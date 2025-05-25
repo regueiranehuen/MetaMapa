@@ -61,6 +61,26 @@ public class HechosController {
 
     }
 
+    @GetMapping
+    public ResponseEntity<List<VisualizarHechosOutputDTO>> listarHechos(
+            @RequestParam(required = false) String categoria,
+            @RequestParam(required = false, name = "fecha_reporte_desde") String fechaReporteDesde,
+            @RequestParam(required = false, name = "fecha_reporte_hasta") String fechaReporteHasta,
+            @RequestParam(required = false, name = "fecha_acontecimiento_desde") String fechaAcontecimientoDesde,
+            @RequestParam(required = false, name = "fecha_acontecimiento_hasta") String fechaAcontecimientoHasta,
+            @RequestParam(required = false) String ubicacion
+    ) {
+        FiltroHechosDTO filtros = new FiltroHechosDTO();
+        filtros.setCategoria(categoria);
+        filtros.setFechaReporteDesde(fechaReporteDesde);
+        filtros.setFechaReporteHasta(fechaReporteHasta);
+        filtros.setFechaAcontecimientoDesde(fechaAcontecimientoDesde);
+        filtros.setFechaAcontecimientoHasta(fechaAcontecimientoHasta);
+        filtros.setUbicacion(ubicacion);
+
+        RespuestaHttp<List<VisualizarHechosOutputDTO>> respuesta = hechosService.navegarPorHechos(filtros);
+        return ResponseEntity.status(respuesta.getCodigo()).body(respuesta.getDatos());
+    }
 
 
 }

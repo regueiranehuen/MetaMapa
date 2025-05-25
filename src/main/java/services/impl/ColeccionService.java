@@ -98,6 +98,14 @@ incluir automáticamente todos los hechos de categoría “Incendio forestal” 
         return new RespuestaHttp<>(null, HttpStatus.OK.value());
 
     }
+
+    @Override
+    public List<Coleccion> obtenerTodasLasColecciones() {
+        return coleccionesRepo.findAll();
+    }
+
 }
+
+
 
 //TODO Cada vez que se crea un hecho que se meta el en las colecciones que el hecho cumple su criterio

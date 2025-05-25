@@ -11,5 +11,8 @@ import models.entities.personas.Usuario;
 import java.util.List;
 
 public interface IColeccionService {
-    public RespuestaHttp<Void> crearColeccion(ColeccionInputDTO inputDTO);
+    //public RespuestaHttp<Void> crearColeccion(ColeccionInputDTO inputDTO);
+    RespuestaHttp<Void> crearColeccion(ColeccionInputDTO inputDTO);
+    List<Coleccion> obtenerTodasLasColecciones();
 }
+
