@@ -19,6 +19,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
+import services.IDetectorDeSpam;
 import services.ISolicitudHechoService;
 
 import java.time.ZonedDateTime;
@@ -34,6 +35,10 @@ public class SolicitudHechoService implements ISolicitudHechoService {
     private final ISolicitudModificarHechoRepository solicitudModificarHechoRepo;
     private final IHechosRepository hechosRepository;
     private final IPersonaRepository usuariosRepository;
+
+    @Autowired
+    private IDetectorDeSpam detectorDeSpam;
+
     GestorRoles gestorRoles;
 
     public SolicitudHechoService(ISolicitudAgregarHechoRepository solicitudAgregarHechoRepo, ISolicitudEliminarHechoRepository solicitudEliminarHechoRepo,
@@ -88,7 +93,18 @@ public class SolicitudHechoService implements ISolicitudHechoService {
             return new RespuestaHttp<>(null, HttpStatus.UNAUTHORIZED.value());
         }
         Hecho hecho = hechosRepository.findById(dto.getId_hecho());
-        SolicitudHecho solicitud = new SolicitudHecho(usuario, hecho, solicitudEliminarHechoRepo.getProxId());
+
+        SolicitudHecho solicitud = new SolicitudHecho(usuario, hecho, solicitudEliminarHechoRepo.getProxId(), dto.getJustificacion());
+
+        if (detectorDeSpam.esSpam(dto.getJustificacion())) {
+            // Marcar como rechazada por spam y guardar
+            solicitud.setProcesada(true);
+            solicitud.setRechazadaPorSpam(true);
+            solicitudEliminarHechoRepo.save(solicitud);
+            return new RespuestaHttp<>(null, HttpStatus.BAD_REQUEST.value()); // 400 - solicitud rechazada por spam
+        }
+
+
         solicitudEliminarHechoRepo.save(solicitud);
         return new RespuestaHttp<>(null, HttpStatus.OK.value()); // Un admin no deberia solicitar eliminar, los elimina directamente
     }
@@ -121,26 +137,42 @@ public class SolicitudHechoService implements ISolicitudHechoService {
     public RespuestaHttp<Void> evaluarSolicitudSubirHecho(SolicitudHechoEvaluarInputDTO dtoInput) {
 
         SolicitudHecho solicitud = solicitudAgregarHechoRepo.findById(dtoInput.getId_solicitud());
+
+        if (solicitud == null) {
+            return new RespuestaHttp<>(null, HttpStatus.NOT_FOUND.value());
+        }
+
+        // Verificar que no haya sido procesada ya
+        if (solicitud.isProcesada()) {
+            return new RespuestaHttp<>(null, HttpStatus.CONFLICT.value()); // Ya fue procesada
+        }
+
+        if (ChronoUnit.DAYS.between(solicitud.getHecho().getFechaDeCarga(), ZonedDateTime.now()) >= 7) {
+            return new RespuestaHttp<>(null, HttpStatus.CONFLICT.value());
+        }
+
         Usuario usuario = usuariosRepository.findById(dtoInput.getId_usuario());//el que ejecuta la acción
 
-        if(!usuario.getRol().equals(Rol.ADMINISTRADOR)){
+        if (!usuario.getRol().equals(Rol.ADMINISTRADOR)) {
             return new RespuestaHttp<>(null, HttpStatus.UNAUTHORIZED.value());
         }
-        else {
 
-            if (dtoInput.getRespuesta()) {
+        // Marcar como procesada
+        solicitud.setProcesada(true);
 
-                solicitud.getHecho().setActivo(true);
-                solicitud.getUsuario().incrementarHechosSubidos();
-                hechosRepository.getSnapshotHechos().add(solicitud.getHecho());
-                hechosRepository.update(solicitud.getHecho());
+        if (dtoInput.getRespuesta()) {
+            // Aceptar solicitud - marcar hecho como inactivo
+            solicitud.getHecho().setActivo(false);
+            solicitud.getUsuario().disminuirHechosSubidos();
+            hechosRepository.update(solicitud.getHecho());
 
-                if (solicitud.getUsuario().getRol().equals(Rol.VISUALIZADOR)){
-                    gestorRoles.VisualizadorAContribuyente(solicitud.getUsuario());
-                }
+            if (solicitud.getUsuario().getCantHechosSubidos() == 0) {
+                gestorRoles.ContribuyenteAVisualizador(solicitud.getUsuario());
             }
-            this.solicitudAgregarHechoRepo.delete(solicitud);
         }
+        // Si es false, simplemente queda rechazada (procesada = true pero sin cambios en el hecho)
+
+        solicitudEliminarHechoRepo.update(solicitud);
         return new RespuestaHttp<>(null, HttpStatus.OK.value());
     }
 
@@ -193,6 +225,12 @@ public class SolicitudHechoService implements ISolicitudHechoService {
         return new RespuestaHttp<>(null, HttpStatus.OK.value());
     }
 
+    @Override
+    public List<SolicitudHecho> obtenerSolicitudesPendientes() {
+        return solicitudEliminarHechoRepo.findAll().stream()
+                .filter(s -> !s.isProcesada() && !s.isRechazadaPorSpam())
+                .toList();
+    }
+
+    
 }
-
-
