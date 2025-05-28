@@ -56,6 +56,10 @@ public class SolicitudHechoService implements ISolicitudHechoService {
             return new RespuestaHttp<>(null, HttpStatus.UNAUTHORIZED.value());
         }
 
+        if (DetectorDeSpam.esSpam(dto.getTitulo()) || DetectorDeSpam.esSpam(dto.getDescripcion())) {
+            return new RespuestaHttp<>(null, HttpStatus.BAD_REQUEST.value());
+        }
+
         List<Hecho> hechos = hechosRepository.findAll();
 
         Optional<Hecho> hecho2 = hechos.stream().filter(h->Normalizador.normalizarYComparar(h.getPais().getPais(), dto.getPais())).findFirst();
