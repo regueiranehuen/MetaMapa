@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Panel de Control - MetaMapa</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+<header class="dashboard-header">
+    <div class="logo">
+        <div class="logo-icon">M</div>
+        <span class="logo-text">MetaMapa</span>
+        <span style="color: #666; font-size: 14px; margin-left: 10px;">Panel de Control</span>
+    </div>
+    <div class="user-info">
+        <span id="welcome-text"></span>
+        <span class="user-badge" id="user-role"></span>
+        <a href="index.html" class="btn btn-secondary">Cerrar Sesión</a>
+    </div>
+</header>
+
+<nav class="nav-tabs">
+    <a href="#" class="nav-tab active" onclick="mostrarPestaña('hechos', this); return false;">📄 Hechos</a>
+    <a href="#" class="nav-tab" onclick="mostrarPestaña('mapa', this); return false;">🗺️ Mapa</a>
+    <a href="#" class="nav-tab" onclick="mostrarPestaña('colecciones', this); return false;">📚 Colecciones</a>
+    <a href="#" class="nav-tab" onclick="mostrarPestaña('contribuir', this); return false;">+ Contribuir</a>
+</nav>
+
+<div class="container">
+    <!-- Contenido de Hechos -->
+    <div id="hechos-content" class="tab-content active">
+        <div class="search-filter-bar">
+            <div class="search-box">
+                <span class="search-icon">🔍</span>
+                <input type="text" class="search-input" placeholder="Buscar hechos históricos...">
+            </div>
+            <select class="filter-dropdown">
+                <option>Todas las categorías</option>
+                <option>Política</option>
+                <option>Exploración</option>
+                <option>Guerra</option>
+                <option>Independencia</option>
+            </select>
+        </div>
+
+        <div class="facts-grid">
+            <div class="fact-card">
+                <div class="fact-header">
+                    <h3 class="fact-title">Revolución de Mayo</h3>
+                    <span class="fact-category">Política</span>
+                </div>
+                <p class="fact-description">Inicio del proceso independentista argentino</p>
+                <div class="fact-meta">
+                    <div class="fact-meta-row">
+                        <span>📍</span>
+                        <span>Buenos Aires, Argentina</span>
+                    </div>
+                    <div class="fact-meta-row">
+                        <span>📅</span>
+                        <span>24/5/1810</span>
+                    </div>
+                    <div class="fact-meta-row">
+                        <span class="fact-multimedia">📁 3 archivos multimedia</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="fact-card">
+                <div class="fact-header">
+                    <h3 class="fact-title">Descubrimiento de América</h3>
+                    <span class="fact-category">Exploración</span>
+                </div>
+                <p class="fact-description">Llegada de Cristóbal Colón al continente americano</p>
+                <div class="fact-meta">
+                    <div class="fact-meta-row">
+                        <span>📍</span>
+                        <span>San Salvador, Bahamas</span>
+                    </div>
+                    <div class="fact-meta-row">
+                        <span>📅</span>
+                        <span>11/10/1492</span>
+                    </div>
+                    <div class="fact-meta-row">
+                        <span class="fact-multimedia">📁 5 archivos multimedia</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="fact-card">
+                <div class="fact-header">
+                    <h3 class="fact-title">Caída del Muro de Berlín</h3>
+                    <span class="fact-category">Política</span>
+                </div>
+                <p class="fact-description">Fin simbólico de la Guerra Fría</p>
+                <div class="fact-meta">
+                    <div class="fact-meta-row">
+                        <span>📍</span>
+                        <span>Berlín, Alemania</span>
+                    </div>
+                    <div class="fact-meta-row">
+                        <span>📅</span>
+                        <span>9/11/1989</span>
+                    </div>
+                    <div class="fact-meta-row">
+                        <span class="fact-multimedia">📁 8 archivos multimedia</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="fact-card">
+                <div class="fact-header">
+                    <h3 class="fact-title">Independencia de México</h3>
+                    <span class="fact-category">Política</span>
+                </div>
+                <p class="fact-description">Grito de Dolores que inició la independencia mexicana</p>
+                <div class="fact-meta">
+                    <div class="fact-meta-row">
+                        <span>📍</span>
+                        <span>Dolores Hidalgo, México</span>
+                    </div>
+                    <div class="fact-meta-row">
+                        <span>📅</span>
+                        <span>15/9/1810</span>
+                    </div>
+                    <div class="fact-meta-row">
+                        <span class="fact-multimedia">📁 4 archivos multimedia</span>
+                    </div>
+                </div>
+                <div class="fact-actions">
+                    <button class="btn-report" onclick="abrirReporte(this)">❗ Reportar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Contenido del Mapa -->
+    <div id="mapa-content" class="tab-content">
+        <div class="search-filter-bar">
+            <div class="search-box">
+                <span class="search-icon">🔍</span>
+                <input type="text" class="search-input" placeholder="Buscar en mapa...">
+            </div>
+            <select class="filter-dropdown">
+                <option>Todas las categorías</option>
+                <option>Política</option>
+                <option>Exploración</option>
+                <option>Guerra</option>
+            </select>
+        </div>
+
+        <div class="map-container">
+            <div class="map-header">
+                <div style="display: flex; align-items: center; gap: 10px;">
+                    <span style="font-size: 20px;">🌍</span>
+                    <div>
+                        <h2 class="map-title">Mapa Mundial de Hechos Históricos</h2>
+                        <p class="map-subtitle">Haz clic en los marcadores para ver detalles de cada evento</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="map-wrapper">
+                <div class="map-area">
+                    <div class="map-placeholder">
+                        <span>Mapa Interactivo Mundial</span>
+                        <div class="map-marker revolucion" title="Revolución de Mayo"></div>
+                        <div class="map-marker descubrimiento" title="Descubrimiento de América"></div>
+                        <div class="map-marker muro" title="Caída del Muro de Berlín"></div>
+                        <div class="map-marker independencia" title="Independencia de México"></div>
+                    </div>
+                    <div class="map-legend">
+                        <div class="legend-item">
+                            <div class="legend-dot historical"></div>
+                            <span>Hecho histórico</span>
+                        </div>
+                        <div class="legend-item">
+                            <div class="legend-dot selected"></div>
+                            <span>Seleccionado</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="map-sidebar">
+                    <div class="map-info-card">
+                        <div class="map-info-icon">🎯</div>
+                        <h3 class="map-info-title">Selecciona un hecho en el mapa</h3>
+                        <p class="map-info-text">Haz clic en cualquier marcador para ver los detalles del evento histórico</p>
+                    </div>
+
+                    <div class="available-facts">
+                        <h3 class="available-facts-title">Hechos Disponibles</h3>
+                        <p class="available-facts-count">4 eventos en el mapa</p>
+
+                        <div class="fact-list-item">
+                            <div>
+                                <div class="fact-list-title">Revolución de Mayo</div>
+                                <div class="fact-list-location">Buenos Aires, Argentina</div>
+                            </div>
+                            <span class="fact-list-category">Política</span>
+                        </div>
+
+                        <div class="fact-list-item">
+                            <div>
+                                <div class="fact-list-title">Descubrimiento de América</div>
+                                <div class="fact-list-location">San Salvador, Bahamas</div>
+                            </div>
+                            <span class="fact-list-category">Exploración</span>
+                        </div>
+
+                        <div class="fact-list-item">
+                            <div>
+                                <div class="fact-list-title">Caída del Muro de Berlín</div>
+                                <div class="fact-list-location">Berlín, Alemania</div>
+                            </div>
+                            <span class="fact-list-category">Política</span>
+                        </div>
+
+                        <div class="fact-list-item">
+                            <div>
+                                <div class="fact-list-title">Independencia de México</div>
+                                <div class="fact-list-location">Dolores Hidalgo, México</div>
+                            </div>
+                            <span class="fact-list-category">Política</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Contenido de Colecciones -->
+    <div id="colecciones-content" class="tab-content">
+        <div class="contribution-section">
+            <h2 class="section-title">📚 Colecciones</h2>
+            <p class="section-subtitle">Gestiona y organiza colecciones de hechos históricos</p>
+            <div style="text-align: center; padding: 60px 20px; color: #666;">
+                <div style="font-size: 48px; margin-bottom: 20px;">📚</div>
+                <h3>Función en desarrollo</h3>
+                <p>La gestión de colecciones estará disponible próximamente</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Contenido de Contribuir -->
+    <div id="contribuir-content" class="tab-content">
+        <div class="contribution-section">
+            <h2 class="section-title">Contribuir con un Nuevo Hecho</h2>
+            <p class="section-subtitle">Comparte información sobre eventos históricos importantes</p>
+
+            <form>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label class="form-label">Título del Hecho *</label>
+                        <input type="text" class="form-input" placeholder="Ej: Revolución Francesa">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Categoría *</label>
+                        <select class="form-select">
+                            <option>Seleccionar categoría</option>
+                            <option>Política</option>
+                            <option>Exploración</option>
+                            <option>Guerra</option>
+                            <option>Independencia</option>
+                            <option>Cultural</option>
+                            <option>Científica</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label class="form-label">País *</label>
+                        <input type="text" class="form-input" placeholder="Ej: Francia">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Fecha del Acontecimiento *</label>
+                        <input type="date" class="form-input">
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label class="form-label">Ubicación *</label>
+                        <input type="text" class="form-input" placeholder="Ej: París, Francia">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Coordenadas (Opcional)</label>
+                        <div class="form-row-coords">
+                            <input type="text" class="form-input" placeholder="Latitud">
+                            <input type="text" class="form-input" placeholder="Longitud">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Descripción *</label>
+                    <textarea class="form-textarea" placeholder="Describe el evento histórico..." rows="5"></textarea>
+                </div>
+
+                <!-- <div class="form-group">
+                    <label class="form-label">Fuente</label>
+                    <input type="url" class="form-input" placeholder="URL o referencia de la fuente">
+                </div> -->
+
+                <div class="form-group">
+                    <label class="form-label">Contenido Multimedia (Opcional)</label>
+                    <div class="file-upload-area">
+                        <div>📁 Elegir archivos</div>
+                        <div style="font-size: 12px; margin-top: 5px; color: #94a3b8;">Sin archivos seleccionados</div>
+                    </div>
+                </div>
+
+                <button type="submit" class="green-button">
+                    Enviar Solicitud de Hecho
+                </button>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Modal para reportar hechos -->
+
+<div id="report-modal" class="modal">
+    <div class="modal-content">
+        <span class="close-btn" onclick="cerrarReporte()">&times;</span>
+        <h3>Reportar hecho</h3>
+        <textarea id="report-text" maxlength="500" placeholder="Describe el problema (máx. 500 caracteres)..."></textarea>
+        <div id="char-count">0/500</div>
+        <button class="btn-submit" onclick="enviarReporte()">Enviar</button>
+    </div>
+</div>
+
+
+<script>
+    function mostrarPestaña(idPestaña, elemento) {
+        // Ocultar todo el contenido de pestañas
+        const contenidoPestañas = document.querySelectorAll('.tab-content');
+        contenidoPestañas.forEach(contenido => contenido.classList.remove('active'));
+
+        // Quitar clase activa de todas las pestañas de navegación
+        const pestañasNav = document.querySelectorAll('.nav-tab');
+        pestañasNav.forEach(pestaña => pestaña.classList.remove('active'));
+
+        // Mostrar contenido de pestaña seleccionada
+        document.getElementById(idPestaña + '-content').classList.add('active');
+
+        // Agregar clase activa a pestaña clickeada
+        elemento.classList.add('active');
+    }
+</script>
+
+<script>
+    // Detectar si se accedió en modo anónimo
+    const params = new URLSearchParams(window.location.search);
+    const isAnon = params.get("anon") === "true";
+
+    const welcomeText = document.getElementById("welcome-text");
+    const userRole = document.getElementById("user-role");
+
+    if (isAnon) {
+        welcomeText.textContent = "Bienvenido, VISUALIZADOR";
+        userRole.textContent = "ANÓNIMO";
+    } else {
+        // Podés más adelante reemplazar estos valores con datos reales del login
+        welcomeText.textContent = "Bienvenido, dasdas";
+        userRole.textContent = "CONTRIBUYENTE";
+    }
+</script>
+
+<!-- Cierra el Reporte cuando se manda, Deberiamos crear una pestaña aparte para que se vea mejor -->
+<script>
+    let modal = document.getElementById("report-modal");
+    let reportText = document.getElementById("report-text");
+    let charCount = document.getElementById("char-count");
+    let currentFact = null;
+
+    function abrirReporte(btn) {
+        currentFact = btn.closest(".fact-card"); // guardar el hecho reportado
+        modal.style.display = "flex";
+        reportText.value = "";
+        charCount.textContent = "0/500";
+    }
+
+    function cerrarReporte() {
+        modal.style.display = "none";
+    }
+
+    function enviarReporte() {
+        if (!reportText.value.trim()) {
+            alert("Por favor, ingresa una descripción antes de enviar.");
+            return;
+        }
+        alert("Reporte enviado:\n\n" + reportText.value);
+        cerrarReporte();
+    }
+
+    reportText.addEventListener("input", () => {
+        charCount.textContent = reportText.value.length + "/500";
+    });
+
+    // Cerrar modal si clickeás afuera
+    window.onclick = function(event) {
+        if (event.target == modal) {
+            cerrarReporte();
+        }
+    }
+</script>
+
+
+</body>
+
+</html>
