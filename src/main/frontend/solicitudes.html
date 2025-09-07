@@ -1,0 +1,598 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Solicitudes - MetaMapa</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #4f46e5;
+            --success-color: #059669;
+            --warning-color: #f59e0b;
+            --danger-color: #dc2626;
+        }
+
+        body {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        }
+
+        .logo-icon {
+            width: 40px;
+            height: 40px;
+            background: var(--primary-color);
+            border-radius: 8px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            font-size: 18px;
+        }
+
+        .dashboard-header {
+            background: white;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .nav-pills-custom .nav-link {
+            color: #666;
+            border-radius: 25px;
+            padding: 10px 20px;
+            margin: 0 5px;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .nav-pills-custom .nav-link.active {
+            background-color: var(--danger-color);
+            color: white;
+        }
+
+        .nav-pills-custom .nav-link:hover:not(.active) {
+            background-color: #f8f9fa;
+            color: #333;
+        }
+
+        .nav-badge {
+            position: absolute;
+            top: -5px;
+            right: -5px;
+            background: var(--danger-color);
+            color: white;
+            font-size: 0.7rem;
+            font-weight: bold;
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .solicitud-card {
+            background: white;
+            border-radius: 12px;
+            border: 1px solid #e9ecef;
+            transition: all 0.3s ease;
+            overflow: hidden;
+        }
+
+        .solicitud-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+        }
+
+        .badge-nuevo {
+            background: var(--success-color);
+            color: white;
+        }
+
+        .badge-modificacion {
+            background: var(--warning-color);
+            color: white;
+        }
+
+        .badge-eliminacion {
+            background: var(--danger-color);
+            color: white;
+        }
+
+        .badge-prioridad-alta {
+            background: #dc2626;
+            color: white;
+            animation: pulse 2s infinite;
+        }
+
+        .badge-prioridad-media {
+            background: #f59e0b;
+            color: white;
+        }
+
+        .badge-prioridad-baja {
+            background: #10b981;
+            color: white;
+        }
+
+        @keyframes pulse {
+            0% { opacity: 1; }
+            50% { opacity: 0.7; }
+            100% { opacity: 1; }
+        }
+
+        .btn-aprobar {
+            background: var(--success-color);
+            border-color: var(--success-color);
+            color: white;
+            font-size: 0.875rem;
+        }
+
+        .btn-aprobar:hover {
+            background: #047857;
+            border-color: #047857;
+            color: white;
+        }
+
+        .btn-rechazar {
+            background: var(--danger-color);
+            border-color: var(--danger-color);
+            color: white;
+            font-size: 0.875rem;
+        }
+
+        .btn-rechazar:hover {
+            background: #b91c1c;
+            border-color: #b91c1c;
+            color: white;
+        }
+
+        .cambio-propuesto {
+            background: #fef3c7;
+            border: 1px solid #fbbf24;
+            border-radius: 8px;
+            padding: 15px;
+            margin: 15px 0;
+        }
+
+        .texto-tachado {
+            text-decoration: line-through;
+            color: #dc2626;
+            background: #fee2e2;
+            padding: 2px 4px;
+            border-radius: 4px;
+        }
+
+        .texto-nuevo {
+            color: #059669;
+            background: #d1fae5;
+            padding: 2px 4px;
+            border-radius: 4px;
+            font-weight: 500;
+        }
+
+        @media (max-width: 768px) {
+            .solicitud-card .btn {
+                font-size: 0.8rem;
+                padding: 5px 10px;
+            }
+        }
+
+        /* Animación de entrada */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .fade-in {
+            animation: fadeIn 0.6s ease-out;
+        }
+
+        /* Hit areas mínimas para móvil, MEJORA VISIBILIDAD PARA MOVIL*/
+        @media (max-width: 768px) {
+            .btn-sm {
+                min-height: 48px;
+                min-width: 48px;
+                padding: 12px 16px;
+            }
+
+            .map-marker {
+                width: 20px;
+                height: 20px;
+                margin: -10px 0 0 -10px;
+            }
+
+            .nav-link {
+                min-height: 48px;
+                display: flex;
+                align-items: center;
+            }
+
+            .form-control, .form-select {
+                min-height: 48px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<!-- Agrego TOASTS Ocultos asi sabemos si las operaciones fueron exitosas o no, en un futuro cambiar a js maybe, sin js no le puedo decir que ejecute algo el boton o mandar mensaje-->
+<div class="toast-container position-fixed bottom-0 end-0 p-3" style="z-index: 11">
+    <div id="successToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
+        <div class="toast-header bg-success text-white">
+            <i class="bi bi-check-circle me-2"></i>
+            <strong class="me-auto">Éxito</strong>
+            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="toast" aria-label="Cerrar"></button>
+        </div>
+        <div class="toast-body" id="successMessage">
+            Operación completada exitosamente
+        </div>
+    </div>
+
+    <div id="errorToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
+        <div class="toast-header bg-danger text-white">
+            <i class="bi bi-exclamation-triangle me-2"></i>
+            <strong class="me-auto">Error</strong>
+            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="toast" aria-label="Cerrar"></button>
+        </div>
+        <div class="toast-body" id="errorMessage">
+            Ocurrió un error. Inténtalo nuevamente.
+        </div>
+    </div>
+</div>
+
+<!-- Header del Dashboard -->
+<header class="dashboard-header py-3">
+    <div class="container-fluid">
+        <div class="row align-items-center">
+            <div class="col-md-6">
+                <a href="index.html" class="text-decoration-none text-dark d-flex align-items-center">
+                    <div class="logo-icon me-2">M</div>
+                    <span class="fs-4 fw-bold">MetaMapa</span>
+                    <span class="text-muted ms-2 d-none d-md-inline">Panel de Control</span>
+                </a>
+            </div>
+            <div class="col-md-6 text-end">
+                <span class="me-2">Bienvenido, <strong>Administrador</strong></span>
+                <span class="badge bg-dark me-2">ADMINISTRADOR</span>
+                <a href="index.html" class="btn btn-outline-secondary btn-sm">
+                    <i class="bi bi-box-arrow-right me-1"></i>Cerrar Sesión
+                </a>
+            </div>
+        </div>
+    </div>
+</header>
+
+<!-- Navegación Principal -->
+<nav class="bg-white border-bottom">
+    <div class="container-fluid py-3">
+        <ul class="nav nav-pills nav-pills-custom justify-content-center">
+            <li class="nav-item">
+                <a class="nav-link" href="dashboard.html">
+                    <i class="bi bi-file-text me-1"></i> Hechos
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="mapa.html">
+                    <i class="bi bi-map me-1"></i> Mapa
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="colecciones.html">
+                    <i class="bi bi-collection me-1"></i> Colecciones
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="contribuir.html">
+                    <i class="bi bi-plus me-1"></i> Contribuir
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link active" href="solicitudes.html">
+                    <i class="bi bi-clipboard-check me-1"></i> Solicitudes
+                    <span class="nav-badge">11</span>
+                </a>
+            </li>
+        </ul>
+    </div>
+</nav>
+
+<!-- Contenido Principal - Solicitudes -->
+<main class="container-fluid py-4 fade-in">
+
+    <!-- Header de solicitudes -->
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h1 class="display-6 fw-bold text-white mb-2">
+                <i class="bi bi-clipboard-check me-2"></i>Solicitudes Pendientes
+            </h1>
+            <p class="text-white-50 mb-0">Revisa y gestiona las solicitudes de modificación de contenido</p>
+        </div>
+        <div class="btn-group">
+            <button class="btn btn-outline-light dropdown-toggle" type="button" data-bs-toggle="dropdown">
+                <i class="bi bi-funnel me-1"></i>Filtros
+            </button>
+            <ul class="dropdown-menu">
+                <li><a class="dropdown-item" href="#">Todas las solicitudes</a></li>
+                <li><a class="dropdown-item" href="#">Solo nuevos hechos</a></li>
+                <li><a class="dropdown-item" href="#">Solo modificaciones</a></li>
+                <li><a class="dropdown-item" href="#">Solo eliminaciones</a></li>
+                <li><hr class="dropdown-divider"></li>
+                <li><a class="dropdown-item" href="#">Prioridad alta</a></li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- Estadísticas generales -->
+    <div class="row mb-5">
+        <div class="col-md-3">
+            <div class="card border-0 shadow-sm">
+                <div class="card-body text-center">
+                    <i class="bi bi-plus-square text-success fs-1"></i>
+                    <h4 class="mt-2">6</h4>
+                    <p class="text-muted mb-0">Nuevos Hechos</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card border-0 shadow-sm">
+                <div class="card-body text-center">
+                    <i class="bi bi-pencil-square text-warning fs-1"></i>
+                    <h4 class="mt-2">3</h4>
+                    <p class="text-muted mb-0">Modificaciones</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card border-0 shadow-sm">
+                <div class="card-body text-center">
+                    <i class="bi bi-trash text-danger fs-1"></i>
+                    <h4 class="mt-2">2</h4>
+                    <p class="text-muted mb-0">Eliminaciones</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card border-0 shadow-sm">
+                <div class="card-body text-center">
+                    <i class="bi bi-exclamation-triangle text-danger fs-1"></i>
+                    <h4 class="mt-2">4</h4>
+                    <p class="text-muted mb-0">Urgentes</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Lista de Solicitudes -->
+    <div class="row g-4">
+
+        <!-- Solicitud 1: Nuevo Hecho -->
+        <div class="col-12">
+            <div class="card solicitud-card">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-start mb-3">
+                        <div class="d-flex gap-2">
+                            <span class="badge badge-nuevo">Nuevo Hecho</span>
+                            <span class="badge badge-prioridad-alta">Prioridad Alta</span>
+                        </div>
+                        <div class="text-end">
+                            <small class="text-muted">Hace 2 horas</small>
+                        </div>
+                    </div>
+
+                    <h5 class="card-title">Revolución Cubana</h5>
+                    <p class="card-text text-muted">Revolución socialista que transformó Cuba entre 1953 y 1959</p>
+
+                    <div class="row text-muted small mb-3">
+                        <div class="col-md-4">
+                            <i class="bi bi-person me-1"></i>Solicitante: Juan Pérez
+                        </div>
+                        <div class="col-md-4">
+                            <i class="bi bi-calendar me-1"></i>Fecha: 20/01/2024
+                        </div>
+                        <div class="col-md-4">
+                            <i class="bi bi-geo-alt me-1"></i>Ubicación: La Habana, Cuba
+                        </div>
+                    </div>
+
+                    <div class="d-flex justify-content-end gap-2">
+                        <button class="btn btn-outline-primary btn-sm">
+                            <i class="bi bi-eye me-1"></i>Ver Detalles
+                        </button>
+                        <button class="btn btn-aprobar btn-sm" onclick="showActionLoader(this, 'Aprobando...')">
+                            <span class="btn-content">
+                                <i class="bi bi-check me-1"></i>Aprobar
+                            </span>
+                                                    <span class="btn-loader d-none">
+                                <span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+                                Aprobando...
+                            </span>
+                        </button>
+                        <button class="btn btn-rechazar btn-sm" onclick="showActionLoader(this, 'Rechazando...')">
+                            <span class="btn-content">
+                                <i class="bi bi-check me-1"></i>Rechazar
+                            </span>
+                                                    <span class="btn-loader d-none">
+                                <span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+                                Rechazando...
+                            </span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Solicitud 2: Modificación -->
+        <div class="col-12">
+            <div class="card solicitud-card">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-start mb-3">
+                        <div class="d-flex gap-2">
+                            <span class="badge badge-modificacion">Modificación</span>
+                            <span class="badge badge-prioridad-media">Prioridad Media</span>
+                        </div>
+                        <div class="text-end">
+                            <small class="text-muted">Hace 5 horas</small>
+                        </div>
+                    </div>
+
+                    <h5 class="card-title">Independencia Argentina</h5>
+                    <p class="card-text text-muted">Solicitud para corregir fecha y agregar información adicional</p>
+
+                    <div class="row text-muted small mb-3">
+                        <div class="col-md-4">
+                            <i class="bi bi-person me-1"></i>Solicitante: María García
+                        </div>
+                        <div class="col-md-4">
+                            <i class="bi bi-calendar me-1"></i>Fecha: 18/01/2024
+                        </div>
+                    </div>
+
+                    <div class="cambio-propuesto">
+                        <h6>Cambios propuestos:</h6>
+                        <p class="mb-2">
+                            <strong>Fecha:</strong>
+                            <span class="texto-tachado">9 de Julio de 1810</span> →
+                            <span class="texto-nuevo">9 de Julio de 1816 (Declaración)</span>
+                        </p>
+                    </div>
+
+                    <div class="d-flex justify-content-end gap-2">
+                        <button class="btn btn-outline-primary btn-sm">
+                            <i class="bi bi-eye me-1"></i>Ver Detalles
+                        </button>
+                        <button class="btn btn-aprobar btn-sm">
+                            <i class="bi bi-check me-1"></i>Aprobar
+                        </button>
+                        <button class="btn btn-rechazar btn-sm">
+                            <i class="bi bi-x me-1"></i>Rechazar
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Solicitud 3: Eliminación -->
+        <div class="col-12">
+            <div class="card solicitud-card">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-start mb-3">
+                        <div class="d-flex gap-2">
+                            <span class="badge badge-eliminacion">Eliminación</span>
+                            <span class="badge badge-prioridad-baja">Prioridad Baja</span>
+                        </div>
+                        <div class="text-end">
+                            <small class="text-muted">Hace 1 día</small>
+                        </div>
+                    </div>
+
+                    <h5 class="card-title">Batalla Realizada Segundo Malvino</h5>
+                    <p class="card-text text-muted">Solicitud de eliminación por información duplicada e incorrecta</p>
+
+                    <div class="row text-muted small mb-3">
+                        <div class="col-md-4">
+                            <i class="bi bi-person me-1"></i>Solicitante: Dr. Carlos López
+                        </div>
+                        <div class="col-md-4">
+                            <i class="bi bi-calendar me-1"></i>Fecha: 17/01/2024
+                        </div>
+                    </div>
+
+                    <div class="alert alert-warning mb-3">
+                        <i class="bi bi-exclamation-triangle me-2"></i>
+                        <strong>Motivo:</strong> Información históricamente incorrecta y duplicada con otro evento existente.
+                    </div>
+
+                    <div class="d-flex justify-content-end gap-2">
+                        <button class="btn btn-outline-primary btn-sm">
+                            <i class="bi bi-eye me-1"></i>Ver Detalles
+                        </button>
+                        <button class="btn btn-aprobar btn-sm">
+                            <i class="bi bi-check me-1"></i>Aprobar
+                        </button>
+                        <button class="btn btn-rechazar btn-sm">
+                            <i class="bi bi-x me-1"></i>Rechazar
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Solicitud 4: Nuevo Hecho -->
+        <div class="col-12">
+            <div class="card solicitud-card">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-start mb-3">
+                        <div class="d-flex gap-2">
+                            <span class="badge badge-nuevo">Nuevo Hecho</span>
+                            <span class="badge badge-prioridad-media">Prioridad Media</span>
+                        </div>
+                        <div class="text-end">
+                            <small class="text-muted">Hace 2 días</small>
+                        </div>
+                    </div>
+
+                    <h5 class="card-title">Tratado de Versalles</h5>
+                    <p class="card-text text-muted">Tratado de paz que puso fin a la Primera Guerra Mundial entre Alemania y los Aliados</p>
+
+                    <div class="row text-muted small mb-3">
+                        <div class="col-md-4">
+                            <i class="bi bi-person me-1"></i>Solicitante: Prof. Ana Martínez
+                        </div>
+                        <div class="col-md-4">
+                            <i class="bi bi-calendar me-1"></i>Fecha: 16/01/2024
+                        </div>
+                        <div class="col-md-4">
+                            <i class="bi bi-geo-alt me-1"></i>Ubicación: Versalles, Francia
+                        </div>
+                    </div>
+
+                    <div class="d-flex justify-content-end gap-2">
+                        <button class="btn btn-outline-primary btn-sm">
+                            <i class="bi bi-eye me-1"></i>Ver Detalles
+                        </button>
+                        <button class="btn btn-aprobar btn-sm">
+                            <i class="bi bi-check me-1"></i>Aprobar
+                        </button>
+                        <button class="btn btn-rechazar btn-sm">
+                            <i class="bi bi-x me-1"></i>Rechazar
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Paginación -->
+    <nav aria-label="Navegación de solicitudes" class="mt-5">
+        <ul class="pagination justify-content-center">
+            <li class="page-item disabled">
+                <span class="page-link">
+                    <i class="bi bi-chevron-left"></i>
+                </span>
+            </li>
+            <li class="page-item active">
+                <span class="page-link">1</span>
+            </li>
+            <li class="page-item">
+                <a class="page-link" href="?page=2">2</a>
+            </li>
+            <li class="page-item">
+                <a class="page-link" href="?page=3">3</a>
+            </li>
+            <li class="page-item">
+                <a class="page-link" href="?page=2">
+                    <i class="bi bi-chevron-right"></i>
+                </a>
+            </li>
+        </ul>
+    </nav>
+
+</main>
+
+</body>
+</html>

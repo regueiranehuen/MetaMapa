@@ -1,0 +1,460 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registrarse - MetaMapa</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #4f46e5;
+        }
+
+        body {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        }
+
+        .logo-icon {
+            width: 40px;
+            height: 40px;
+            background: var(--primary-color);
+            border-radius: 8px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            font-size: 18px;
+        }
+
+        .register-container {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .register-card {
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.15);
+            overflow: hidden;
+            max-width: 500px;
+            width: 100%;
+        }
+
+        .form-control:focus, .form-select:focus {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 0.2rem rgba(79, 70, 229, 0.25);
+        }
+
+        .btn-register {
+            background-color: var(--primary-color);
+            border-color: var(--primary-color);
+            padding: 12px;
+            font-weight: 600;
+        }
+
+        .btn-register:hover {
+            background-color: #3730a3;
+            border-color: #3730a3;
+            transform: translateY(-2px);
+        }
+
+        .back-arrow {
+            color: #666;
+            text-decoration: none;
+            font-size: 24px;
+            transition: color 0.2s ease;
+        }
+
+        .back-arrow:hover {
+            color: #333;
+        }
+
+        .required-field {
+            color: #dc2626;
+        }
+
+        .form-section {
+            border: 1px solid #e5e7eb;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 20px;
+            background: #f9fafb;
+        }
+
+        .form-section h6 {
+            color: #374151;
+            margin-bottom: 15px;
+            font-weight: 600;
+        }
+
+        .password-strength {
+            height: 4px;
+            background: #e5e7eb;
+            border-radius: 2px;
+            margin-top: 8px;
+            overflow: hidden;
+        }
+
+        .password-strength-bar {
+            height: 100%;
+            transition: all 0.3s ease;
+            border-radius: 2px;
+        }
+
+        .strength-weak { background: #ef4444; width: 33%; }
+        .strength-medium { background: #f59e0b; width: 66%; }
+        .strength-strong { background: #10b981; width: 100%; }
+
+        .terms-box {
+            background: #fef3c7;
+            border: 1px solid #fbbf24;
+            border-radius: 8px;
+            padding: 15px;
+            margin: 20px 0;
+        }
+
+        @media (max-width: 576px) {
+            .register-card {
+                margin: 10px;
+            }
+        }
+
+        /* Hit areas mínimas para móvil */
+        @media (max-width: 768px) {
+            .btn-sm {
+                min-height: 48px;
+                min-width: 48px;
+                padding: 12px 16px;
+            }
+
+            .map-marker {
+                width: 20px;
+                height: 20px;
+                margin: -10px 0 0 -10px;
+            }
+
+            .nav-link {
+                min-height: 48px;
+                display: flex;
+                align-items: center;
+            }
+
+            .form-control, .form-select {
+                min-height: 48px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<!-- Agrego TOASTS Ocultos asi sabemos si las operaciones fueron exitosas o no, en un futuro cambiar a js maybe -->
+<div class="toast-container position-fixed bottom-0 end-0 p-3" style="z-index: 11">
+    <div id="successToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
+        <div class="toast-header bg-success text-white">
+            <i class="bi bi-check-circle me-2"></i>
+            <strong class="me-auto">Éxito</strong>
+            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="toast" aria-label="Cerrar"></button>
+        </div>
+        <div class="toast-body" id="successMessage">
+            Operación completada exitosamente
+        </div>
+    </div>
+
+    <div id="errorToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
+        <div class="toast-header bg-danger text-white">
+            <i class="bi bi-exclamation-triangle me-2"></i>
+            <strong class="me-auto">Error</strong>
+            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="toast" aria-label="Cerrar"></button>
+        </div>
+        <div class="toast-body" id="errorMessage">
+            Ocurrió un error. Inténtalo nuevamente.
+        </div>
+    </div>
+</div>
+
+<div class="register-container">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-8 col-lg-6">
+
+                <!-- Header con logo y navegación -->
+                <div class="mb-4">
+                    <a href="login.html" class="back-arrow me-3">
+                        <i class="bi bi-arrow-left"></i>
+                    </a>
+                    <a href="index.html" class="text-decoration-none text-white d-inline-flex align-items-center">
+                        <div class="logo-icon me-2">M</div>
+                        <span class="fs-4 fw-bold">MetaMapa</span>
+                    </a>
+                </div>
+
+                <!-- Tarjeta de registro -->
+                <div class="card register-card border-0">
+                    <div class="card-body p-5">
+                        <div class="text-center mb-4">
+                            <h2 class="card-title fw-bold">Crear Cuenta</h2>
+                            <p class="text-muted">Únete a la comunidad de MetaMapa como contribuyente</p>
+                        </div>
+
+                        <!-- Formulario de registro -->
+                        <form action="dashboard.html" method="get">
+
+                            <!-- Información básica (obligatoria) -->
+                            <div class="form-section">
+                                <h6>
+                                    <i class="bi bi-person me-2"></i>Información Básica
+                                    <span class="required-field">*</span>
+                                </h6>
+
+                                <div class="row g-3">
+                                    <div class="col-md-6">
+                                        <label class="form-label fw-semibold">
+                                            Nombre <span class="required-field">*</span>
+                                        </label>
+                                        <input
+                                                type="text"
+                                                class="form-control"
+                                                name="nombre"
+                                                placeholder="Tu nombre"
+                                                required
+                                        >
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label class="form-label fw-semibold">
+                                            Apellido <span class="required-field">*</span>
+                                        </label>
+                                        <input
+                                                type="text"
+                                                class="form-control"
+                                                name="apellido"
+                                                placeholder="Tu apellido"
+                                                required
+                                        >
+                                    </div>
+                                    <div class="col-12">
+                                        <label class="form-label fw-semibold">
+                                            Correo Electrónico <span class="required-field">*</span>
+                                        </label>
+                                        <input
+                                                type="email"
+                                                class="form-control"
+                                                name="email"
+                                                placeholder="tu@email.com"
+                                                required
+                                        >
+                                    </div>
+                                    <div class="col-12">
+                                        <label class="form-label fw-semibold">
+                                            Nombre de Usuario <span class="required-field">*</span>
+                                        </label>
+                                        <input
+                                                type="text"
+                                                class="form-control"
+                                                name="username"
+                                                placeholder="Nombre único para identificarte"
+                                                required
+                                        >
+                                        <div class="form-text">Será visible en tus contribuciones</div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Contraseña -->
+                            <div class="form-section">
+                                <h6>
+                                    <i class="bi bi-lock me-2"></i>Seguridad
+                                </h6>
+
+                                <div class="row g-3">
+                                    <div class="col-12">
+                                        <label class="form-label fw-semibold">
+                                            Contraseña <span class="required-field">*</span>
+                                        </label>
+                                        <input
+                                                type="password"
+                                                class="form-control"
+                                                name="password"
+                                                placeholder="Mínimo 8 caracteres"
+                                                required
+                                                onkeyup="checkPasswordStrength(this.value)"
+                                        >
+                                        <div class="password-strength">
+                                            <div id="passwordStrengthBar" class="password-strength-bar"></div>
+                                        </div>
+                                        <div class="form-text">
+                                            <small>Incluye mayúsculas, minúsculas, números y símbolos</small>
+                                        </div>
+                                    </div>
+                                    <div class="col-12">
+                                        <label class="form-label fw-semibold">
+                                            Confirmar Contraseña <span class="required-field">*</span>
+                                        </label>
+                                        <input
+                                                type="password"
+                                                class="form-control"
+                                                placeholder="Repite tu contraseña"
+                                                required
+                                        >
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Información opcional -->
+                            <div class="form-section">
+                                <h6>
+                                    <i class="bi bi-info-circle me-2"></i>Información Adicional
+                                    <small class="text-muted">(Opcional)</small>
+                                </h6>
+
+                                <div class="row g-3">
+                                    <div class="col-md-6">
+                                        <label class="form-label fw-semibold">Institución</label>
+                                        <input
+                                                type="text"
+                                                class="form-control"
+                                                name="institucion"
+                                                placeholder="Universidad, ONG, etc."
+                                        >
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label class="form-label fw-semibold">Área de Especialización</label>
+                                        <select class="form-select" name="especializacion">
+                                            <option value="">Seleccionar área</option>
+                                            <option value="historia">Historia</option>
+                                            <option value="arqueologia">Arqueología</option>
+                                            <option value="antropologia">Antropología</option>
+                                            <option value="sociologia">Sociología</option>
+                                            <option value="politica">Ciencias Políticas</option>
+                                            <option value="geografia">Geografía</option>
+                                            <option value="periodismo">Periodismo</option>
+                                            <option value="otro">Otro</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-12">
+                                        <label class="form-label fw-semibold">País</label>
+                                        <select class="form-select" name="pais">
+                                            <option value="">Seleccionar país</option>
+                                            <option value="AR">Argentina</option>
+                                            <option value="BR">Brasil</option>
+                                            <option value="CL">Chile</option>
+                                            <option value="CO">Colombia</option>
+                                            <option value="MX">México</option>
+                                            <option value="PE">Perú</option>
+                                            <option value="UY">Uruguay</option>
+                                            <option value="ES">España</option>
+                                            <option value="US">Estados Unidos</option>
+                                            <option value="otro">Otro</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-12">
+                                        <label class="form-label fw-semibold">Breve Descripción</label>
+                                        <textarea
+                                                class="form-control"
+                                                rows="3"
+                                                name="descripcion"
+                                                placeholder="Cuéntanos sobre ti y tu interés en MetaMapa..."
+                                                maxlength="500"
+                                        ></textarea>
+                                        <div class="form-text text-end">0/500 caracteres</div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Términos y condiciones -->
+                            <div class="terms-box">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" id="terms" required>
+                                    <label class="form-check-label" for="terms">
+                                        <small>
+                                            Acepto los <a href="#" class="text-decoration-none">términos de servicio</a>
+                                            y la <a href="#" class="text-decoration-none">política de privacidad</a> de MetaMapa
+                                        </small>
+                                    </label>
+                                </div>
+                                <div class="form-check mt-2">
+                                    <input class="form-check-input" type="checkbox" id="newsletter">
+                                    <label class="form-check-label" for="newsletter">
+                                        <small>
+                                            Deseo recibir actualizaciones sobre nuevas funcionalidades y eventos de la comunidad
+                                        </small>
+                                    </label>
+                                </div>
+                            </div>
+
+                            <!-- Información sobre el rol -->
+                            <div class="alert alert-info">
+                                <i class="bi bi-info-circle me-2"></i>
+                                <small>
+                                    <strong>Como Contribuyente podrás:</strong> Subir nuevos hechos históricos, editar tus contribuciones por 7 días,
+                                    solicitar eliminaciones y acceder a todas las funcionalidades de visualización.
+                                </small>
+                            </div>
+
+                            <button type="submit" class="btn btn-register btn-primary btn-lg w-100 mb-3">
+                                <i class="bi bi-person-plus me-2"></i>Crear Cuenta
+                            </button>
+                        </form>
+
+                        <hr class="my-4">
+
+                        <div class="text-center">
+                            <span class="text-muted">¿Ya tienes cuenta?</span>
+                            <a href="login.html" class="text-decoration-none ms-1">
+                                <i class="bi bi-box-arrow-in-right me-1"></i>Iniciar Sesión
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Información adicional -->
+                <div class="text-center mt-4">
+                    <small class="text-white-50">
+                        Al registrarte, te unes a una comunidad global comprometida con la preservación
+                        y difusión del conocimiento histórico
+                    </small>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Lo podemos usar en un futuro para mayor seguridad, por ahora lo dejo comentado
+<script>
+    function checkPasswordStrength(password) {
+        const strengthBar = document.getElementById('passwordStrengthBar');
+        let strength = 0;
+
+        if (password.length >= 8) strength++;
+        if (/[A-Z]/.test(password)) strength++;
+        if (/[a-z]/.test(password)) strength++;
+        if (/[0-9]/.test(password)) strength++;
+        if (/[^A-Za-z0-9]/.test(password)) strength++;
+
+        strengthBar.className = 'password-strength-bar';
+
+        if (strength <= 2) {
+            strengthBar.classList.add('strength-weak');
+        } else if (strength <= 4) {
+            strengthBar.classList.add('strength-medium');
+        } else {
+            strengthBar.classList.add('strength-strong');
+        }
+    }
+
+    // Contador de caracteres para la descripción
+    document.querySelector('textarea[name="descripcion"]').addEventListener('input', function() {
+        const counter = this.parentElement.querySelector('.form-text');
+        counter.textContent = `${this.value.length}/500 caracteres`;
+    });
+</script>
+-->
+
+</body>

@@ -152,9 +152,60 @@
                 gap: 10px;
             }
         }
+
+        /* Hit areas mínimas para móvil */
+        @media (max-width: 768px) {
+            .btn-sm {
+                min-height: 48px;
+                min-width: 48px;
+                padding: 12px 16px;
+            }
+
+            .map-marker {
+                width: 20px;
+                height: 20px;
+                margin: -10px 0 0 -10px;
+            }
+
+            .nav-link {
+                min-height: 48px;
+                display: flex;
+                align-items: center;
+            }
+
+            .form-control, .form-select {
+                min-height: 48px;
+            }
+        }
     </style>
 </head>
+
 <body>
+
+<!-- Agrego TOASTS Ocultos asi sabemos si las operaciones fueron exitosas o no, en un futuro cambiar a js maybe -->
+<div class="toast-container position-fixed bottom-0 end-0 p-3" style="z-index: 11">
+    <div id="successToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
+        <div class="toast-header bg-success text-white">
+            <i class="bi bi-check-circle me-2"></i>
+            <strong class="me-auto">Éxito</strong>
+            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="toast" aria-label="Cerrar"></button>
+        </div>
+        <div class="toast-body" id="successMessage">
+            Operación completada exitosamente
+        </div>
+    </div>
+
+    <div id="errorToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
+        <div class="toast-header bg-danger text-white">
+            <i class="bi bi-exclamation-triangle me-2"></i>
+            <strong class="me-auto">Error</strong>
+            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="toast" aria-label="Cerrar"></button>
+        </div>
+        <div class="toast-body" id="errorMessage">
+            Ocurrió un error. Inténtalo nuevamente.
+        </div>
+    </div>
+</div>
 
 <!-- Header del Dashboard -->
 <header class="dashboard-header py-3">
@@ -169,7 +220,7 @@
             </div>
             <div class="col-md-6 text-end">
                 <span class="me-2">Bienvenido, <strong>Usuario</strong></span>
-                <span class="badge bg-dark me-2">CONTRIBUYENTE</span>
+                <!-- <span class="badge bg-dark me-2">CONTRIBUYENTE</span> -->
                 <a href="index.html" class="btn btn-outline-secondary btn-sm">
                     <i class="bi bi-box-arrow-right me-1"></i>Cerrar Sesión
                 </a>
@@ -200,6 +251,12 @@
             <li class="nav-item">
                 <a class="nav-link" href="contribuir.html">
                     <i class="bi bi-plus me-1"></i> Contribuir
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="solicitudes.html">
+                    <i class="bi bi-clipboard-check me-1"></i> Solicitudes
+                    <span class="badge bg-danger ms-1">11</span>
                 </a>
             </li>
         </ul>
