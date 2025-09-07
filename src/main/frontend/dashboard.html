@@ -1,415 +1,622 @@
 <!DOCTYPE html>
 <html lang="es">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Panel de Control - MetaMapa</title>
-    <link rel="stylesheet" href="styles.css">
-</head>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #4f46e5;
+            --success-color: #059669;
+            --danger-color: #dc2626;
+        }
 
+        body {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        }
+
+        .logo-icon {
+            width: 40px;
+            height: 40px;
+            background: var(--primary-color);
+            border-radius: 8px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            font-size: 18px;
+        }
+
+        .dashboard-header {
+            background: white;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .user-badge {
+            background: #333;
+            color: white;
+            font-size: 0.75rem;
+            font-weight: 500;
+        }
+
+        .fact-card {
+            background: white;
+            border-radius: 12px;
+            border: 1px solid #e9ecef;
+            transition: all 0.3s ease;
+        }
+
+        .fact-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+        }
+
+        .fact-category {
+            background: #f8f9fa;
+            color: #495057;
+            font-size: 0.75rem;
+            font-weight: 500;
+            border-radius: 15px;
+        }
+
+        .fact-multimedia {
+            background: #ffc107;
+            color: #856404;
+            font-size: 0.75rem;
+            font-weight: 500;
+            border-radius: 12px;
+        }
+
+        /* Modal usando checkbox hack */
+        .modal-checkbox {
+            display: none;
+        }
+
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 1050;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-checkbox:checked + .modal-overlay {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .modal-content-custom {
+            background: white;
+            border-radius: 12px;
+            padding: 30px;
+            width: 90%;
+            max-width: 500px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            position: relative;
+            transform: translateY(-20px);
+            transition: transform 0.3s ease;
+        }
+
+        .modal-checkbox:checked + .modal-overlay .modal-content-custom {
+            transform: translateY(0);
+        }
+
+        .close-modal {
+            position: absolute;
+            top: 15px;
+            right: 20px;
+            font-size: 24px;
+            color: #666;
+            text-decoration: none;
+            line-height: 1;
+        }
+
+        .close-modal:hover {
+            color: #333;
+        }
+
+        .search-highlight:focus {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 0.2rem rgba(79, 70, 229, 0.25);
+        }
+
+        .nav-pills-custom .nav-link {
+            color: #666;
+            border-radius: 25px;
+            padding: 10px 20px;
+            margin: 0 5px;
+            transition: all 0.3s ease;
+        }
+
+        .nav-pills-custom .nav-link.active {
+            background-color: var(--primary-color);
+            color: white;
+        }
+
+        .nav-pills-custom .nav-link:hover:not(.active) {
+            background-color: #f8f9fa;
+            color: #333;
+        }
+
+        .btn-report {
+            background: var(--danger-color);
+            border-color: var(--danger-color);
+            font-size: 0.875rem;
+            padding: 6px 12px;
+        }
+
+        .btn-report:hover {
+            background: #b91c1c;
+            border-color: #b91c1c;
+            transform: translateY(-1px);
+        }
+
+        @media (max-width: 768px) {
+            .dashboard-header .row > div {
+                text-align: center !important;
+                margin-bottom: 10px;
+            }
+
+            .modal-content-custom {
+                margin: 20px;
+                padding: 20px;
+            }
+        }
+
+        /* Animación de carga */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .fade-in {
+            animation: fadeIn 0.6s ease-out;
+        }
+    </style>
+</head>
 <body>
-<header class="dashboard-header">
-    <div class="logo">
-        <div class="logo-icon">M</div>
-        <span class="logo-text">MetaMapa</span>
-        <span style="color: #666; font-size: 14px; margin-left: 10px;">Panel de Control</span>
-    </div>
-    <div class="user-info">
-        <span id="welcome-text"></span>
-        <span class="user-badge" id="user-role"></span>
-        <a href="index.html" class="btn btn-secondary">Cerrar Sesión</a>
+
+<!-- Header del Dashboard -->
+<header class="dashboard-header py-3">
+    <div class="container-fluid">
+        <div class="row align-items-center">
+            <div class="col-md-6">
+                <a href="index.html" class="text-decoration-none text-dark d-flex align-items-center">
+                    <div class="logo-icon me-2">M</div>
+                    <span class="fs-4 fw-bold">MetaMapa</span>
+                    <span class="text-muted ms-2 d-none d-md-inline">Panel de Control</span>
+                </a>
+            </div>
+            <div class="col-md-6 text-end">
+                <span class="me-2">Bienvenido, <strong id="username">Usuario</strong></span>
+                <span class="badge user-badge me-2">CONTRIBUYENTE</span>
+                <a href="index.html" class="btn btn-outline-secondary btn-sm">
+                    <i class="bi bi-box-arrow-right me-1"></i>Cerrar Sesión
+                </a>
+            </div>
+        </div>
     </div>
 </header>
 
-<nav class="nav-tabs">
-    <a href="#" class="nav-tab active" onclick="mostrarPestaña('hechos', this); return false;">📄 Hechos</a>
-    <a href="#" class="nav-tab" onclick="mostrarPestaña('mapa', this); return false;">🗺️ Mapa</a>
-    <a href="#" class="nav-tab" onclick="mostrarPestaña('colecciones', this); return false;">📚 Colecciones</a>
-    <a href="#" class="nav-tab" onclick="mostrarPestaña('contribuir', this); return false;">+ Contribuir</a>
+<!-- Navegación Principal -->
+<nav class="bg-white border-bottom">
+    <div class="container-fluid py-3">
+        <ul class="nav nav-pills nav-pills-custom justify-content-center">
+            <li class="nav-item">
+                <a class="nav-link active" href="dashboard.html">
+                    <i class="bi bi-file-text me-1"></i> Hechos
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="mapa.html">
+                    <i class="bi bi-map me-1"></i> Mapa
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="colecciones.html">
+                    <i class="bi bi-collection me-1"></i> Colecciones
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="contribuir.html">
+                    <i class="bi bi-plus me-1"></i> Contribuir
+                </a>
+            </li>
+        </ul>
+    </div>
 </nav>
 
-<div class="container">
-    <!-- Contenido de Hechos -->
-    <div id="hechos-content" class="tab-content active">
-        <div class="search-filter-bar">
-            <div class="search-box">
-                <span class="search-icon">🔍</span>
-                <input type="text" class="search-input" placeholder="Buscar hechos históricos...">
+<!-- Contenido Principal - Hechos -->
+<main class="container-fluid py-4 fade-in">
+
+    <!-- Barra de búsqueda y filtros -->
+    <div class="row mb-4">
+        <div class="col-md-8">
+            <div class="input-group">
+                <span class="input-group-text bg-white">
+                    <i class="bi bi-search text-muted"></i>
+                </span>
+                <input
+                        type="text"
+                        class="form-control search-highlight"
+                        placeholder="Buscar hechos históricos..."
+                        style="border-left: none;"
+                >
             </div>
-            <select class="filter-dropdown">
-                <option>Todas las categorías</option>
-                <option>Política</option>
-                <option>Exploración</option>
-                <option>Guerra</option>
-                <option>Independencia</option>
+        </div>
+        <div class="col-md-4">
+            <select class="form-select">
+                <option value="">Todas las categorías</option>
+                <option value="politica">Política</option>
+                <option value="exploracion">Exploración</option>
+                <option value="guerra">Guerra</option>
+                <option value="independencia">Independencia</option>
+                <option value="cultural">Cultural</option>
+                <option value="cientifica">Científica</option>
             </select>
         </div>
+    </div>
 
-        <div class="facts-grid">
-            <div class="fact-card">
-                <div class="fact-header">
-                    <h3 class="fact-title">Revolución de Mayo</h3>
-                    <span class="fact-category">Política</span>
-                </div>
-                <p class="fact-description">Inicio del proceso independentista argentino</p>
-                <div class="fact-meta">
-                    <div class="fact-meta-row">
-                        <span>📍</span>
-                        <span>Buenos Aires, Argentina</span>
-                    </div>
-                    <div class="fact-meta-row">
-                        <span>📅</span>
-                        <span>24/5/1810</span>
-                    </div>
-                    <div class="fact-meta-row">
-                        <span class="fact-multimedia">📁 3 archivos multimedia</span>
-                    </div>
+    <!-- Estadísticas rápidas -->
+    <div class="row mb-4">
+        <div class="col-md-3">
+            <div class="card border-0 shadow-sm">
+                <div class="card-body text-center">
+                    <i class="bi bi-file-text text-primary fs-1"></i>
+                    <h4 class="mt-2">1,247</h4>
+                    <p class="text-muted mb-0">Total Hechos</p>
                 </div>
             </div>
-
-            <div class="fact-card">
-                <div class="fact-header">
-                    <h3 class="fact-title">Descubrimiento de América</h3>
-                    <span class="fact-category">Exploración</span>
-                </div>
-                <p class="fact-description">Llegada de Cristóbal Colón al continente americano</p>
-                <div class="fact-meta">
-                    <div class="fact-meta-row">
-                        <span>📍</span>
-                        <span>San Salvador, Bahamas</span>
-                    </div>
-                    <div class="fact-meta-row">
-                        <span>📅</span>
-                        <span>11/10/1492</span>
-                    </div>
-                    <div class="fact-meta-row">
-                        <span class="fact-multimedia">📁 5 archivos multimedia</span>
-                    </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card border-0 shadow-sm">
+                <div class="card-body text-center">
+                    <i class="bi bi-geo-alt text-success fs-1"></i>
+                    <h4 class="mt-2">89</h4>
+                    <p class="text-muted mb-0">Países</p>
                 </div>
             </div>
-
-            <div class="fact-card">
-                <div class="fact-header">
-                    <h3 class="fact-title">Caída del Muro de Berlín</h3>
-                    <span class="fact-category">Política</span>
-                </div>
-                <p class="fact-description">Fin simbólico de la Guerra Fría</p>
-                <div class="fact-meta">
-                    <div class="fact-meta-row">
-                        <span>📍</span>
-                        <span>Berlín, Alemania</span>
-                    </div>
-                    <div class="fact-meta-row">
-                        <span>📅</span>
-                        <span>9/11/1989</span>
-                    </div>
-                    <div class="fact-meta-row">
-                        <span class="fact-multimedia">📁 8 archivos multimedia</span>
-                    </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card border-0 shadow-sm">
+                <div class="card-body text-center">
+                    <i class="bi bi-people text-warning fs-1"></i>
+                    <h4 class="mt-2">356</h4>
+                    <p class="text-muted mb-0">Contribuyentes</p>
                 </div>
             </div>
-
-            <div class="fact-card">
-                <div class="fact-header">
-                    <h3 class="fact-title">Independencia de México</h3>
-                    <span class="fact-category">Política</span>
-                </div>
-                <p class="fact-description">Grito de Dolores que inició la independencia mexicana</p>
-                <div class="fact-meta">
-                    <div class="fact-meta-row">
-                        <span>📍</span>
-                        <span>Dolores Hidalgo, México</span>
-                    </div>
-                    <div class="fact-meta-row">
-                        <span>📅</span>
-                        <span>15/9/1810</span>
-                    </div>
-                    <div class="fact-meta-row">
-                        <span class="fact-multimedia">📁 4 archivos multimedia</span>
-                    </div>
-                </div>
-                <div class="fact-actions">
-                    <button class="btn-report" onclick="abrirReporte(this)">❗ Reportar</button>
+        </div>
+        <div class="col-md-3">
+            <div class="card border-0 shadow-sm">
+                <div class="card-body text-center">
+                    <i class="bi bi-calendar text-info fs-1"></i>
+                    <h4 class="mt-2">12</h4>
+                    <p class="text-muted mb-0">Hoy</p>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- Contenido del Mapa -->
-    <div id="mapa-content" class="tab-content">
-        <div class="search-filter-bar">
-            <div class="search-box">
-                <span class="search-icon">🔍</span>
-                <input type="text" class="search-input" placeholder="Buscar en mapa...">
-            </div>
-            <select class="filter-dropdown">
-                <option>Todas las categorías</option>
-                <option>Política</option>
-                <option>Exploración</option>
-                <option>Guerra</option>
-            </select>
-        </div>
+    <!-- Grid de Hechos Históricos -->
+    <div class="row g-4">
 
-        <div class="map-container">
-            <div class="map-header">
-                <div style="display: flex; align-items: center; gap: 10px;">
-                    <span style="font-size: 20px;">🌍</span>
-                    <div>
-                        <h2 class="map-title">Mapa Mundial de Hechos Históricos</h2>
-                        <p class="map-subtitle">Haz clic en los marcadores para ver detalles de cada evento</p>
+        <div class="col-md-6 col-lg-4">
+            <div class="card fact-card h-100 border-0 shadow-sm">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-start mb-3">
+                        <h5 class="card-title mb-0">Revolución de Mayo</h5>
+                        <span class="badge fact-category px-2 py-1">Política</span>
                     </div>
-                </div>
-            </div>
-
-            <div class="map-wrapper">
-                <div class="map-area">
-                    <div class="map-placeholder">
-                        <span>Mapa Interactivo Mundial</span>
-                        <div class="map-marker revolucion" title="Revolución de Mayo"></div>
-                        <div class="map-marker descubrimiento" title="Descubrimiento de América"></div>
-                        <div class="map-marker muro" title="Caída del Muro de Berlín"></div>
-                        <div class="map-marker independencia" title="Independencia de México"></div>
-                    </div>
-                    <div class="map-legend">
-                        <div class="legend-item">
-                            <div class="legend-dot historical"></div>
-                            <span>Hecho histórico</span>
+                    <p class="card-text text-muted">Inicio del proceso independentista argentino que marcó el comienzo de la lucha por la independencia.</p>
+                    <div class="d-flex flex-column gap-2 small text-muted mb-3">
+                        <div>
+                            <i class="bi bi-geo-alt me-1"></i> Buenos Aires, Argentina
                         </div>
-                        <div class="legend-item">
-                            <div class="legend-dot selected"></div>
-                            <span>Seleccionado</span>
+                        <div>
+                            <i class="bi bi-calendar me-1"></i> 24 de Mayo de 1810
+                        </div>
+                        <div>
+                            <span class="badge fact-multimedia px-2 py-1">
+                                <i class="bi bi-folder2 me-1"></i>3 archivos multimedia
+                            </span>
                         </div>
                     </div>
-                </div>
-
-                <div class="map-sidebar">
-                    <div class="map-info-card">
-                        <div class="map-info-icon">🎯</div>
-                        <h3 class="map-info-title">Selecciona un hecho en el mapa</h3>
-                        <p class="map-info-text">Haz clic en cualquier marcador para ver los detalles del evento histórico</p>
-                    </div>
-
-                    <div class="available-facts">
-                        <h3 class="available-facts-title">Hechos Disponibles</h3>
-                        <p class="available-facts-count">4 eventos en el mapa</p>
-
-                        <div class="fact-list-item">
-                            <div>
-                                <div class="fact-list-title">Revolución de Mayo</div>
-                                <div class="fact-list-location">Buenos Aires, Argentina</div>
-                            </div>
-                            <span class="fact-list-category">Política</span>
-                        </div>
-
-                        <div class="fact-list-item">
-                            <div>
-                                <div class="fact-list-title">Descubrimiento de América</div>
-                                <div class="fact-list-location">San Salvador, Bahamas</div>
-                            </div>
-                            <span class="fact-list-category">Exploración</span>
-                        </div>
-
-                        <div class="fact-list-item">
-                            <div>
-                                <div class="fact-list-title">Caída del Muro de Berlín</div>
-                                <div class="fact-list-location">Berlín, Alemania</div>
-                            </div>
-                            <span class="fact-list-category">Política</span>
-                        </div>
-
-                        <div class="fact-list-item">
-                            <div>
-                                <div class="fact-list-title">Independencia de México</div>
-                                <div class="fact-list-location">Dolores Hidalgo, México</div>
-                            </div>
-                            <span class="fact-list-category">Política</span>
-                        </div>
+                    <div class="d-flex justify-content-between align-items-center">
+                        <a href="detalle.html?id=1" class="btn btn-outline-primary btn-sm">
+                            <i class="bi bi-eye me-1"></i>Ver Detalles
+                        </a>
+                        <label for="report-modal-1" class="btn btn-report btn-danger btn-sm">
+                            <i class="bi bi-exclamation-triangle me-1"></i>Reportar
+                        </label>
                     </div>
                 </div>
             </div>
         </div>
+
+        <div class="col-md-6 col-lg-4">
+            <div class="card fact-card h-100 border-0 shadow-sm">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-start mb-3">
+                        <h5 class="card-title mb-0">Descubrimiento de América</h5>
+                        <span class="badge fact-category px-2 py-1">Exploración</span>
+                    </div>
+                    <p class="card-text text-muted">Llegada de Cristóbal Colón al continente americano, evento que cambió la historia mundial.</p>
+                    <div class="d-flex flex-column gap-2 small text-muted mb-3">
+                        <div>
+                            <i class="bi bi-geo-alt me-1"></i> San Salvador, Bahamas
+                        </div>
+                        <div>
+                            <i class="bi bi-calendar me-1"></i> 12 de Octubre de 1492
+                        </div>
+                        <div>
+                            <span class="badge fact-multimedia px-2 py-1">
+                                <i class="bi bi-folder2 me-1"></i>5 archivos multimedia
+                            </span>
+                        </div>
+                    </div>
+                    <div class="d-flex justify-content-between align-items-center">
+                        <a href="detalle.html?id=2" class="btn btn-outline-primary btn-sm">
+                            <i class="bi bi-eye me-1"></i>Ver Detalles
+                        </a>
+                        <label for="report-modal-2" class="btn btn-report btn-danger btn-sm">
+                            <i class="bi bi-exclamation-triangle me-1"></i>Reportar
+                        </label>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-6 col-lg-4">
+            <div class="card fact-card h-100 border-0 shadow-sm">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-start mb-3">
+                        <h5 class="card-title mb-0">Caída del Muro de Berlín</h5>
+                        <span class="badge fact-category px-2 py-1">Política</span>
+                    </div>
+                    <p class="card-text text-muted">Fin simbólico de la Guerra Fría y reunificación alemana después de décadas de división.</p>
+                    <div class="d-flex flex-column gap-2 small text-muted mb-3">
+                        <div>
+                            <i class="bi bi-geo-alt me-1"></i> Berlín, Alemania
+                        </div>
+                        <div>
+                            <i class="bi bi-calendar me-1"></i> 9 de Noviembre de 1989
+                        </div>
+                        <div>
+                            <span class="badge fact-multimedia px-2 py-1">
+                                <i class="bi bi-folder2 me-1"></i>8 archivos multimedia
+                            </span>
+                        </div>
+                    </div>
+                    <div class="d-flex justify-content-between align-items-center">
+                        <a href="detalle.html?id=3" class="btn btn-outline-primary btn-sm">
+                            <i class="bi bi-eye me-1"></i>Ver Detalles
+                        </a>
+                        <label for="report-modal-3" class="btn btn-report btn-danger btn-sm">
+                            <i class="bi bi-exclamation-triangle me-1"></i>Reportar
+                        </label>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-6 col-lg-4">
+            <div class="card fact-card h-100 border-0 shadow-sm">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-start mb-3">
+                        <h5 class="card-title mb-0">Independencia de México</h5>
+                        <span class="badge fact-category px-2 py-1">Independencia</span>
+                    </div>
+                    <p class="card-text text-muted">Grito de Dolores que inició la independencia mexicana con Miguel Hidalgo.</p>
+                    <div class="d-flex flex-column gap-2 small text-muted mb-3">
+                        <div>
+                            <i class="bi bi-geo-alt me-1"></i> Dolores Hidalgo, México
+                        </div>
+                        <div>
+                            <i class="bi bi-calendar me-1"></i> 16 de Septiembre de 1810
+                        </div>
+                        <div>
+                            <span class="badge fact-multimedia px-2 py-1">
+                                <i class="bi bi-folder2 me-1"></i>4 archivos multimedia
+                            </span>
+                        </div>
+                    </div>
+                    <div class="d-flex justify-content-between align-items-center">
+                        <a href="detalle.html?id=4" class="btn btn-outline-primary btn-sm">
+                            <i class="bi bi-eye me-1"></i>Ver Detalles
+                        </a>
+                        <label for="report-modal-4" class="btn btn-report btn-danger btn-sm">
+                            <i class="bi bi-exclamation-triangle me-1"></i>Reportar
+                        </label>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-6 col-lg-4">
+            <div class="card fact-card h-100 border-0 shadow-sm">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-start mb-3">
+                        <h5 class="card-title mb-0">Primera Guerra Mundial</h5>
+                        <span class="badge fact-category px-2 py-1" style="background: #dc3545; color: white;">Guerra</span>
+                    </div>
+                    <p class="card-text text-muted">Conflicto global que involucró a las principales potencias mundiales entre 1914 y 1918.</p>
+                    <div class="d-flex flex-column gap-2 small text-muted mb-3">
+                        <div>
+                            <i class="bi bi-geo-alt me-1"></i> Europa, África, Asia
+                        </div>
+                        <div>
+                            <i class="bi bi-calendar me-1"></i> 28 de Julio de 1914
+                        </div>
+                        <div>
+                            <span class="badge fact-multimedia px-2 py-1">
+                                <i class="bi bi-folder2 me-1"></i>15 archivos multimedia
+                            </span>
+                        </div>
+                    </div>
+                    <div class="d-flex justify-content-between align-items-center">
+                        <a href="detalle.html?id=5" class="btn btn-outline-primary btn-sm">
+                            <i class="bi bi-eye me-1"></i>Ver Detalles
+                        </a>
+                        <label for="report-modal-5" class="btn btn-report btn-danger btn-sm">
+                            <i class="bi bi-exclamation-triangle me-1"></i>Reportar
+                        </label>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-6 col-lg-4">
+            <div class="card fact-card h-100 border-0 shadow-sm">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-start mb-3">
+                        <h5 class="card-title mb-0">Revolución Industrial</h5>
+                        <span class="badge fact-category px-2 py-1" style="background: #6f42c1; color: white;">Científica</span>
+                    </div>
+                    <p class="card-text text-muted">Período de transformación económica, social y tecnológica iniciado en Gran Bretaña.</p>
+                    <div class="d-flex flex-column gap-2 small text-muted mb-3">
+                        <div>
+                            <i class="bi bi-geo-alt me-1"></i> Manchester, Reino Unido
+                        </div>
+                        <div>
+                            <i class="bi bi-calendar me-1"></i> 1760 - 1840
+                        </div>
+                        <div>
+                            <span class="badge fact-multimedia px-2 py-1">
+                                <i class="bi bi-folder2 me-1"></i>12 archivos multimedia
+                            </span>
+                        </div>
+                    </div>
+                    <div class="d-flex justify-content-between align-items-center">
+                        <a href="detalle.html?id=6" class="btn btn-outline-primary btn-sm">
+                            <i class="bi bi-eye me-1"></i>Ver Detalles
+                        </a>
+                        <label for="report-modal-6" class="btn btn-report btn-danger btn-sm">
+                            <i class="bi bi-exclamation-triangle me-1"></i>Reportar
+                        </label>
+                    </div>
+                </div>
+            </div>
+        </div>
+
     </div>
 
-    <!-- Contenido de Colecciones -->
-    <div id="colecciones-content" class="tab-content">
-        <div class="contribution-section">
-            <h2 class="section-title">📚 Colecciones</h2>
-            <p class="section-subtitle">Gestiona y organiza colecciones de hechos históricos</p>
-            <div style="text-align: center; padding: 60px 20px; color: #666;">
-                <div style="font-size: 48px; margin-bottom: 20px;">📚</div>
-                <h3>Función en desarrollo</h3>
-                <p>La gestión de colecciones estará disponible próximamente</p>
+    <!-- Paginación -->
+    <nav aria-label="Navegación de hechos" class="mt-5">
+        <ul class="pagination justify-content-center">
+            <li class="page-item disabled">
+                <span class="page-link">
+                    <i class="bi bi-chevron-left"></i>
+                </span>
+            </li>
+            <li class="page-item active">
+                <span class="page-link">1</span>
+            </li>
+            <li class="page-item">
+                <a class="page-link" href="?page=2">2</a>
+            </li>
+            <li class="page-item">
+                <a class="page-link" href="?page=3">3</a>
+            </li>
+            <li class="page-item">
+                <span class="page-link">...</span>
+            </li>
+            <li class="page-item">
+                <a class="page-link" href="?page=25">25</a>
+            </li>
+            <li class="page-item">
+                <a class="page-link" href="?page=2">
+                    <i class="bi bi-chevron-right"></i>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</main>
+
+<!-- Modales para reportar hechos -->
+<input type="checkbox" id="report-modal-1" class="modal-checkbox">
+<div class="modal-overlay">
+    <div class="modal-content-custom">
+        <label for="report-modal-1" class="close-modal">&times;</label>
+        <h4 class="mb-3">
+            <i class="bi bi-exclamation-triangle text-danger me-2"></i>
+            Reportar: Revolución de Mayo
+        </h4>
+        <form action="dashboard.html" method="get">
+            <div class="mb-3">
+                <label class="form-label fw-semibold">Motivo del reporte</label>
+                <select class="form-select" required>
+                    <option value="">Selecciona un motivo</option>
+                    <option value="informacion-incorrecta">Información incorrecta</option>
+                    <option value="contenido-inapropiado">Contenido inapropiado</option>
+                    <option value="spam">Spam</option>
+                    <option value="violacion-derechos">Violación de derechos</option>
+                    <option value="otro">Otro</option>
+                </select>
             </div>
-        </div>
-    </div>
-
-    <!-- Contenido de Contribuir -->
-    <div id="contribuir-content" class="tab-content">
-        <div class="contribution-section">
-            <h2 class="section-title">Contribuir con un Nuevo Hecho</h2>
-            <p class="section-subtitle">Comparte información sobre eventos históricos importantes</p>
-
-            <form>
-                <div class="form-row">
-                    <div class="form-group">
-                        <label class="form-label">Título del Hecho *</label>
-                        <input type="text" class="form-input" placeholder="Ej: Revolución Francesa">
-                    </div>
-                    <div class="form-group">
-                        <label class="form-label">Categoría *</label>
-                        <select class="form-select">
-                            <option>Seleccionar categoría</option>
-                            <option>Política</option>
-                            <option>Exploración</option>
-                            <option>Guerra</option>
-                            <option>Independencia</option>
-                            <option>Cultural</option>
-                            <option>Científica</option>
-                        </select>
-                    </div>
-                </div>
-
-                <div class="form-row">
-                    <div class="form-group">
-                        <label class="form-label">País *</label>
-                        <input type="text" class="form-input" placeholder="Ej: Francia">
-                    </div>
-                    <div class="form-group">
-                        <label class="form-label">Fecha del Acontecimiento *</label>
-                        <input type="date" class="form-input">
-                    </div>
-                </div>
-
-                <div class="form-row">
-                    <div class="form-group">
-                        <label class="form-label">Ubicación *</label>
-                        <input type="text" class="form-input" placeholder="Ej: París, Francia">
-                    </div>
-                    <div class="form-group">
-                        <label class="form-label">Coordenadas (Opcional)</label>
-                        <div class="form-row-coords">
-                            <input type="text" class="form-input" placeholder="Latitud">
-                            <input type="text" class="form-input" placeholder="Longitud">
-                        </div>
-                    </div>
-                </div>
-
-                <div class="form-group">
-                    <label class="form-label">Descripción *</label>
-                    <textarea class="form-textarea" placeholder="Describe el evento histórico..." rows="5"></textarea>
-                </div>
-
-                <!-- <div class="form-group">
-                    <label class="form-label">Fuente</label>
-                    <input type="url" class="form-input" placeholder="URL o referencia de la fuente">
-                </div> -->
-
-                <div class="form-group">
-                    <label class="form-label">Contenido Multimedia (Opcional)</label>
-                    <div class="file-upload-area">
-                        <div>📁 Elegir archivos</div>
-                        <div style="font-size: 12px; margin-top: 5px; color: #94a3b8;">Sin archivos seleccionados</div>
-                    </div>
-                </div>
-
-                <button type="submit" class="green-button">
-                    Enviar Solicitud de Hecho
+            <div class="mb-3">
+                <label class="form-label fw-semibold">Descripción del problema</label>
+                <textarea class="form-control" rows="4" maxlength="500" placeholder="Describe el problema (máx. 500 caracteres)..." required></textarea>
+                <div class="form-text text-end">0/500 caracteres</div>
+            </div>
+            <div class="d-flex justify-content-end gap-2">
+                <label for="report-modal-1" class="btn btn-secondary">Cancelar</label>
+                <button type="submit" class="btn btn-danger">
+                    <i class="bi bi-send me-1"></i>Enviar Reporte
                 </button>
-            </form>
-        </div>
+            </div>
+        </form>
     </div>
 </div>
 
-<!-- Modal para reportar hechos -->
-
-<div id="report-modal" class="modal">
-    <div class="modal-content">
-        <span class="close-btn" onclick="cerrarReporte()">&times;</span>
-        <h3>Reportar hecho</h3>
-        <textarea id="report-text" maxlength="500" placeholder="Describe el problema (máx. 500 caracteres)..."></textarea>
-        <div id="char-count">0/500</div>
-        <button class="btn-submit" onclick="enviarReporte()">Enviar</button>
+<!-- Repetir modales para otros hechos -->
+<input type="checkbox" id="report-modal-2" class="modal-checkbox">
+<div class="modal-overlay">
+    <div class="modal-content-custom">
+        <label for="report-modal-2" class="close-modal">&times;</label>
+        <h4 class="mb-3">
+            <i class="bi bi-exclamation-triangle text-danger me-2"></i>
+            Reportar: Descubrimiento de América
+        </h4>
+        <form action="dashboard.html" method="get">
+            <div class="mb-3">
+                <label class="form-label fw-semibold">Motivo del reporte</label>
+                <select class="form-select" required>
+                    <option value="">Selecciona un motivo</option>
+                    <option value="informacion-incorrecta">Información incorrecta</option>
+                    <option value="contenido-inapropiado">Contenido inapropiado</option>
+                    <option value="spam">Spam</option>
+                    <option value="violacion-derechos">Violación de derechos</option>
+                    <option value="otro">Otro</option>
+                </select>
+            </div>
+            <div class="mb-3">
+                <label class="form-label fw-semibold">Descripción del problema</label>
+                <textarea class="form-control" rows="4" maxlength="500" placeholder="Describe el problema (máx. 500 caracteres)..." required></textarea>
+                <div class="form-text text-end">0/500 caracteres</div>
+            </div>
+            <div class="d-flex justify-content-end gap-2">
+                <label for="report-modal-2" class="btn btn-secondary">Cancelar</label>
+                <button type="submit" class="btn btn-danger">
+                    <i class="bi bi-send me-1"></i>Enviar Reporte
+                </button>
+            </div>
+        </form>
     </div>
 </div>
-
-
-<script>
-    function mostrarPestaña(idPestaña, elemento) {
-        // Ocultar todo el contenido de pestañas
-        const contenidoPestañas = document.querySelectorAll('.tab-content');
-        contenidoPestañas.forEach(contenido => contenido.classList.remove('active'));
-
-        // Quitar clase activa de todas las pestañas de navegación
-        const pestañasNav = document.querySelectorAll('.nav-tab');
-        pestañasNav.forEach(pestaña => pestaña.classList.remove('active'));
-
-        // Mostrar contenido de pestaña seleccionada
-        document.getElementById(idPestaña + '-content').classList.add('active');
-
-        // Agregar clase activa a pestaña clickeada
-        elemento.classList.add('active');
-    }
-</script>
-
-<script>
-    // Detectar si se accedió en modo anónimo
-    const params = new URLSearchParams(window.location.search);
-    const isAnon = params.get("anon") === "true";
-
-    const welcomeText = document.getElementById("welcome-text");
-    const userRole = document.getElementById("user-role");
-
-    if (isAnon) {
-        welcomeText.textContent = "Bienvenido, VISUALIZADOR";
-        userRole.textContent = "ANÓNIMO";
-    } else {
-        // Podés más adelante reemplazar estos valores con datos reales del login
-        welcomeText.textContent = "Bienvenido, dasdas";
-        userRole.textContent = "CONTRIBUYENTE";
-    }
-</script>
-
-<!-- Cierra el Reporte cuando se manda, Deberiamos crear una pestaña aparte para que se vea mejor -->
-<script>
-    let modal = document.getElementById("report-modal");
-    let reportText = document.getElementById("report-text");
-    let charCount = document.getElementById("char-count");
-    let currentFact = null;
-
-    function abrirReporte(btn) {
-        currentFact = btn.closest(".fact-card"); // guardar el hecho reportado
-        modal.style.display = "flex";
-        reportText.value = "";
-        charCount.textContent = "0/500";
-    }
-
-    function cerrarReporte() {
-        modal.style.display = "none";
-    }
-
-    function enviarReporte() {
-        if (!reportText.value.trim()) {
-            alert("Por favor, ingresa una descripción antes de enviar.");
-            return;
-        }
-        alert("Reporte enviado:\n\n" + reportText.value);
-        cerrarReporte();
-    }
-
-    reportText.addEventListener("input", () => {
-        charCount.textContent = reportText.value.length + "/500";
-    });
-
-    // Cerrar modal si clickeás afuera
-    window.onclick = function(event) {
-        if (event.target == modal) {
-            cerrarReporte();
-        }
-    }
-</script>
 
 
 </body>
-
 </html>

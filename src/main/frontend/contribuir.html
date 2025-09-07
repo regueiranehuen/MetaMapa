@@ -242,9 +242,6 @@
             <a href="#csv" class="method-tab flex-fill text-center py-3 d-block">
                 <i class="bi bi-file-spreadsheet me-2"></i>Importar CSV
             </a>
-            <a href="#masivo" class="method-tab flex-fill text-center py-3 d-block">
-                <i class="bi bi-cloud-upload me-2"></i>Carga Masiva
-            </a>
         </div>
 
         <!-- Contenido: Formulario Individual -->
@@ -344,6 +341,129 @@
                                     <h6>Subir Archivos Multimedia</h6>
                                     <p class="mb-2">Arrastra archivos aquí o haz clic para seleccionar</p>
                                     <small class="text-muted">Admite: JPG, PNG, PDF, MP4, MP3 (máx. 10MB cada uno)</small>
+                                    <input type="file" class="d-none" multiple accept=".jpg,.jpeg,.png,.pdf,.mp4,.mp3">
+                                </div>
+
+                                <div class="row g-3">
+                                    <div class="col-md-6">
+                                        <label class="form-label fw-semibold">URL de Fuente Principal</label>
+                                        <input type="url" class="form-control" placeholder="https://ejemplo.com/fuente">
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label class="form-label fw-semibold">Tipo de Fuente</label>
+                                        <select class="form-select">
+                                            <option value="">Seleccionar tipo</option>
+                                            <option value="academica">Fuente Académica</option>
+                                            <option value="periodistica">Fuente Periodística</option>
+                                            <option value="oficial">Documento Oficial</option>
+                                            <option value="museo">Archivo de Museo</option>
+                                            <option value="libro">Libro/Publicación</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Información adicional -->
+                        <div class="card mb-4">
+                            <div class="card-header">
+                                <h5 class="mb-0">
+                                    <i class="bi bi-tags me-2"></i>Información Adicional
+                                </h5>
+                            </div>
+                            <div class="card-body">
+                                <div class="row g-3">
+                                    <div class="col-md-6">
+                                        <label class="form-label fw-semibold">Palabras Clave</label>
+                                        <input type="text" class="form-control" placeholder="revolución, independencia, política">
+                                        <div class="form-text">Separar por comas</div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label class="form-label fw-semibold">Importancia</label>
+                                        <select class="form-select">
+                                            <option value="local">Importancia Local</option>
+                                            <option value="nacional">Importancia Nacional</option>
+                                            <option value="regional">Importancia Regional</option>
+                                            <option value="mundial" selected>Importancia Mundial</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-12">
+                                        <label class="form-label fw-semibold">Contexto Histórico</label>
+                                        <textarea class="form-control" rows="3" placeholder="Información adicional sobre el contexto de la época..."></textarea>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Botones de acción -->
+                        <div class="d-flex justify-content-between">
+                            <a href="dashboard.html" class="btn btn-outline-secondary">
+                                <i class="bi bi-arrow-left me-1"></i>Cancelar
+                            </a>
+                            <div>
+                                <button type="button" class="btn btn-outline-primary me-2">
+                                    <i class="bi bi-eye me-1"></i>Vista Previa
+                                </button>
+                                <button type="submit" class="btn btn-success-custom">
+                                    <i class="bi bi-send me-1"></i>Enviar Solicitud
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <!-- Contenido: Importar CSV -->
+        <div id="csv" class="tab-content-contribute p-4">
+            <div class="row">
+                <div class="col-lg-8 mx-auto">
+
+                    <div class="d-flex align-items-center mb-4">
+                        <span class="step-indicator">2</span>
+                        <h3 class="mb-0">Importar desde Archivo CSV</h3>
+                    </div>
+
+                    <div class="alert alert-info">
+                        <i class="bi bi-info-circle me-2"></i>
+                        <strong>Formato requerido:</strong> Asegúrate de que tu archivo CSV contenga las columnas necesarias en el formato correcto.
+                    </div>
+
+                    <!-- Instrucciones -->
+                    <div class="card mb-4">
+                        <div class="card-header">
+                            <h5 class="mb-0">
+                                <i class="bi bi-list-check me-2"></i>Instrucciones de Formato
+                            </h5>
+                        </div>
+                        <div class="card-body">
+                            <p><strong>Columnas requeridas:</strong></p>
+                            <div class="csv-preview">
+                                titulo,categoria,descripcion,pais,ciudad,fecha_inicio,fecha_fin,latitud,longitud,fuente_url,palabras_clave
+                                "Revolución Francesa","Política","Revolución social y política en Francia","Francia","París","1789-07-14","1799-11-09","48.8566","2.3522","https://ejemplo.com","revolución,política,francia"
+                                "Independencia de EE.UU.","Independencia","Declaración de independencia estadounidense","Estados Unidos","Filadelfia","1776-07-04","","39.9526","-75.1652","https://ejemplo.com","independencia,eeuu"
+                            </div>
+
+                            <div class="mt-3">
+                                <a href="#" class="btn btn-outline-primary btn-sm me-2">
+                                    <i class="bi bi-download me-1"></i>Descargar Plantilla
+                                </a>
+                                <a href="#" class="btn btn-outline-info btn-sm">
+                                    <i class="bi bi-question-circle me-1"></i>Ver Guía Completa
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Área de subida -->
+                    <form action="dashboard.html" method="get">
+                        <div class="card mb-4">
+                            <div class="card-body">
+                                <div class="file-upload-area">
+                                    <i class="bi bi-file-earmark-spreadsheet fs-1 text-success mb-3"></i>
+                                    <h6>Subir Archivo CSV</h6>
+                                    <p class="mb-2">Arrastra tu archivo CSV aquí o haz clic para seleccionar</p>
+                                    <small class="text-muted">Máximo 1000 registros por archivo</small>
                                     <input type="file" class="d-none" accept=".csv" name="csv_file">
                                 </div>
 
@@ -385,136 +505,6 @@
                             </button>
                         </div>
                     </form>
-                </div>
-            </div>
-        </div>
-
-        <!-- Contenido: Carga Masiva -->
-        <div id="masivo" class="tab-content-contribute p-4">
-            <div class="row">
-                <div class="col-lg-8 mx-auto">
-
-                    <div class="d-flex align-items-center mb-4">
-                        <span class="step-indicator">3</span>
-                        <h3 class="mb-0">Carga Masiva de Datos</h3>
-                    </div>
-
-                    <div class="alert alert-warning">
-                        <i class="bi bi-exclamation-triangle me-2"></i>
-                        <strong>Función Avanzada:</strong> Esta opción está diseñada para organizaciones que necesitan cargar grandes volúmenes de datos.
-                    </div>
-
-                    <!-- Opciones de carga masiva -->
-                    <div class="row g-4 mb-4">
-                        <div class="col-md-4">
-                            <div class="card h-100 text-center">
-                                <div class="card-body">
-                                    <i class="bi bi-database text-primary fs-1 mb-3"></i>
-                                    <h6 class="card-title">Base de Datos</h6>
-                                    <p class="card-text small">Conectar directamente a una base de datos externa</p>
-                                    <a href="#" class="btn btn-outline-primary btn-sm">Configurar</a>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-4">
-                            <div class="card h-100 text-center">
-                                <div class="card-body">
-                                    <i class="bi bi-cloud text-success fs-1 mb-3"></i>
-                                    <h6 class="card-title">API Externa</h6>
-                                    <p class="card-text small">Sincronizar con servicios externos mediante API</p>
-                                    <a href="#" class="btn btn-outline-success btn-sm">Configurar</a>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-4">
-                            <div class="card h-100 text-center">
-                                <div class="card-body">
-                                    <i class="bi bi-file-zip text-warning fs-1 mb-3"></i>
-                                    <h6 class="card-title">Archivo Comprimido</h6>
-                                    <p class="card-text small">Subir múltiples archivos en formato ZIP</p>
-                                    <a href="#" class="btn btn-outline-warning btn-sm">Subir</a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Formulario de configuración -->
-                    <div class="card mb-4">
-                        <div class="card-header">
-                            <h5 class="mb-0">
-                                <i class="bi bi-gear me-2"></i>Configuración de Carga
-                            </h5>
-                        </div>
-                        <div class="card-body">
-                            <form action="dashboard.html" method="get">
-                                <div class="row g-3">
-                                    <div class="col-md-6">
-                                        <label class="form-label fw-semibold">Nombre del Proyecto</label>
-                                        <input type="text" class="form-control" placeholder="Ej: Historia Colonial América">
-                                    </div>
-                                    <div class="col-md-6">
-                                        <label class="form-label fw-semibold">Organización</label>
-                                        <input type="text" class="form-control" placeholder="Ej: Universidad Nacional">
-                                    </div>
-                                    <div class="col-md-6">
-                                        <label class="form-label fw-semibold">Período Histórico</label>
-                                        <select class="form-select">
-                                            <option value="">Seleccionar período</option>
-                                            <option value="prehistoria">Prehistoria</option>
-                                            <option value="antiguedad">Antigüedad</option>
-                                            <option value="medieval">Medieval</option>
-                                            <option value="moderna">Edad Moderna</option>
-                                            <option value="contemporanea">Edad Contemporánea</option>
-                                        </select>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <label class="form-label fw-semibold">Prioridad de Procesamiento</label>
-                                        <select class="form-select">
-                                            <option value="normal" selected>Normal (24-48 horas)</option>
-                                            <option value="alta">Alta (8-12 horas)</option>
-                                            <option value="urgente">Urgente (2-4 horas)</option>
-                                        </select>
-                                    </div>
-                                    <div class="col-12">
-                                        <label class="form-label fw-semibold">Notas para el Equipo de Revisión</label>
-                                        <textarea class="form-control" rows="3" placeholder="Información adicional sobre los datos a procesar..."></textarea>
-                                    </div>
-                                </div>
-
-                                <div class="mt-4">
-                                    <div class="form-check">
-                                        <input class="form-check-input" type="checkbox" id="accept_terms">
-                                        <label class="form-check-label" for="accept_terms">
-                                            Acepto que los datos cargados serán revisados por el equipo de moderación antes de su publicación
-                                        </label>
-                                    </div>
-                                </div>
-
-                                <div class="d-flex justify-content-between mt-4">
-                                    <a href="dashboard.html" class="btn btn-outline-secondary">
-                                        <i class="bi bi-arrow-left me-1"></i>Cancelar
-                                    </a>
-                                    <button type="submit" class="btn btn-success-custom">
-                                        <i class="bi bi-cloud-upload me-1"></i>Iniciar Carga Masiva
-                                    </button>
-                                </div>
-                            </form>
-                        </div>
-                    </div>
-
-                    <!-- Información de contacto -->
-                    <div class="card">
-                        <div class="card-body text-center">
-                            <h6>¿Necesitas ayuda con la carga masiva?</h6>
-                            <p class="text-muted small mb-3">Nuestro equipo puede asistirte en el proceso de carga de grandes volúmenes de datos</p>
-                            <a href="mailto:soporte@metamapa.org" class="btn btn-outline-primary btn-sm me-2">
-                                <i class="bi bi-envelope me-1"></i>Contactar Soporte
-                            </a>
-                            <a href="#" class="btn btn-outline-info btn-sm">
-                                <i class="bi bi-book me-1"></i>Ver Documentación
-                            </a>
-                        </div>
-                    </div>
                 </div>
             </div>
         </div>
@@ -585,127 +575,4 @@
 </main>
 
 </body>
-</html> class="d-none" multiple accept=".jpg,.jpeg,.png,.pdf,.mp4,.mp3">
-</div>
-
-<div class="row g-3">
-    <div class="col-md-6">
-        <label class="form-label fw-semibold">URL de Fuente Principal</label>
-        <input type="url" class="form-control" placeholder="https://ejemplo.com/fuente">
-    </div>
-    <div class="col-md-6">
-        <label class="form-label fw-semibold">Tipo de Fuente</label>
-        <select class="form-select">
-            <option value="">Seleccionar tipo</option>
-            <option value="academica">Fuente Académica</option>
-            <option value="periodistica">Fuente Periodística</option>
-            <option value="oficial">Documento Oficial</option>
-            <option value="museo">Archivo de Museo</option>
-            <option value="libro">Libro/Publicación</option>
-        </select>
-    </div>
-</div>
-</div>
-</div>
-
-<!-- Información adicional -->
-<div class="card mb-4">
-    <div class="card-header">
-        <h5 class="mb-0">
-            <i class="bi bi-tags me-2"></i>Información Adicional
-        </h5>
-    </div>
-    <div class="card-body">
-        <div class="row g-3">
-            <div class="col-md-6">
-                <label class="form-label fw-semibold">Palabras Clave</label>
-                <input type="text" class="form-control" placeholder="revolución, independencia, política">
-                <div class="form-text">Separar por comas</div>
-            </div>
-            <div class="col-md-6">
-                <label class="form-label fw-semibold">Importancia</label>
-                <select class="form-select">
-                    <option value="local">Importancia Local</option>
-                    <option value="nacional">Importancia Nacional</option>
-                    <option value="regional">Importancia Regional</option>
-                    <option value="mundial" selected>Importancia Mundial</option>
-                </select>
-            </div>
-            <div class="col-12">
-                <label class="form-label fw-semibold">Contexto Histórico</label>
-                <textarea class="form-control" rows="3" placeholder="Información adicional sobre el contexto de la época..."></textarea>
-            </div>
-        </div>
-    </div>
-</div>
-
-<!-- Botones de acción -->
-<div class="d-flex justify-content-between">
-    <a href="dashboard.html" class="btn btn-outline-secondary">
-        <i class="bi bi-arrow-left me-1"></i>Cancelar
-    </a>
-    <div>
-        <button type="button" class="btn btn-outline-primary me-2">
-            <i class="bi bi-eye me-1"></i>Vista Previa
-        </button>
-        <button type="submit" class="btn btn-success-custom">
-            <i class="bi bi-send me-1"></i>Enviar Solicitud
-        </button>
-    </div>
-</div>
-</form>
-</div>
-</div>
-</div>
-
-<!-- Contenido: Importar CSV -->
-<div id="csv" class="tab-content-contribute p-4">
-    <div class="row">
-        <div class="col-lg-8 mx-auto">
-
-            <div class="d-flex align-items-center mb-4">
-                <span class="step-indicator">2</span>
-                <h3 class="mb-0">Importar desde Archivo CSV</h3>
-            </div>
-
-            <div class="alert alert-info">
-                <i class="bi bi-info-circle me-2"></i>
-                <strong>Formato requerido:</strong> Asegúrate de que tu archivo CSV contenga las columnas necesarias en el formato correcto.
-            </div>
-
-            <!-- Instrucciones -->
-            <div class="card mb-4">
-                <div class="card-header">
-                    <h5 class="mb-0">
-                        <i class="bi bi-list-check me-2"></i>Instrucciones de Formato
-                    </h5>
-                </div>
-                <div class="card-body">
-                    <p><strong>Columnas requeridas:</strong></p>
-                    <div class="csv-preview">
-                        titulo,categoria,descripcion,pais,ciudad,fecha_inicio,fecha_fin,latitud,longitud,fuente_url,palabras_clave
-                        "Revolución Francesa","Política","Revolución social y política en Francia","Francia","París","1789-07-14","1799-11-09","48.8566","2.3522","https://ejemplo.com","revolución,política,francia"
-                        "Independencia de EE.UU.","Independencia","Declaración de independencia estadounidense","Estados Unidos","Filadelfia","1776-07-04","","39.9526","-75.1652","https://ejemplo.com","independencia,eeuu"
-                    </div>
-
-                    <div class="mt-3">
-                        <a href="#" class="btn btn-outline-primary btn-sm me-2">
-                            <i class="bi bi-download me-1"></i>Descargar Plantilla
-                        </a>
-                        <a href="#" class="btn btn-outline-info btn-sm">
-                            <i class="bi bi-question-circle me-1"></i>Ver Guía Completa
-                        </a>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Área de subida -->
-            <form action="dashboard.html" method="get">
-                <div class="card mb-4">
-                    <div class="card-body">
-                        <div class="file-upload-area">
-                            <i class="bi bi-file-earmark-spreadsheet fs-1 text-success mb-3"></i>
-                            <h6>Subir Archivo CSV</h6>
-                            <p class="mb-2">Arrastra tu archivo CSV aquí o haz clic para seleccionar</p>
-                            <small class="text-muted">Máximo 1000 registros por archivo</small>
-                            <input type="file"
+</html>
