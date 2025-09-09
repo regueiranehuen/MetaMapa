@@ -270,6 +270,11 @@
                     <span class="badge bg-danger ms-1">11</span>
                 </a>
             </li>
+            <li class="nav-item">
+                <a class="nav-link" href="gestion.html">
+                    <i class="bi bi-gear me-1"></i> Gestión
+                </a>
+            </li>
         </ul>
     </div>
 </nav>
@@ -358,14 +363,14 @@
                                 <div class="row g-3">
                                     <div class="col-md-6">
                                         <label class="form-label fw-semibold">País *</label>
-                                        <input type="text" class="form-control" placeholder="Ej: Francia" required>
+                                        <input type="text" class="form-control" placeholder="Ej: Argentina" required>
                                     </div>
                                     <div class="col-md-6">
                                         <label class="form-label fw-semibold">Ciudad/Región *</label>
-                                        <input type="text" class="form-control" placeholder="Ej: París, Île-de-France" required>
+                                        <input type="text" class="form-control" placeholder="Ej: Buenos Aires" required>
                                     </div>
                                     <div class="col-md-6">
-                                        <label class="form-label fw-semibold">Fecha del Evento *</label>
+                                        <label class="form-label fw-semibold">Fecha del Acontecimiento *</label>
                                         <input type="date" class="form-control" required>
                                     </div>
                                     <div class="col-md-6">
@@ -400,57 +405,9 @@
                                     <small class="text-muted">Admite: JPG, PNG, PDF, MP4, MP3 (máx. 10MB cada uno)</small>
                                     <input type="file" class="d-none" multiple accept=".jpg,.jpeg,.png,.pdf,.mp4,.mp3">
                                 </div>
-
-                                <div class="row g-3">
-                                    <div class="col-md-6">
-                                        <label class="form-label fw-semibold">URL de Fuente Principal</label>
-                                        <input type="url" class="form-control" placeholder="https://ejemplo.com/fuente">
-                                    </div>
-                                    <div class="col-md-6">
-                                        <label class="form-label fw-semibold">Tipo de Fuente</label>
-                                        <select class="form-select">
-                                            <option value="">Seleccionar tipo</option>
-                                            <option value="academica">Fuente Académica</option>
-                                            <option value="periodistica">Fuente Periodística</option>
-                                            <option value="oficial">Documento Oficial</option>
-                                            <option value="museo">Archivo de Museo</option>
-                                            <option value="libro">Libro/Publicación</option>
-                                        </select>
-                                    </div>
-                                </div>
                             </div>
                         </div>
 
-                        <!-- Información adicional -->
-                        <div class="card mb-4">
-                            <div class="card-header">
-                                <h5 class="mb-0">
-                                    <i class="bi bi-tags me-2"></i>Información Adicional
-                                </h5>
-                            </div>
-                            <div class="card-body">
-                                <div class="row g-3">
-                                    <div class="col-md-6">
-                                        <label class="form-label fw-semibold">Palabras Clave</label>
-                                        <input type="text" class="form-control" placeholder="revolución, independencia, política">
-                                        <div class="form-text">Separar por comas</div>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <label class="form-label fw-semibold">Importancia</label>
-                                        <select class="form-select">
-                                            <option value="local">Importancia Local</option>
-                                            <option value="nacional">Importancia Nacional</option>
-                                            <option value="regional">Importancia Regional</option>
-                                            <option value="mundial" selected>Importancia Mundial</option>
-                                        </select>
-                                    </div>
-                                    <div class="col-12">
-                                        <label class="form-label fw-semibold">Contexto Histórico</label>
-                                        <textarea class="form-control" rows="3" placeholder="Información adicional sobre el contexto de la época..."></textarea>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
 
                         <!-- Botones de acción -->
                         <div class="d-flex justify-content-between">
@@ -500,20 +457,18 @@
                             </h5>
                         </div>
                         <div class="card-body">
-                            <p><strong>Columnas requeridas:</strong></p>
+                            <p><strong>Columnas:</strong></p>
                             <div class="csv-preview">
-                                titulo,categoria,descripcion,pais,ciudad,fecha_inicio,fecha_fin,latitud,longitud,fuente_url,palabras_clave
-                                "Revolución Francesa","Política","Revolución social y política en Francia","Francia","París","1789-07-14","1799-11-09","48.8566","2.3522","https://ejemplo.com","revolución,política,francia"
-                                "Independencia de EE.UU.","Independencia","Declaración de independencia estadounidense","Estados Unidos","Filadelfia","1776-07-04","","39.9526","-75.1652","https://ejemplo.com","independencia,eeuu"
+                                "titulo","descripcion","categoria","latitud","longitud","fechadelhecho","pais"
                             </div>
 
                             <div class="mt-3">
                                 <a href="#" class="btn btn-outline-primary btn-sm me-2">
                                     <i class="bi bi-download me-1"></i>Descargar Plantilla
                                 </a>
-                                <a href="#" class="btn btn-outline-info btn-sm">
+                                <!-- <a href="#" class="btn btn-outline-info btn-sm">
                                     <i class="bi bi-question-circle me-1"></i>Ver Guía Completa
-                                </a>
+                                </a> -->
                             </div>
                         </div>
                     </div>
@@ -526,35 +481,8 @@
                                     <i class="bi bi-file-earmark-spreadsheet fs-1 text-success mb-3"></i>
                                     <h6>Subir Archivo CSV</h6>
                                     <p class="mb-2">Arrastra tu archivo CSV aquí o haz clic para seleccionar</p>
-                                    <small class="text-muted">Máximo 1000 registros por archivo</small>
+                                    <small class="text-muted">QUE CULO</small>
                                     <input type="file" class="d-none" accept=".csv" name="csv_file">
-                                </div>
-
-                                <div class="row g-3 mt-3">
-                                    <div class="col-md-6">
-                                        <label class="form-label fw-semibold">Separador de columnas</label>
-                                        <select class="form-select">
-                                            <option value="," selected>Coma (,)</option>
-                                            <option value=";">Punto y coma (;)</option>
-                                            <option value="|">Pipe (|)</option>
-                                        </select>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <label class="form-label fw-semibold">Codificación</label>
-                                        <select class="form-select">
-                                            <option value="utf-8" selected>UTF-8</option>
-                                            <option value="latin1">Latin-1</option>
-                                            <option value="cp1252">Windows-1252</option>
-                                        </select>
-                                    </div>
-                                    <div class="col-12">
-                                        <div class="form-check">
-                                            <input class="form-check-input" type="checkbox" id="header_row" checked>
-                                            <label class="form-check-label" for="header_row">
-                                                Primera fila contiene encabezados
-                                            </label>
-                                        </div>
-                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -591,35 +519,48 @@
                                 <th>Categoría</th>
                                 <th>Fecha de Envío</th>
                                 <th>Estado</th>
-                                <th>Acciones</th>
+                                <th>Solicitudes</th>
                             </tr>
                             </thead>
                             <tbody>
                             <tr>
                                 <td>Revolución de los Claveles</td>
                                 <td><span class="badge bg-primary">Política</span></td>
-                                <td>2024-01-15</td>
+                                <td>2025-01-15</td>
                                 <td><span class="badge bg-success">Aprobado</span></td>
                                 <td>
-                                    <a href="#" class="btn btn-sm btn-outline-primary">Ver</a>
+                                    <a href="#" class="btn btn-sm btn-outline-secondary">Modificar</a>
+                                    <a href="#" class="btn btn-sm btn-outline-danger">Eliminar</a>
                                 </td>
                             </tr>
                             <tr>
                                 <td>Conquista de Tenochtitlan</td>
                                 <td><span class="badge bg-warning text-dark">Exploración</span></td>
-                                <td>2024-01-10</td>
+                                <td>2025-01-10</td>
                                 <td><span class="badge bg-warning">En Revisión</span></td>
                                 <td>
-                                    <a href="#" class="btn btn-sm btn-outline-secondary">Editar</a>
+                                    <a href="#" class="btn btn-sm btn-outline-secondary">Modificar</a>
+                                    <a href="#" class="btn btn-sm btn-outline-danger">Eliminar</a>
                                 </td>
                             </tr>
                             <tr>
                                 <td>Tratado de Versalles</td>
                                 <td><span class="badge bg-danger">Guerra</span></td>
-                                <td>2024-01-05</td>
+                                <td>2025-01-05</td>
                                 <td><span class="badge bg-info">Pendiente</span></td>
                                 <td>
-                                    <a href="#" class="btn btn-sm btn-outline-warning">Revisar</a>
+                                    <a href="#" class="btn btn-sm btn-outline-secondary">Modificar</a>
+                                    <a href="#" class="btn btn-sm btn-outline-danger">Eliminar</a>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>Rusia vs Ucrania - la ira se desata</td>
+                                <td><span class="badge bg-danger">Guerra</span></td>
+                                <td>2025-01-05</td>
+                                <td><span class="badge bg-danger">Rechazada</span></td>
+                                <td>
+                                    <a href="#" class="btn btn-sm btn-outline-secondary">Modificar</a>
+                                    <a href="#" class="btn btn-sm btn-outline-danger">Eliminar</a>
                                 </td>
                             </tr>
                             </tbody>
