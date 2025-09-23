@@ -344,6 +344,7 @@
     </div>
 </main>
 
+<!-- Importo una libreria js de Mapa -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.js"></script>
 <script>
     // Datos de hechos históricos con coordenadas reales
@@ -428,7 +429,7 @@
     ];
 
     // Variables globales
-    let map;
+    let map; // Lo uso para referenciar el objeto de la libreria de js del mapa
     let markers = [];
     let selectedFactId = null;
 
@@ -445,7 +446,7 @@
         updateStats();
     }
 
-    // Agregar marcadores al mapa
+    // Agregar marcadores al mapa, Los dibuja
     function addMarkersToMap(factsToShow = historicalFacts) {
         // Limpiar marcadores existentes
         markers.forEach(marker => map.removeLayer(marker));
@@ -468,7 +469,7 @@
         });
     }
 
-    // Crear contenido del popup
+    // Crear contenido del popup, defino los colores
     function createPopupContent(fact) {
         const categoryColors = {
             politica: '#4f46e5',

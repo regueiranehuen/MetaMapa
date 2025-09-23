@@ -405,7 +405,7 @@
                                 <div class="mb-3">
                                     <label class="form-label fw-semibold">Color de Identificación</label>
                                     <select class="form-select">
-                                        <option value="">Seleccionar tipo</option>
+                                        <option value="" disabled selected>Seleccionar tipo</option>
                                         <option value="primary">Azul</option>
                                         <option value="success">Verde</option>
                                         <option value="warning">Amarillo</option>
@@ -562,7 +562,7 @@
                                 <div class="mb-3">
                                     <label class="form-label fw-semibold">Tipo de Sinónimo *</label>
                                     <select class="form-select" required>
-                                        <option value="">Seleccionar tipo</option>
+                                        <option value="" disabled selected>Seleccionar tipo</option>
                                         <option value="categoria">Categoría</option>
                                         <option value="pais">País</option>
                                         <option value="provincia">Provincia</option>
@@ -580,6 +580,12 @@
                                     </div>
                                     <div class="input-group mb-2">
                                         <input type="text" class="form-control" placeholder="Ej: Fuego">
+                                        <span class="input-group-text">
+                                            <i class="bi bi-plus text-primary"></i>
+                                        </span>
+                                    </div>
+                                    <div class="input-group mb-2">
+                                        <input type="text" class="form-control" placeholder="Ej: Bosque en llamas">
                                         <span class="input-group-text">
                                             <i class="bi bi-plus text-primary"></i>
                                         </span>
@@ -724,29 +730,28 @@
                             </div>
 
 
-                            <div class="text-center mt-3">
-                                <nav aria-label="Navegación de sinónimos">
-                                    <ul class="pagination pagination-sm justify-content-center">
-                                        <li class="page-item active">
-                                            <span class="page-link">1</span>
-                                        </li>
-                                        <li class="page-item">
-                                            <a class="page-link" href="?page=2">2</a>
-                                        </li>
-                                        <li class="page-item">
-                                            <a class="page-link" href="?page=3">3</a>
-                                        </li>
-                                    </ul>
-                                </nav>
-                            </div>
-
+                        <div class="text-center mt-3">
+                            <nav aria-label="Navegación de sinónimos">
+                                <ul class="pagination pagination-sm justify-content-center">
+                                    <li class="page-item active">
+                                        <span class="page-link">1</span>
+                                    </li>
+                                    <li class="page-item">
+                                        <a class="page-link" href="?page=2">2</a>
+                                    </li>
+                                    <li class="page-item">
+                                        <a class="page-link" href="?page=3">3</a>
+                                    </li>
+                                </ul>
+                            </nav>
                         </div>
+
                     </div>
                 </div>
             </div>
         </div>
-
-
+    </div>
+    </div>
 
 </main>
 
