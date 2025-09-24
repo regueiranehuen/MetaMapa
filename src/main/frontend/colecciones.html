@@ -9,80 +9,6 @@
     <link href="styles.css" rel="stylesheet">
 
     <style>
-        :root {
-            --primary-color: #4f46e5;
-            --collection-color: #8b5cf6;
-        }
-
-        .nav-pills-custom .nav-link.active {
-            background-color: var(--collection-color);
-            color: white;
-        }
-
-        .collection-card {
-            border: none;
-            border-radius: 12px;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
-            transition: all 0.3s ease;
-            overflow: hidden;
-            position: relative;
-        }
-
-        .collection-card:hover {
-            transform: translateY(-8px);
-            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.15);
-        }
-
-        .collection-header {
-            background: linear-gradient(135deg, var(--collection-color), #a855f7);
-            color: white;
-            padding: 20px;
-            position: relative;
-        }
-
-        .collection-stats {
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 8px;
-            padding: 10px;
-            margin-top: 15px;
-        }
-
-        .collection-badge {
-            position: absolute;
-            top: 15px;
-            right: 15px;
-            background: rgba(255, 255, 255, 0.2);
-            color: white;
-            border-radius: 15px;
-            padding: 4px 12px;
-            font-size: 0.75rem;
-        }
-
-        .collection-icon {
-            width: 60px;
-            height: 60px;
-            background: rgba(255, 255, 255, 0.2);
-            border-radius: 12px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 24px;
-            margin-bottom: 15px;
-        }
-
-        .btn-create-collection {
-            background: var(--collection-color);
-            border-color: var(--collection-color);
-            color: white;
-            font-weight: 600;
-        }
-
-        .btn-create-collection:hover {
-            background: #7c3aed;
-            border-color: #7c3aed;
-            color: white;
-            transform: translateY(-2px);
-        }
 
         .empty-state {
             text-align: center;
@@ -96,16 +22,6 @@
             opacity: 0.5;
         }
 
-        /* Animación de entrada */
-
-        .progress-ring {
-            width: 60px;
-            height: 60px;
-        }
-
-        .progress-ring__circle {
-            transition: stroke-dasharray 0.5s ease-in-out;
-        }
 
         @media (max-width: 768px) {
             .collection-stats {
