@@ -5,6 +5,7 @@
             --warning-color: #f59e0b;
             --collection-color: #8b5cf6;
             --admin-color: #059669;
+            --secondary-color: #667eea;
         }
 
 
@@ -205,3 +206,417 @@ body {
             border-color: var(--admin-color);
             box-shadow: 0 0 0 0.2rem rgba(5, 150, 105, 0.25);
         }
+
+/* =======================
+   CSS Index
+   ======================= */
+.landing-container {
+    background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+    min-height: 100vh;
+}
+.hero-section {
+    text-align: center;
+    padding: 100px 20px;
+}
+
+.hero-title {
+    font-size: 3.5rem;
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 30px;
+    line-height: 1.2;
+}
+
+.feature-icon {
+    width: 80px;
+    height: 80px;
+    border-radius: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 20px;
+    font-size: 36px;
+    color: white;
+}
+
+.feature-icon.blue { background: var(--primary-color); }
+.feature-icon.yellow { background: #f59e0b; }
+.feature-icon.pink { background: #ec4899; }
+
+.btn-custom-primary {
+    background-color: var(--primary-color);
+    border-color: var(--primary-color);
+    color: white;
+}
+
+.btn-custom-primary:hover {
+    background-color: #3730a3;
+    border-color: #3730a3;
+    color: white;
+    transform: translateY(-2px);
+}
+
+.card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+    transition: all 0.3s ease;
+}
+
+.btn:hover {
+    transform: translateY(-2px);
+    transition: all 0.2s ease;
+}
+
+@media (max-width: 768px) {
+    .hero-title {
+        font-size: 2.5rem;
+    }
+}
+
+/* =======================
+   CSS Login
+   ======================= */
+.login-container {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+}
+
+.login-card {
+    background: white;
+    border-radius: 16px;
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.15);
+    overflow: hidden;
+}
+
+.btn-login {
+    background-color: var(--primary-color);
+    border-color: var(--primary-color);
+    padding: 12px;
+    font-weight: 600;
+}
+
+.btn-login:hover {
+    background-color: #3730a3;
+    border-color: #3730a3;
+    transform: translateY(-2px);
+}
+
+.back-arrow {
+    color: #666;
+    text-decoration: none;
+    font-size: 24px;
+    transition: color 0.2s ease;
+}
+
+.back-arrow:hover {
+    color: #333;
+}
+
+.social-login {
+    border: 1px solid #e5e7eb;
+    color: #374151;
+    padding: 10px;
+    border-radius: 8px;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    transition: all 0.2s ease;
+}
+
+.social-login:hover {
+    background-color: #f9fafb;
+    color: #111827;
+    transform: translateY(-1px);
+}
+
+@media (max-width: 576px) {
+    .login-card {
+        margin: 10px;
+    }
+}
+
+/* =======================
+   CSS Mapa
+   ======================= */
+.map-container {
+    background: white;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    position: relative;
+}
+
+.static-map {
+    width: 100%;
+    height: 600px;
+    background-image: url('https://tile.openstreetmap.org/3/3/4.png'),
+    url('https://tile.openstreetmap.org/3/4/4.png');
+    background-size: 300px 300px;
+    background-repeat: repeat;
+    position: relative;
+    background-color: #a8cdf0;
+}
+
+/* Overlay con imagen de mapa SVG más realista */
+.map-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, #e0f2fe 0%, #b3e5fc 30%, #81c784 60%, #8bc34a 100%);
+    background-image:
+            radial-gradient(circle at 20% 30%, #4caf50 2px, transparent 2px),
+            radial-gradient(circle at 80% 20%, #2196f3 1px, transparent 1px),
+            radial-gradient(circle at 60% 80%, #ff9800 1px, transparent 1px);
+}
+
+.marker {
+    position: absolute;
+    width: 25px;
+    height: 25px;
+    background: #dc2626;
+    border: 3px solid white;
+    border-radius: 50%;
+    cursor: pointer;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+    z-index: 10;
+    transform: translate(-50%, -50%);
+    transition: all 0.3s ease;
+}
+
+.marker:hover {
+    transform: translate(-50%, -50%) scale(1.3);
+    z-index: 20;
+}
+
+.marker.politica { background: #4f46e5; }
+.marker.exploracion { background: #059669; }
+.marker.guerra { background: #dc2626; }
+.marker.independencia { background: #f59e0b; }
+.marker.cientifica { background: #7c3aed; }
+
+/* Posiciones de marcadores basadas en porcentajes */
+.marker-cordoba { top: 70%; left: 55%; }
+.marker-bsas { top: 75%; left: 52%; }
+.marker-rosario { top: 68%; left: 50%; }
+.marker-bahamas { top: 45%; left: 25%; }
+.marker-berlin { top: 25%; left: 70%; }
+.marker-mexico { top: 50%; left: 20%; }
+
+/* Tooltips CSS puros */
+.marker[data-tooltip] {
+    position: relative;
+}
+
+.marker[data-tooltip]:hover::before {
+    content: attr(data-tooltip);
+    position: absolute;
+    bottom: 140%;
+    left: 50%;
+    transform: translateX(-50%);
+    background: #333;
+    color: white;
+    padding: 8px 12px;
+    border-radius: 6px;
+    font-size: 12px;
+    white-space: nowrap;
+    z-index: 1000;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.3);
+}
+
+.marker[data-tooltip]:hover::after {
+    content: '';
+    position: absolute;
+    bottom: 120%;
+    left: 50%;
+    transform: translateX(-50%);
+    border: 6px solid transparent;
+    border-top-color: #333;
+    z-index: 1000;
+}
+
+/* Modal usando checkbox hack - SIN JavaScript */
+.modal-trigger {
+    display: none;
+}
+
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.7);
+    z-index: 1000;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.modal-trigger:checked + .modal-overlay {
+    opacity: 1;
+    visibility: visible;
+}
+
+.modal-content {
+    background: white;
+    border-radius: 12px;
+    padding: 30px;
+    width: 90%;
+    max-width: 500px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    position: relative;
+    transform: translateY(-30px);
+    transition: transform 0.3s ease;
+}
+
+.modal-trigger:checked + .modal-overlay .modal-content {
+    transform: translateY(0);
+}
+
+.modal-close {
+    position: absolute;
+    top: 15px;
+    right: 20px;
+    font-size: 28px;
+    color: #666;
+    text-decoration: none;
+    line-height: 1;
+}
+
+.modal-close:hover {
+    color: #333;
+}
+
+.legend {
+    position: absolute;
+    bottom: 20px;
+    left: 20px;
+    background: white;
+    padding: 15px;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+    z-index: 10;
+}
+
+.legend-item {
+    display: flex;
+    align-items: center;
+    margin-bottom: 8px;
+}
+
+.legend-item:last-child {
+    margin-bottom: 0;
+}
+
+.legend-dot {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    border: 2px solid white;
+    margin-right: 8px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.3);
+}
+
+@media (max-width: 768px) {
+    .static-map {
+        height: 400px;
+    }
+}
+
+/* =======================
+   CSS Mapa2
+   ======================= */
+
+/* =======================
+   CSS Register
+   ======================= */
+.register-container {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+}
+
+.register-card {
+    background: white;
+    border-radius: 16px;
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.15);
+    overflow: hidden;
+    max-width: 500px;
+    width: 100%;
+}
+
+.btn-register {
+    background-color: var(--primary-color);
+    border-color: var(--primary-color);
+    padding: 12px;
+    font-weight: 600;
+}
+
+.btn-register:hover {
+    background-color: #3730a3;
+    border-color: #3730a3;
+    transform: translateY(-2px);
+}
+
+.required-field {
+    color: #dc2626;
+}
+
+.form-section {
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
+    padding: 20px;
+    margin-bottom: 20px;
+    background: #f9fafb;
+}
+
+.form-section h6 {
+    color: #374151;
+    margin-bottom: 15px;
+    font-weight: 600;
+}
+
+.password-strength {
+    height: 4px;
+    background: #e5e7eb;
+    border-radius: 2px;
+    margin-top: 8px;
+    overflow: hidden;
+}
+
+.password-strength-bar {
+    height: 100%;
+    transition: all 0.3s ease;
+    border-radius: 2px;
+}
+
+.strength-weak { background: #ef4444; width: 33%; }
+.strength-medium { background: #f59e0b; width: 66%; }
+.strength-strong { background: #10b981; width: 100%; }
+
+.terms-box {
+    background: #fef3c7;
+    border: 1px solid #fbbf24;
+    border-radius: 8px;
+    padding: 15px;
+    margin: 20px 0;
+}
+
+@media (max-width: 576px) {
+    .register-card {
+        margin: 10px;
+    }
+}
+
