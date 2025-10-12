@@ -1,7 +1,6 @@
-package modulos.agregacion.entities.fuentes;
+package modulos.agregacion.entities.fuentes.Requests;
 
 import lombok.Data;
-import modulos.agregacion.entities.fuentes.Requests.ColeccionResponse;
 import modulos.shared.dtos.output.ColeccionOutputDTO;
 
 import java.util.List;

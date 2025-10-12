@@ -1,11 +1,9 @@
 package modulos.agregacion.entities.fuentes;
 
 import modulos.agregacion.entities.DbMain.*;
-import modulos.agregacion.entities.DbMain.filtros.*;
 import modulos.agregacion.entities.DbMain.hechoRef.HechoRef;
 import modulos.agregacion.entities.DbProxy.HechoProxy;
 import modulos.agregacion.entities.atributosHecho.AtributosHecho;
-import modulos.agregacion.entities.atributosHecho.ContenidoMultimedia;
 import modulos.agregacion.entities.atributosHecho.Origen;
 import modulos.agregacion.entities.fuentes.Requests.*;
 import modulos.shared.dtos.output.ColeccionOutputDTO;
@@ -15,26 +13,18 @@ import modulos.buscadores.*;
 import modulos.shared.dtos.input.*;
 import modulos.shared.utils.FechaParser;
 import modulos.shared.utils.Geocodificador;
-import org.json.JSONArray;
 import org.json.JSONObject;
 
-import java.io.InputStream;
-import java.io.OutputStream;
 import java.net.HttpURLConnection;
-import java.net.Proxy;
 import java.net.URL;
-import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 import java.util.Scanner;
-import com.fasterxml.jackson.databind.ObjectMapper;
+
 import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.MediaType;
 import org.springframework.web.reactive.function.client.WebClient;
-import org.springframework.web.util.UriBuilder;
 import reactor.core.publisher.Mono;
 
 public class FuenteProxy {
@@ -161,38 +151,49 @@ public class FuenteProxy {
                 .bodyToMono(HechosMetamapaResponse.class)
                 .map(hechosResponse -> {
                             for (VisualizarHechosOutputDTO hechoDto : hechosResponse.getHechos()) {
-                                Hecho hecho = new HechoProxy();
-                                hecho.setAtributosHecho(new AtributosHecho());
-                                hecho.getAtributosHecho().setFuente(Fuente.valueOf(hechoDto.getFuente()));
-                                //hecho.setContenidoMultimedia(dto.getContenidoMultimedia()); TODO
-
-                                // Crear y setear atributosHecho
-                                AtributosHecho atributos = new AtributosHecho();
-                                atributos.setTitulo(hechoDto.getTitulo());
-                                atributos.setDescripcion(hechoDto.getDescripcion());
-                                atributos.setCategoria_id(buscadores.getBuscadorCategoria().buscar(hechoDto.getCategoria()).getId());
-
-                                Pais pais = buscadores.getBuscadorPais().buscar(hechoDto.getPais());
-                                Provincia provincia = buscadores.getBuscadorProvincia().buscar(hechoDto.getProvincia());
-
-                                if(pais != null && provincia != null){
-                                    Ubicacion ubicacion = buscadores.getBuscadorUbicacion().buscar(pais.getId(), provincia.getId());
-                                    if(ubicacion != null){
-                                        atributos.setUbicacion_id(ubicacion.getId());
-                                    }
-                                }
-
-                                atributos.setCategoria_id(buscadores.getBuscadorCategoria().buscar(hechoDto.getCategoria()).getId());
-                                atributos.setFechaAcontecimiento(FechaParser.parsearFecha(hechoDto.getFechaAcontecimiento()));
-                                atributos.setLatitud(hechoDto.getLatitud());
-                                atributos.setLongitud(hechoDto.getLongitud());
-                                hechos.add(hecho);
+                                hechos.add(this.setearHechoMetamapa(hechoDto, buscadores));
                             }
                             return hechos;
                         }
                 );
     }
 
+    private Hecho setearHechoMetamapa(VisualizarHechosOutputDTO hechoDto, BuscadoresRegistry buscadores){
+        Hecho hecho = new HechoProxy();
+        hecho.setAtributosHecho(new AtributosHecho());
+        hecho.getAtributosHecho().setFuente(Fuente.valueOf(hechoDto.getFuente()));
+        //hecho.setContenidoMultimedia(dto.getContenidoMultimedia()); TODO
+
+        // Crear y setear atributosHecho
+        AtributosHecho atributos = new AtributosHecho();
+        atributos.setTitulo(hechoDto.getTitulo());
+        atributos.setDescripcion(hechoDto.getDescripcion());
+        atributos.setCategoria_id(buscadores.getBuscadorCategoria().buscar(hechoDto.getCategoria()).getId());
+
+        Pais pais = buscadores.getBuscadorPais().buscar(hechoDto.getPais());
+        Provincia provincia = buscadores.getBuscadorProvincia().buscar(hechoDto.getProvincia());
+
+        if(pais != null && provincia != null){
+            Ubicacion ubicacion = buscadores.getBuscadorUbicacion().buscar(pais.getId(), provincia.getId());
+            if(ubicacion != null){
+                atributos.setUbicacion_id(ubicacion.getId());
+            }
+        }
+        Categoria categoria = buscadores.getBuscadorCategoria().buscar(hechoDto.getCategoria());
+
+        if(categoria != null){
+            atributos.setCategoria_id(categoria.getId());
+        }
+
+        atributos.setFechaAcontecimiento(FechaParser.parsearFecha(hechoDto.getFechaAcontecimiento()));
+        atributos.setLatitud(hechoDto.getLatitud());
+        atributos.setLongitud(hechoDto.getLongitud());
+
+        hecho.getAtributosHecho().setOrigen(Origen.FUENTE_PROXY_METAMAPA);
+        hecho.getAtributosHecho().setFuente(Fuente.PROXY);
+
+        return hecho;
+    }
 
     public Mono<List<Hecho>> getHechosDeColeccionMetaMapa(CriteriosColeccionProxyDTO atributos, Boolean navegacionCurada, Long id_coleccion, BuscadoresRegistry buscadores) {
 
@@ -218,102 +219,34 @@ public class FuenteProxy {
                 .bodyToMono(HechosSkibidi.class)
                 .map(hechosSkibidi -> {
                     for (VisualizarHechosOutputDTO dto : hechosSkibidi.getHechos()) {
-                        Hecho hecho = new HechoProxy();
-                        hecho.setId(dto.getId());
-
-                        hecho.getAtributosHecho().setTitulo(dto.getTitulo());
-                        hecho.getAtributosHecho().setDescripcion(dto.getDescripcion());
-
-                        Categoria categoria = buscadores.getBuscadorCategoria().buscar(dto.getCategoria());
-                        hecho.getAtributosHecho().setCategoria_id(categoria != null ? categoria.getId() : null);
-
-                        if (dto.getLatitud() != null && dto.getLongitud() != null) {
-                            UbicacionString ubicacionString = Geocodificador.obtenerUbicacion(dto.getLatitud(), dto.getLongitud());
-                            if (ubicacionString != null) {
-                                Pais pais = buscadores.getBuscadorPais().buscar(ubicacionString.getPais());
-                                Provincia provincia = buscadores.getBuscadorProvincia().buscar(ubicacionString.getProvincia());
-                                Ubicacion ubicacion = buscadores.getBuscadorUbicacion().buscarOCrear(pais, provincia);
-
-                                hecho.getAtributosHecho().setUbicacion_id(ubicacion != null ? ubicacion.getId() : null);
-                                hecho.getAtributosHecho().setLatitud(dto.getLatitud());
-                                hecho.getAtributosHecho().setLongitud(dto.getLongitud());
-                            }
-                        }
-
-                        hecho.getAtributosHecho().setOrigen(Origen.FUENTE_PROXY_METAMAPA);
-                        hecho.getAtributosHecho().setFuente(Fuente.PROXY);
-                        hechos.add(hecho);
+                        hechos.add(this.setearHechoMetamapa(dto, buscadores));
                     }
                     return hechos;
                 });
     }
 
-    public void enviarReporte(String url_1, Long id_hecho, String motivo){
-        try {
+    public void enviarReporte(Long id_hecho, String motivo){
 
-            String urlStr = url_1 + "/reportar";
-            URL url = new URL(urlStr);
-            HttpURLConnection conexion = (HttpURLConnection) url.openConnection();
-            conexion.setRequestMethod("POST");
-
-            conexion.setRequestProperty("Content-Type", "application/json");
-
-            JSONObject jsonBody = new JSONObject();
-            jsonBody.put("id_hecho", id_hecho);
-            jsonBody.put("motivo", motivo);
-
-            int status = conexion.getResponseCode();
-
-            if (status == 200) {
-                System.out.println("Solicitud enviada con exito");
-            }
-
-            else {
-                System.out.println("Error al enviar solicitud con código: " + status);
-                String errorMsg = new Scanner(conexion.getErrorStream()).useDelimiter("\\A").next();
-                System.out.println("Mensaje: " + errorMsg);
-            }
-
-        } catch (Exception e) {
-            System.out.println("Excepción al enviar solicitud: " + e.getMessage());
-        }
-
+            webClientMetaMapa.post()
+                    .uri(uriBuilder -> uriBuilder.path("/api/solicitud-hecho/reportar")
+                            .queryParam("id_hecho", id_hecho)
+                            .queryParam("motivo", motivo).build())
+                    .retrieve()
+                    .toBodilessEntity() // <- indica que no se espera body
+                    .subscribe();
     }
 
-    public void enviarSolicitudEliminacionMetaMapa(String url_1, SolicitudHechoEliminarInputDTO data){
+    public void enviarSolicitudEliminacionMetaMapa(SolicitudHechoEliminarInputDTO data){
 
-        try {
-
-            String urlStr = url_1 + "/solicitud/eliminar-hecho";
-            URL url = new URL(urlStr);
-            HttpURLConnection conexion = (HttpURLConnection) url.openConnection();
-            conexion.setRequestMethod("POST");
-
-            conexion.setRequestProperty("Content-Type", "application/json");
-
-            JSONObject jsonBody = new JSONObject();
-            jsonBody.put("id_usuario", data.getId_usuario());
-            jsonBody.put("id_hecho",data.getId_hecho());
-            jsonBody.put("justificacion", data.getJustificacion());
-
-            int status = conexion.getResponseCode();
-
-            if (status == 200) {
-                System.out.println("Solicitud enviada con exito");
-            }
-
-            else {
-                System.out.println("Error al enviar solicitud con código: " + status);
-                String errorMsg = new Scanner(conexion.getErrorStream()).useDelimiter("\\A").next();
-                System.out.println("Mensaje: " + errorMsg);
-            }
-
-        } catch (Exception e) {
-            System.out.println("Excepción al enviar solicitud: " + e.getMessage());
-        }
+        webClientMetaMapa.post()
+                .uri("/api/solicitud-hecho/eliminar-hecho")
+                .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
+                .bodyValue(data)
+                .retrieve()
+                .toBodilessEntity()
+                .subscribe();
 
     }
-
 
 }
 
