@@ -53,13 +53,14 @@ public class FuenteProxy {
                     .map(LoginResponse::getToken);
     }
 
-        public Mono<List<Hecho>> getHechos(BuscadoresRegistry buscadores, String token) {
+        public Mono<List<Hecho>> getHechos(BuscadoresRegistry buscadores, String token, int page) {
         //TODO no se si esta bien que el token vaya en el query param
             List<Hecho> hechos = new ArrayList<>();
 
                 return webClient.get()
                         .uri(uriBuilder -> uriBuilder.path("/desastres")
-                                .queryParam("token", token).build())
+                                .queryParam("page", page).build())
+                        .header("Authorization", "Bearer " + token)
                         .retrieve()
                         .bodyToMono(HechosResponse.class).map(response -> {
                             for(HechoResponse hechoResponse : response.getHechos()){
@@ -98,9 +99,9 @@ public class FuenteProxy {
 
             return webClient.get()
                     .uri(UriBuilder -> UriBuilder.path("/desastres-naturales")
-                            .queryParam("token",token)
                             .queryParam("id", id)
                             .build())
+                            .header("Authorization", "Bearer " + token)
                             .retrieve()
                             .bodyToMono(HechoResponse.class)
                             .map(hechoResponse -> this.setearHecho(hechoResponse, buscadores));
