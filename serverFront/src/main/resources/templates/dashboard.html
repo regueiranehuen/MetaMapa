@@ -1,627 +1,222 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Panel de Control - MetaMapa</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css" rel="stylesheet">
-    <style>
-        :root {
-            --primary-color: #4f46e5;
-            --success-color: #059669;
-            --danger-color: #dc2626;
-        }
+<html th:replace="~{layout/base :: html}">
+<div th:fragment="contenido" class="row">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Panel de Control - MetaMapa</title>
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css" rel="stylesheet">
+        <style>
+            :root { --primary-color:#4f46e5; --success-color:#059669; --danger-color:#dc2626; }
+            body { background:linear-gradient(135deg,#667eea 0%,#764ba2 100%); min-height:100vh; font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif; }
+            .logo-icon { width:40px; height:40px; background:var(--primary-color); border-radius:8px; display:inline-flex; align-items:center; justify-content:center; color:white; font-weight:bold; font-size:18px; }
+            .dashboard-header { background:white; box-shadow:0 2px 10px rgba(0,0,0,0.1); }
+            .user-badge { background:#333; color:white; font-size:.75rem; font-weight:500; }
+            .fact-card { background:white; border-radius:12px; border:1px solid #e9ecef; transition:all .3s ease; }
+            .fact-card:hover { transform:translateY(-5px); box-shadow:0 8px 25px rgba(0,0,0,0.15); }
+            .fact-category { background:#f8f9fa; color:#495057; font-size:.75rem; font-weight:500; border-radius:15px; }
+            .fact-multimedia { background:#ffc107; color:#856404; font-size:.75rem; font-weight:500; border-radius:12px; }
+            .modal-checkbox { display:none; }
+            .modal-overlay { position:fixed; inset:0; background:rgba(0,0,0,.5); z-index:1050; opacity:0; visibility:hidden; transition:all .3s ease; display:flex; align-items:center; justify-content:center; }
+            .modal-checkbox:checked + .modal-overlay { opacity:1; visibility:visible; }
+            .modal-content-custom { background:white; border-radius:12px; padding:30px; width:90%; max-width:500px; box-shadow:0 10px 30px rgba(0,0,0,.3); position:relative; transform:translateY(-20px); transition:transform .3s ease; }
+            .modal-checkbox:checked + .modal-overlay .modal-content-custom { transform:translateY(0); }
+            .close-modal { position:absolute; top:15px; right:20px; font-size:24px; color:#666; text-decoration:none; line-height:1; }
+            .close-modal:hover { color:#333; }
+            .search-highlight:focus { border-color:var(--primary-color); box-shadow:0 0 0 .2rem rgba(79,70,229,.25); }
+            .nav-pills-custom .nav-link { color:#666; border-radius:25px; padding:10px 20px; margin:0 5px; transition:all .3s ease; }
+            .nav-pills-custom .nav-link.active { background-color:var(--primary-color); color:white; }
+            .nav-pills-custom .nav-link:hover:not(.active) { background-color:#f8f9fa; color:#333; }
+            .btn-report { background:var(--danger-color); border-color:var(--danger-color); font-size:.875rem; padding:6px 12px; }
+            .btn-report:hover { background:#b91c1c; border-color:#b91c1c; transform:translateY(-1px); }
+        </style>
+    </head>
 
-        body {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            min-height: 100vh;
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-        }
+    <body>
 
-        .logo-icon {
-            width: 40px;
-            height: 40px;
-            background: var(--primary-color);
-            border-radius: 8px;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            font-weight: bold;
-            font-size: 18px;
-        }
-
-        .dashboard-header {
-            background: white;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-        }
-
-        .user-badge {
-            background: #333;
-            color: white;
-            font-size: 0.75rem;
-            font-weight: 500;
-        }
-
-        .fact-card {
-            background: white;
-            border-radius: 12px;
-            border: 1px solid #e9ecef;
-            transition: all 0.3s ease;
-        }
-
-        .fact-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 8px 25px rgba(0,0,0,0.15);
-        }
-
-        .fact-category {
-            background: #f8f9fa;
-            color: #495057;
-            font-size: 0.75rem;
-            font-weight: 500;
-            border-radius: 15px;
-        }
-
-        .fact-multimedia {
-            background: #ffc107;
-            color: #856404;
-            font-size: 0.75rem;
-            font-weight: 500;
-            border-radius: 12px;
-        }
-
-        /* Modal usando checkbox hack */
-        .modal-checkbox {
-            display: none;
-        }
-
-        .modal-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.5);
-            z-index: 1050;
-            opacity: 0;
-            visibility: hidden;
-            transition: all 0.3s ease;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .modal-checkbox:checked + .modal-overlay {
-            opacity: 1;
-            visibility: visible;
-        }
-
-        .modal-content-custom {
-            background: white;
-            border-radius: 12px;
-            padding: 30px;
-            width: 90%;
-            max-width: 500px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
-            position: relative;
-            transform: translateY(-20px);
-            transition: transform 0.3s ease;
-        }
-
-        .modal-checkbox:checked + .modal-overlay .modal-content-custom {
-            transform: translateY(0);
-        }
-
-        .close-modal {
-            position: absolute;
-            top: 15px;
-            right: 20px;
-            font-size: 24px;
-            color: #666;
-            text-decoration: none;
-            line-height: 1;
-        }
-
-        .close-modal:hover {
-            color: #333;
-        }
-
-        .search-highlight:focus {
-            border-color: var(--primary-color);
-            box-shadow: 0 0 0 0.2rem rgba(79, 70, 229, 0.25);
-        }
-
-        .nav-pills-custom .nav-link {
-            color: #666;
-            border-radius: 25px;
-            padding: 10px 20px;
-            margin: 0 5px;
-            transition: all 0.3s ease;
-        }
-
-        .nav-pills-custom .nav-link.active {
-            background-color: var(--primary-color);
-            color: white;
-        }
-
-        .nav-pills-custom .nav-link:hover:not(.active) {
-            background-color: #f8f9fa;
-            color: #333;
-        }
-
-        .btn-report {
-            background: var(--danger-color);
-            border-color: var(--danger-color);
-            font-size: 0.875rem;
-            padding: 6px 12px;
-        }
-
-        .btn-report:hover {
-            background: #b91c1c;
-            border-color: #b91c1c;
-            transform: translateY(-1px);
-        }
-
-        @media (max-width: 768px) {
-            .dashboard-header .row > div {
-                text-align: center !important;
-                margin-bottom: 10px;
-            }
-
-            .modal-content-custom {
-                margin: 20px;
-                padding: 20px;
-            }
-        }
-
-    </style>
-</head>
-
-<body>
-
-<!-- Header del Dashboard -->
-<header class="dashboard-header py-3">
-    <div class="container-fluid">
-        <div class="row align-items-center">
-            <div class="col-md-6">
-                <a href="index.html" class="text-decoration-none text-dark d-flex align-items-center">
-                    <div class="logo-icon me-2">M</div>
-                    <span class="fs-4 fw-bold">MetaMapa</span>
-                    <span class="text-muted ms-2 d-none d-md-inline">Panel de Control</span>
-                </a>
-            </div>
-            <div class="col-md-6 text-end">
-                <span class="me-2">Bienvenido, <strong id="username">Usuario</strong></span>
-                <!-- <span class="badge user-badge me-2">CONTRIBUYENTE</span> -->
-                <a href="index.html" class="btn btn-outline-secondary btn-sm">
-                    <i class="bi bi-box-arrow-right me-1"></i>Cerrar Sesión
-                </a>
-            </div>
-        </div>
-    </div>
-</header>
-
-<!-- Navegación Principal -->
-<nav class="bg-white border-bottom">
-    <div class="container-fluid py-3">
-        <ul class="nav nav-pills nav-pills-custom justify-content-center">
-            <li class="nav-item">
-                <a class="nav-link active" href="dashboard.html">
-                    <i class="bi bi-file-text me-1"></i> Hechos
-                </a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="mapa.html">
-                    <i class="bi bi-map me-1"></i> Mapa
-                </a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="colecciones.html">
-                    <i class="bi bi-collection me-1"></i> Colecciones
-                </a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="contribuir.html">
-                    <i class="bi bi-plus me-1"></i> Contribuir
-                </a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="solicitudes.html">
-                    <i class="bi bi-clipboard-check me-1"></i> Solicitudes
-                    <span class="badge bg-danger ms-1">11</span>
-                </a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="gestion.html">
-                    <i class="bi bi-gear me-1"></i> Gestión
-                </a>
-            </li>
-        </ul>
-    </div>
-</nav>
-
-
-
-<!-- Contenido Principal - Hechos -->
-<main class="container-fluid py-4 fade-in">
-
-    <!-- Barra de búsqueda y filtros -->
-    <div class="row mb-4">
-        <div class="col-md-8">
-            <div class="input-group">
-                <span class="input-group-text bg-white">
-                    <i class="bi bi-search text-muted"></i>
-                </span>
-                <input
-                        type="text"
-                        class="form-control search-highlight"
-                        placeholder="Buscar hechos históricos..."
-                        style="border-left: none;"
-                >
-            </div>
-        </div>
-        <div class="col-md-4">
-            <select class="form-select">
-                <option value="">Todas las categorías</option>
-                <option value="politica">Política</option>
-                <option value="exploracion">Exploración</option>
-                <option value="guerra">Guerra</option>
-                <option value="independencia">Independencia</option>
-                <option value="cultural">Cultural</option>
-                <option value="cientifica">Científica</option>
-            </select>
-        </div>
-    </div>
-
-    <!-- Estadísticas rápidas -->
-    <div class="row mb-4">
-        <div class="col-md-3">
-            <div class="card border-0 shadow-sm">
-                <div class="card-body text-center">
-                    <i class="bi bi-file-text text-primary fs-1"></i>
-                    <h4 class="mt-2">1,247</h4>
-                    <p class="text-muted mb-0">Total Hechos</p>
+    <!-- Header -->
+    <header class="dashboard-header py-3">
+        <div class="container-fluid">
+            <div class="row align-items-center">
+                <div class="col-md-6">
+                    <a href="index.html" class="text-decoration-none text-dark d-flex align-items-center">
+                        <div class="logo-icon me-2">M</div>
+                        <span class="fs-4 fw-bold">MetaMapa</span>
+                        <span class="text-muted ms-2 d-none d-md-inline">Panel de Control</span>
+                    </a>
+                </div>
+                <div class="col-md-6 text-end">
+                    <span class="me-2">Bienvenido, <strong id="username" th:text="${username}">Usuario</strong></span>
+                    <a href="index.html" class="btn btn-outline-secondary btn-sm">
+                        <i class="bi bi-box-arrow-right me-1"></i>Cerrar Sesión
+                    </a>
                 </div>
             </div>
         </div>
-        <div class="col-md-3">
-            <div class="card border-0 shadow-sm">
-                <div class="card-body text-center">
-                    <i class="bi bi-geo-alt text-success fs-1"></i>
-                    <h4 class="mt-2">89</h4>
-                    <p class="text-muted mb-0">Países</p>
-                </div>
-            </div>
-        </div>
-        <div class="col-md-3">
-            <div class="card border-0 shadow-sm">
-                <div class="card-body text-center">
-                    <i class="bi bi-people text-warning fs-1"></i>
-                    <h4 class="mt-2">356</h4>
-                    <p class="text-muted mb-0">Contribuyentes</p>
-                </div>
-            </div>
-        </div>
-        <div class="col-md-3">
-            <div class="card border-0 shadow-sm">
-                <div class="card-body text-center">
-                    <i class="bi bi-calendar text-info fs-1"></i>
-                    <h4 class="mt-2">12</h4>
-                    <p class="text-muted mb-0">Hoy</p>
-                </div>
-            </div>
-        </div>
-    </div>
+    </header>
 
-    <!-- Grid de Hechos Históricos -->
-    <div class="row g-4">
-
-        <div class="col-md-6 col-lg-4">
-            <div class="card fact-card h-100 border-0 shadow-sm">
-                <div class="card-body">
-                    <div class="d-flex justify-content-between align-items-start mb-3">
-                        <h5 class="card-title mb-0">Revolución de Mayo</h5>
-                        <span class="badge fact-category px-2 py-1">Política</span>
-                    </div>
-                    <p class="card-text text-muted">Inicio del proceso independentista argentino que marcó el comienzo de la lucha por la independencia.</p>
-                    <div class="d-flex flex-column gap-2 small text-muted mb-3">
-                        <div>
-                            <i class="bi bi-geo-alt me-1"></i> Buenos Aires, Argentina
-                        </div>
-                        <div>
-                            <i class="bi bi-calendar me-1"></i> 24 de Mayo de 1810
-                        </div>
-                        <div>
-                            <span class="badge fact-multimedia px-2 py-1">
-                                <i class="bi bi-folder2 me-1"></i>3 archivos multimedia
-                            </span>
-                        </div>
-                    </div>
-                    <div class="d-flex justify-content-between align-items-center">
-                        <a href="detalle.html?id=1" class="btn btn-outline-primary btn-sm">
-                            <i class="bi bi-eye me-1"></i>Ver Detalles
-                        </a>
-                        <label for="report-modal-1" class="btn btn-report btn-danger btn-sm">
-                            <i class="bi bi-exclamation-triangle me-1"></i>Reportar
-                        </label>
-                    </div>
-                </div>
-            </div>
+    <!-- Nav -->
+    <nav class="bg-white border-bottom">
+        <div class="container-fluid py-3">
+            <ul class="nav nav-pills nav-pills-custom justify-content-center">
+                <li class="nav-item">
+                    <a class="nav-link active" href="dashboard.html">
+                        <i class="bi bi-file-text me-1"></i> Hechos
+                    </a>
+                </li>
+                <li class="nav-item"><a class="nav-link" href="mapa.html"><i class="bi bi-map me-1"></i> Mapa</a></li>
+                <li class="nav-item"><a class="nav-link" href="colecciones.html"><i class="bi bi-collection me-1"></i> Colecciones</a></li>
+                <li class="nav-item"><a class="nav-link" href="contribuir.html"><i class="bi bi-plus me-1"></i> Contribuir</a></li>
+                <li class="nav-item">
+                    <a class="nav-link" href="solicitudes.html">
+                        <i class="bi bi-clipboard-check me-1"></i> Solicitudes
+                        <span class="badge bg-danger ms-1" th:text="${cantidadSolicitudes}">11</span>
+                    </a>
+                </li>
+                <li class="nav-item"><a class="nav-link" href="gestion.html"><i class="bi bi-gear me-1"></i> Gestión</a></li>
+            </ul>
         </div>
-
-        <div class="col-md-6 col-lg-4">
-            <div class="card fact-card h-100 border-0 shadow-sm">
-                <div class="card-body">
-                    <div class="d-flex justify-content-between align-items-start mb-3">
-                        <h5 class="card-title mb-0">Descubrimiento de América</h5>
-                        <span class="badge fact-category px-2 py-1">Exploración</span>
-                    </div>
-                    <p class="card-text text-muted">Llegada de Cristóbal Colón al continente americano, evento que cambió la historia mundial.</p>
-                    <div class="d-flex flex-column gap-2 small text-muted mb-3">
-                        <div>
-                            <i class="bi bi-geo-alt me-1"></i> San Salvador, Bahamas
-                        </div>
-                        <div>
-                            <i class="bi bi-calendar me-1"></i> 12 de Octubre de 1492
-                        </div>
-                        <div>
-                            <span class="badge fact-multimedia px-2 py-1">
-                                <i class="bi bi-folder2 me-1"></i>5 archivos multimedia
-                            </span>
-                        </div>
-                    </div>
-                    <div class="d-flex justify-content-between align-items-center">
-                        <a href="detalle.html?id=2" class="btn btn-outline-primary btn-sm">
-                            <i class="bi bi-eye me-1"></i>Ver Detalles
-                        </a>
-                        <label for="report-modal-2" class="btn btn-report btn-danger btn-sm">
-                            <i class="bi bi-exclamation-triangle me-1"></i>Reportar
-                        </label>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div class="col-md-6 col-lg-4">
-            <div class="card fact-card h-100 border-0 shadow-sm">
-                <div class="card-body">
-                    <div class="d-flex justify-content-between align-items-start mb-3">
-                        <h5 class="card-title mb-0">Caída del Muro de Berlín</h5>
-                        <span class="badge fact-category px-2 py-1">Política</span>
-                    </div>
-                    <p class="card-text text-muted">Fin simbólico de la Guerra Fría y reunificación alemana después de décadas de división.</p>
-                    <div class="d-flex flex-column gap-2 small text-muted mb-3">
-                        <div>
-                            <i class="bi bi-geo-alt me-1"></i> Berlín, Alemania
-                        </div>
-                        <div>
-                            <i class="bi bi-calendar me-1"></i> 9 de Noviembre de 1989
-                        </div>
-                        <div>
-                            <span class="badge fact-multimedia px-2 py-1">
-                                <i class="bi bi-folder2 me-1"></i>8 archivos multimedia
-                            </span>
-                        </div>
-                    </div>
-                    <div class="d-flex justify-content-between align-items-center">
-                        <a href="detalle.html?id=3" class="btn btn-outline-primary btn-sm">
-                            <i class="bi bi-eye me-1"></i>Ver Detalles
-                        </a>
-                        <label for="report-modal-2" class="btn btn-report btn-danger btn-sm">
-                            <i class="bi bi-exclamation-triangle me-1"></i>Reportar
-                        </label>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div class="col-md-6 col-lg-4">
-            <div class="card fact-card h-100 border-0 shadow-sm">
-                <div class="card-body">
-                    <div class="d-flex justify-content-between align-items-start mb-3">
-                        <h5 class="card-title mb-0">Independencia de México</h5>
-                        <span class="badge fact-category px-2 py-1">Independencia</span>
-                    </div>
-                    <p class="card-text text-muted">Grito de Dolores que inició la independencia mexicana con Miguel Hidalgo.</p>
-                    <div class="d-flex flex-column gap-2 small text-muted mb-3">
-                        <div>
-                            <i class="bi bi-geo-alt me-1"></i> Dolores Hidalgo, México
-                        </div>
-                        <div>
-                            <i class="bi bi-calendar me-1"></i> 16 de Septiembre de 1810
-                        </div>
-                        <div>
-                            <span class="badge fact-multimedia px-2 py-1">
-                                <i class="bi bi-folder2 me-1"></i>4 archivos multimedia
-                            </span>
-                        </div>
-                    </div>
-                    <div class="d-flex justify-content-between align-items-center">
-                        <a href="detalle.html?id=4" class="btn btn-outline-primary btn-sm">
-                            <i class="bi bi-eye me-1"></i>Ver Detalles
-                        </a>
-                        <label for="report-modal-2" class="btn btn-report btn-danger btn-sm">
-                            <i class="bi bi-exclamation-triangle me-1"></i>Reportar
-                        </label>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div class="col-md-6 col-lg-4">
-            <div class="card fact-card h-100 border-0 shadow-sm">
-                <div class="card-body">
-                    <div class="d-flex justify-content-between align-items-start mb-3">
-                        <h5 class="card-title mb-0">Primera Guerra Mundial</h5>
-                        <span class="badge fact-category px-2 py-1" style="background: #dc3545; color: white;">Guerra</span>
-                    </div>
-                    <p class="card-text text-muted">Conflicto global que involucró a las principales potencias mundiales entre 1914 y 1918.</p>
-                    <div class="d-flex flex-column gap-2 small text-muted mb-3">
-                        <div>
-                            <i class="bi bi-geo-alt me-1"></i> Europa, África, Asia
-                        </div>
-                        <div>
-                            <i class="bi bi-calendar me-1"></i> 28 de Julio de 1914
-                        </div>
-                        <div>
-                            <span class="badge fact-multimedia px-2 py-1">
-                                <i class="bi bi-folder2 me-1"></i>15 archivos multimedia
-                            </span>
-                        </div>
-                    </div>
-                    <div class="d-flex justify-content-between align-items-center">
-                        <a href="detalle.html?id=5" class="btn btn-outline-primary btn-sm">
-                            <i class="bi bi-eye me-1"></i>Ver Detalles
-                        </a>
-                        <label for="report-modal-2" class="btn btn-report btn-danger btn-sm">
-                            <i class="bi bi-exclamation-triangle me-1"></i>Reportar
-                        </label>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div class="col-md-6 col-lg-4">
-            <div class="card fact-card h-100 border-0 shadow-sm">
-                <div class="card-body">
-                    <div class="d-flex justify-content-between align-items-start mb-3">
-                        <h5 class="card-title mb-0">Revolución Industrial</h5>
-                        <span class="badge fact-category px-2 py-1" style="background: #6f42c1; color: white;">Científica</span>
-                    </div>
-                    <p class="card-text text-muted">Período de transformación económica, social y tecnológica iniciado en Gran Bretaña.</p>
-                    <div class="d-flex flex-column gap-2 small text-muted mb-3">
-                        <div>
-                            <i class="bi bi-geo-alt me-1"></i> Manchester, Reino Unido
-                        </div>
-                        <div>
-                            <i class="bi bi-calendar me-1"></i> 1760 - 1840
-                        </div>
-                        <div>
-                            <span class="badge fact-multimedia px-2 py-1">
-                                <i class="bi bi-folder2 me-1"></i>12 archivos multimedia
-                            </span>
-                        </div>
-                    </div>
-                    <div class="d-flex justify-content-between align-items-center">
-                        <a href="detalle.html?id=6" class="btn btn-outline-primary btn-sm">
-                            <i class="bi bi-eye me-1"></i>Ver Detalles
-                        </a>
-                        <label for="report-modal-2" class="btn btn-report btn-danger btn-sm">
-                            <i class="bi bi-exclamation-triangle me-1"></i>Reportar
-                        </label>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-    </div>
-
-    <!-- Paginación -->
-    <nav aria-label="Navegación de hechos" class="mt-5">
-        <ul class="pagination justify-content-center">
-            <li class="page-item disabled">
-                <span class="page-link">
-                    <i class="bi bi-chevron-left"></i>
-                </span>
-            </li>
-            <li class="page-item active">
-                <span class="page-link">1</span>
-            </li>
-            <li class="page-item">
-                <a class="page-link" href="?page=2">2</a>
-            </li>
-            <li class="page-item">
-                <a class="page-link" href="?page=3">3</a>
-            </li>
-            <li class="page-item">
-                <span class="page-link">...</span>
-            </li>
-            <li class="page-item">
-                <a class="page-link" href="?page=25">25</a>
-            </li>
-            <li class="page-item">
-                <a class="page-link" href="?page=2">
-                    <i class="bi bi-chevron-right"></i>
-                </a>
-            </li>
-        </ul>
     </nav>
-</main>
 
-<!-- Modales para reportar hechos -->
-<input type="checkbox" id="report-modal-1" class="modal-checkbox">
-<div class="modal-overlay">
-    <div class="modal-content-custom">
-        <label for="report-modal-1" class="close-modal">&times;</label>
-        <h4 class="mb-3">
-            <i class="bi bi-exclamation-triangle text-danger me-2"></i>
-            Reportar: Revolución de Mayo
-        </h4>
-        <form action="dashboard.html" method="get">
-            <div class="mb-3">
-                <label class="form-label fw-semibold">Motivo del reporte</label>
-                <select class="form-select" required>
-                    <option value="">Selecciona un motivo</option>
-                    <option value="informacion-incorrecta">Información incorrecta</option>
-                    <option value="contenido-inapropiado">Contenido inapropiado</option>
-                    <option value="spam">Spam</option>
-                    <option value="violacion-derechos">Violación de derechos</option>
-                    <option value="otro">Otro</option>
+    <!-- Main -->
+    <main class="container-fluid py-4 fade-in">
+        <!-- Buscador -->
+        <div class="row mb-4">
+            <div class="col-md-8">
+                <div class="input-group">
+                    <span class="input-group-text bg-white"><i class="bi bi-search text-muted"></i></span>
+                    <input type="text" class="form-control search-highlight" placeholder="Buscar hechos históricos..." style="border-left: none;">
+                </div>
+            </div>
+            <div class="col-md-4">
+                <select class="form-select">
+                    <option value="">Todas las categorías</option>
+                    <option value="politica">Política</option>
+                    <option value="exploracion">Exploración</option>
+                    <option value="guerra">Guerra</option>
+                    <option value="independencia">Independencia</option>
+                    <option value="cultural">Cultural</option>
+                    <option value="cientifica">Científica</option>
                 </select>
             </div>
-            <div class="mb-3">
-                <label class="form-label fw-semibold">Descripción del problema</label>
-                <textarea class="form-control" rows="4" maxlength="500" placeholder="Describe el problema (máx. 500 caracteres)..." required></textarea>
-                <div class="form-text text-end">0/500 caracteres</div>
+        </div>
+
+        <!-- Métricas -->
+        <div class="row mb-4">
+            <div class="col-md-3"><div class="card border-0 shadow-sm"><div class="card-body text-center">
+                <i class="bi bi-file-text text-primary fs-1"></i>
+                <h4 class="mt-2" th:text="${totalHechos}">0</h4>
+                <p class="text-muted mb-0">Total Hechos</p>
+            </div></div></div>
+            <div class="col-md-3"><div class="card border-0 shadow-sm"><div class="card-body text-center">
+                <i class="bi bi-geo-alt text-success fs-1"></i>
+                <h4 class="mt-2" th:text="${totalPaises}">0</h4>
+                <p class="text-muted mb-0">Países</p>
+            </div></div></div>
+            <div class="col-md-3"><div class="card border-0 shadow-sm"><div class="card-body text-center">
+                <i class="bi bi-people text-warning fs-1"></i>
+                <h4 class="mt-2" th:text="${totalContribuyentes}">0</h4>
+                <p class="text-muted mb-0">Contribuyentes</p>
+            </div></div></div>
+            <div class="col-md-3"><div class="card border-0 shadow-sm"><div class="card-body text-center">
+                <i class="bi bi-calendar text-info fs-1"></i>
+                <h4 class="mt-2" th:text="${contribuidosHoy}">0</h4>
+                <p class="text-muted mb-0">Contribuidos Hoy</p>
+            </div></div></div>
+        </div>
+
+        <!-- Grid de Hechos -->
+        <div class="row g-4" th:if="${hechos != null and !#lists.isEmpty(hechos)}">
+            <div class="col-md-6 col-lg-4" th:each="hecho : ${hechos}">
+                <div class="card fact-card h-100 border-0 shadow-sm">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between align-items-start mb-3">
+                            <h5 class="card-title mb-0" th:text="${hecho.titulo}">Revolución de Mayo</h5>
+                            <span class="badge fact-category px-2 py-1" th:text="${hecho.categoria}">Política</span>
+                        </div>
+                        <p class="card-text text-muted" th:text="${hecho.descripcion}">
+                            Inicio del proceso independentista argentino que marcó el comienzo de la lucha por la independencia.
+                        </p>
+                        <div class="d-flex flex-column gap-2 small text-muted mb-3">
+                            <div><i class="bi bi-geo-alt me-1"></i> <span th:text="${hecho.ubicacion}">Buenos Aires, Argentina</span></div>
+                            <div><i class="bi bi-calendar me-1"></i> <span th:text="${hecho.fechaAcontecimiento}">24 de Mayo de 1810</span></div>
+                            <div>
+                                <span class="badge fact-multimedia px-2 py-1">
+                                    <i class="bi bi-folder2 me-1"></i><span th:text="${hecho.cantArch}">3</span> archivos multimedia
+                                </span>
+                            </div>
+                        </div>
+                        <div class="d-flex justify-content-between align-items-center">
+                            <a th:href="@{/detalle/{id}(id=${hecho.id})}" class="btn btn-outline-primary btn-sm">
+                                <i class="bi bi-eye me-1"></i>Ver Detalles
+                            </a>
+                            <label th:for="${'report-modal-' + hecho.id}" class="btn btn-report btn-danger btn-sm">
+                                <i class="bi bi-exclamation-triangle me-1"></i>Reportar
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Checkbox + Modal único por hecho -->
+                <input type="checkbox" class="modal-checkbox" th:id="${'report-modal-' + hecho.id}">
+                <div class="modal-overlay">
+                    <div class="modal-content-custom">
+                        <label class="close-modal" th:for="${'report-modal-' + hecho.id}">&times;</label>
+                        <h4 class="mb-3">
+                            <i class="bi bi-exclamation-triangle text-danger me-2"></i>
+                            Reportar: <span th:text="${hecho.titulo}">Revolución de Mayo</span>
+                        </h4>
+                        <form th:action="@{/hechos/{id}/reportar(id=${hecho.id})}" method="post">
+                            <!-- CSRF opcional (si usás Spring Security) -->
+                            <input type="hidden" th:if="${_csrf != null}" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+
+                            <div class="mb-3">
+                                <label class="form-label fw-semibold">Motivo del reporte</label>
+                                <select class="form-select" name="motivo" required>
+                                    <option value="">Selecciona un motivo</option>
+                                    <option value="informacion-incorrecta">Información incorrecta</option>
+                                    <option value="contenido-inapropiado">Contenido inapropiado</option>
+                                    <option value="spam">Spam</option>
+                                    <option value="violacion-derechos">Violación de derechos</option>
+                                    <option value="otro">Otro</option>
+                                </select>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label fw-semibold">Descripción del problema</label>
+                                <textarea class="form-control" name="descripcion" rows="4" maxlength="500"
+                                          placeholder="Describe el problema (máx. 500 caracteres)..." required></textarea>
+                                <div class="form-text text-end">0/500 caracteres</div>
+                            </div>
+                            <div class="d-flex justify-content-end gap-2">
+                                <label class="btn btn-secondary" th:for="${'report-modal-' + hecho.id}">Cancelar</label>
+                                <button type="submit" class="btn btn-danger">
+                                    <i class="bi bi-send me-1"></i>Enviar Reporte
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
             </div>
-            <div class="d-flex justify-content-end gap-2">
-                <label for="report-modal-1" class="btn btn-secondary">Cancelar</label>
-                <button type="submit" class="btn btn-danger">
-                    <i class="bi bi-send me-1"></i>Enviar Reporte
-                </button>
-            </div>
-        </form>
-    </div>
+        </div>
+
+
+        <!-- Paginación (tu hardcode actual; cuando pages en backend, lo hacemos dinámico) -->
+        <nav aria-label="Navegación de hechos" class="mt-5">
+            <ul class="pagination justify-content-center">
+                <li class="page-item disabled">
+                    <span class="page-link"><i class="bi bi-chevron-left"></i></span>
+                </li>
+                <li class="page-item active"><span class="page-link">1</span></li>
+                <li class="page-item"><a class="page-link" href="?page=2">2</a></li>
+                <li class="page-item"><a class="page-link" href="?page=3">3</a></li>
+                <li class="page-item"><span class="page-link">...</span></li>
+                <li class="page-item"><a class="page-link" href="?page=25">25</a></li>
+                <li class="page-item"><a class="page-link" href="?page=2"><i class="bi bi-chevron-right"></i></a></li>
+            </ul>
+        </nav>
+    </main>
+
+    </body>
 </div>
-
-<!-- Repetir modales para otros hechos -->
-<input type="checkbox" id="report-modal-2" class="modal-checkbox">
-<div class="modal-overlay">
-    <div class="modal-content-custom">
-        <label for="report-modal-2" class="close-modal">&times;</label>
-        <h4 class="mb-3">
-            <i class="bi bi-exclamation-triangle text-danger me-2"></i>
-            Reportar: Descubrimiento de América
-        </h4>
-        <form action="dashboard.html" method="get">
-            <div class="mb-3">
-                <label class="form-label fw-semibold">Motivo del reporte</label>
-                <select class="form-select" required>
-                    <option value="">Selecciona un motivo</option>
-                    <option value="informacion-incorrecta">Información incorrecta</option>
-                    <option value="contenido-inapropiado">Contenido inapropiado</option>
-                    <option value="spam">Spam</option>
-                    <option value="violacion-derechos">Violación de derechos</option>
-                    <option value="otro">Otro</option>
-                </select>
-            </div>
-            <div class="mb-3">
-                <label class="form-label fw-semibold">Descripción del problema</label>
-                <textarea class="form-control" rows="4" maxlength="500" placeholder="Describe el problema (máx. 500 caracteres)..." required></textarea>
-                <div class="form-text text-end">0/500 caracteres</div>
-            </div>
-            <div class="d-flex justify-content-end gap-2">
-                <label for="report-modal-2" class="btn btn-secondary">Cancelar</label>
-                <button type="submit" class="btn btn-danger">
-                    <i class="bi bi-send me-1"></i>Enviar Reporte
-                </button>
-            </div>
-        </form>
-    </div>
-</div>
-
-
-</body>
 </html>
