@@ -1,614 +1,235 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Colecciones - MetaMapa</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css" rel="stylesheet">
-    <link href="styles.css" rel="stylesheet">
+<html th:replace="~{layout/base :: html}" xmlns:th="http://www.thymeleaf.org">
+<div th:fragment="contenido" class="row">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Colecciones - MetaMapa</title>
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css" rel="stylesheet">
 
-    <style>
-        :root {
-            --primary-color: #4f46e5;
-            --collection-color: #8b5cf6;
-        }
+        <style>
+            :root { --primary-color:#4f46e5; --collection-color:#8b5cf6; }
 
-        .nav-pills-custom .nav-link.active {
-            background-color: var(--collection-color);
-            color: white;
-        }
+            /* Layout base */
+            body { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); }
+            .dashboard-header { background:white; box-shadow:0 2px 10px rgba(0,0,0,.1); }
+            .logo-icon { width:40px; height:40px; background:var(--primary-color); border-radius:8px; display:flex; align-items:center; justify-content:center; color:white; font-weight:700; }
+            .nav-pills-custom .nav-link.active { background-color: var(--collection-color); color: white; }
 
-        .collection-card {
-            border: none;
-            border-radius: 12px;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
-            transition: all 0.3s ease;
-            overflow: hidden;
-            position: relative;
-        }
+            /* Cards */
+            .collection-card { border:none; border-radius:12px; box-shadow:0 4px 20px rgba(0,0,0,.1); transition:all .3s ease; overflow:hidden; position:relative; }
+            .collection-card:hover { transform: translateY(-8px); box-shadow:0 8px 30px rgba(0,0,0,.15); }
+            .collection-header { color:white; padding:20px; position:relative; }
+            .collection-badge { position:absolute; top:15px; right:15px; background:rgba(255,255,255,.2); color:white; border-radius:15px; padding:4px 12px; font-size:.75rem; }
+            .collection-icon { width:60px; height:60px; background:rgba(255,255,255,.2); border-radius:12px; display:flex; align-items:center; justify-content:center; font-size:24px; margin-bottom:15px; }
+            .collection-stats { background:rgba(255,255,255,.1); border-radius:8px; padding:10px; margin-top:15px; }
+            .btn-create-collection { background:var(--collection-color); border-color:var(--collection-color); color:white; font-weight:600; }
+            .btn-create-collection:hover { background:#7c3aed; border-color:#7c3aed; color:white; transform:translateY(-2px); }
 
-        .collection-card:hover {
-            transform: translateY(-8px);
-            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.15);
-        }
+            /* Estado vacío */
+            .empty-state { text-align:center; padding:60px 20px; color:#6b7280; }
+            .empty-state i { font-size:4rem; margin-bottom:20px; opacity:.5; }
 
-        .collection-header {
-            background: linear-gradient(135deg, var(--collection-color), #a855f7);
-            color: white;
-            padding: 20px;
-            position: relative;
-        }
+            /* ====== COLORES POR CLASE (no backend) ====== */
+            .color_AZUL    { background: linear-gradient(135deg, #2563eb, #3b82f6); }
+            .color_VERDE   { background: linear-gradient(135deg, #059669, #10b981); }
+            .color_AMARILLO{ background: linear-gradient(135deg, #d97706, #f59e0b); }
+            .color_ROJO    { background: linear-gradient(135deg, #dc2626, #ef4444); }
+            .color_CELESTE { background: linear-gradient(135deg, #0ea5e9, #38bdf8); }
+            .color_GRIS    { background: linear-gradient(135deg, #6b7280, #9ca3af); }
 
-        .collection-stats {
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 8px;
-            padding: 10px;
-            margin-top: 15px;
-        }
+            @media (max-width: 768px) { .collection-stats { display:flex; flex-wrap:wrap; gap:10px; } }
+        </style>
+    </head>
 
-        .collection-badge {
-            position: absolute;
-            top: 15px;
-            right: 15px;
-            background: rgba(255, 255, 255, 0.2);
-            color: white;
-            border-radius: 15px;
-            padding: 4px 12px;
-            font-size: 0.75rem;
-        }
-
-        .collection-icon {
-            width: 60px;
-            height: 60px;
-            background: rgba(255, 255, 255, 0.2);
-            border-radius: 12px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 24px;
-            margin-bottom: 15px;
-        }
-
-        .btn-create-collection {
-            background: var(--collection-color);
-            border-color: var(--collection-color);
-            color: white;
-            font-weight: 600;
-        }
-
-        .btn-create-collection:hover {
-            background: #7c3aed;
-            border-color: #7c3aed;
-            color: white;
-            transform: translateY(-2px);
-        }
-
-        .empty-state {
-            text-align: center;
-            padding: 60px 20px;
-            color: #6b7280;
-        }
-
-        .empty-state i {
-            font-size: 4rem;
-            margin-bottom: 20px;
-            opacity: 0.5;
-        }
-
-        /* Animación de entrada */
-
-        .progress-ring {
-            width: 60px;
-            height: 60px;
-        }
-
-        .progress-ring__circle {
-            transition: stroke-dasharray 0.5s ease-in-out;
-        }
-
-        @media (max-width: 768px) {
-            .collection-stats {
-                display: flex;
-                flex-wrap: wrap;
-                gap: 10px;
-            }
-        }
-
-    </style>
-</head>
-
-<body>
-
-<!-- Agrego TOASTS Ocultos asi sabemos si las operaciones fueron exitosas o no, en un futuro cambiar a js maybe -->
-<div class="toast-container position-fixed bottom-0 end-0 p-3" style="z-index: 11">
-    <div id="successToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
-        <div class="toast-header bg-success text-white">
-            <i class="bi bi-check-circle me-2"></i>
-            <strong class="me-auto">Éxito</strong>
-            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="toast" aria-label="Cerrar"></button>
-        </div>
-        <div class="toast-body" id="successMessage">
-            Operación completada exitosamente
-        </div>
-    </div>
-
-    <div id="errorToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
-        <div class="toast-header bg-danger text-white">
-            <i class="bi bi-exclamation-triangle me-2"></i>
-            <strong class="me-auto">Error</strong>
-            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="toast" aria-label="Cerrar"></button>
-        </div>
-        <div class="toast-body" id="errorMessage">
-            Ocurrió un error. Inténtalo nuevamente.
-        </div>
-    </div>
-</div>
-
-<!-- Header del Dashboard -->
-<header class="dashboard-header py-3">
-    <div class="container-fluid">
-        <div class="row align-items-center">
-            <div class="col-md-6">
-                <a href="index.html" class="text-decoration-none text-dark d-flex align-items-center">
-                    <div class="logo-icon me-2">M</div>
-                    <span class="fs-4 fw-bold">MetaMapa</span>
-                    <span class="text-muted ms-2 d-none d-md-inline">Panel de Control</span>
-                </a>
-            </div>
-            <div class="col-md-6 text-end">
-                <span class="me-2">Bienvenido, <strong>Usuario</strong></span>
-                <!-- <span class="badge bg-dark me-2">CONTRIBUYENTE</span> -->
-                <a href="index.html" class="btn btn-outline-secondary btn-sm">
-                    <i class="bi bi-box-arrow-right me-1"></i>Cerrar Sesión
-                </a>
-            </div>
-        </div>
-    </div>
-</header>
-
-<!-- Navegación Principal -->
-<nav class="bg-white border-bottom">
-    <div class="container-fluid py-3">
-        <ul class="nav nav-pills nav-pills-custom justify-content-center">
-            <li class="nav-item">
-                <a class="nav-link" href="dashboard.html">
-                    <i class="bi bi-file-text me-1"></i> Hechos
-                </a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="mapa.html">
-                    <i class="bi bi-map me-1"></i> Mapa
-                </a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link active" href="colecciones.html">
-                    <i class="bi bi-collection me-1"></i> Colecciones
-                </a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="contribuir.html">
-                    <i class="bi bi-plus me-1"></i> Contribuir
-                </a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="solicitudes.html">
-                    <i class="bi bi-clipboard-check me-1"></i> Solicitudes
-                    <span class="badge bg-danger ms-1">11</span>
-                </a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="gestion.html">
-                    <i class="bi bi-gear me-1"></i> Gestión
-                </a>
-            </li>
-        </ul>
-    </div>
-</nav>
-
-<!-- Contenido Principal - Colecciones -->
-<main class="container-fluid py-4 fade-in">
-
-    <!-- Header de colecciones -->
-    <div class="d-flex justify-content-between align-items-center mb-4">
-        <div>
-            <h1 class="display-6 fw-bold text-white mb-2">
-                <i class="bi bi-collection me-2"></i>Gestión de Colecciones
-            </h1>
-            <p class="text-white-50 mb-0">Organiza y administra conjuntos de hechos históricos relacionados</p>
-        </div>
-        <a href="crear-coleccion.html" class="btn btn-create-collection btn-lg">
-            <i class="bi bi-plus-circle me-2"></i>Nueva Colección
-        </a>
-    </div>
-
-    <!-- Estadísticas generales -->
-    <div class="row mb-5">
-        <div class="col-md-3">
-            <div class="card border-0 shadow-sm">
-                <div class="card-body text-center">
-                    <i class="bi bi-collection text-purple fs-1" style="color: var(--collection-color)"></i>
-                    <h4 class="mt-2">12</h4>
-                    <p class="text-muted mb-0">Colecciones Activas</p>
+    <body>
+    <!-- Header -->
+    <header class="dashboard-header py-3">
+        <div class="container-fluid">
+            <div class="row align-items-center">
+                <div class="col-md-6">
+                    <a th:href="@{/}" class="text-decoration-none text-dark d-flex align-items-center">
+                        <div class="logo-icon me-2">M</div>
+                        <span class="fs-4 fw-bold">MetaMapa</span>
+                        <span class="text-muted ms-2 d-none d-md-inline">Panel de Control</span>
+                    </a>
+                </div>
+                <div class="col-md-6 text-end">
+                    <span class="me-2" th:if="${username != null}">Bienvenido, <strong th:text="${username}">Usuario</strong></span>
+                    <span class="me-2" th:if="${username == null}">Bienvenido, <strong>Usuario</strong></span>
+                    <a th:href="@{/logout}" class="btn btn-outline-secondary btn-sm">
+                        <i class="bi bi-box-arrow-right me-1"></i>Cerrar Sesión
+                    </a>
                 </div>
             </div>
         </div>
-        <div class="col-md-3">
-            <div class="card border-0 shadow-sm">
-                <div class="card-body text-center">
-                    <i class="bi bi-file-text text-primary fs-1"></i>
-                    <h4 class="mt-2">347</h4>
-                    <p class="text-muted mb-0">Hechos Agrupados</p>
+    </header>
+
+    <!-- Nav -->
+    <nav class="bg-white border-bottom">
+        <div class="container-fluid py-3">
+            <ul class="nav nav-pills nav-pills-custom justify-content-center">
+                <li class="nav-item"><a class="nav-link" th:href="@{/dashboard}"><i class="bi bi-file-text me-1"></i> Hechos</a></li>
+                <li class="nav-item"><a class="nav-link" th:href="@{/mapa}"><i class="bi bi-map me-1"></i> Mapa</a></li>
+                <li class="nav-item"><a class="nav-link active" th:href="@{/colecciones/get-all}"><i class="bi bi-collection me-1"></i> Colecciones</a></li>
+                <li class="nav-item"><a class="nav-link" th:href="@{/contribuir}"><i class="bi bi-plus me-1"></i> Contribuir</a></li>
+                <li class="nav-item">
+                    <a class="nav-link" th:href="@{/solicitudes}">
+                        <i class="bi bi-clipboard-check me-1"></i> Solicitudes
+                        <span class="badge bg-danger ms-1" th:text="${cantidadSolicitudes}">11</span>
+                    </a>
+                </li>
+                <li class="nav-item"><a class="nav-link" th:href="@{/gestion}"><i class="bi bi-gear me-1"></i> Gestión</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Contenido -->
+    <main class="container-fluid py-4 fade-in">
+
+        <!-- Header de colecciones -->
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <div>
+                <h1 class="display-6 fw-bold text-white mb-2">
+                    <i class="bi bi-collection me-2"></i>
+                    <span th:text="${titulo} ?: 'Gestión de Colecciones'">Gestión de Colecciones</span>
+                </h1>
+                <p class="text-white-50 mb-0">Organiza y administra conjuntos de hechos históricos relacionados</p>
+            </div>
+            <a th:href="@{/colecciones/crear}" class="btn btn-create-collection btn-lg">
+                <i class="bi bi-plus-circle me-2"></i>Nueva Colección
+            </a>
+        </div>
+
+
+        <!-- Filtros -->
+        <form class="row mb-4 g-2 align-items-center"
+              th:action="@{/colecciones/get-all}" method="get">
+
+            <div class="col-md-8">
+                <div class="input-group">
+                      <span class="input-group-text bg-white">
+                        <i class="bi bi-search text-muted"></i>
+                      </span>
+                    <input type="text" class="form-control"
+                           name="q" placeholder="Buscar colecciones..."
+                           style="border-left:none;"
+                           th:value="${q} ?: ''">
                 </div>
             </div>
-        </div>
-        <div class="col-md-3">
-            <div class="card border-0 shadow-sm">
-                <div class="card-body text-center">
-                    <i class="bi bi-people text-success fs-1"></i>
-                    <h4 class="mt-2">28</h4>
-                    <p class="text-muted mb-0">Colaboradores</p>
-                </div>
+
+            <!-- Select de categorías reales -->
+            <div class="col-md-3">
+                <select class="form-select" name="categoriaId">
+                    <option th:value="">Todas las categorías</option>
+                    <option th:each="cat : ${categorias}"
+                            th:value="${cat.id}"
+                            th:text="${cat.nombre}"
+                            th:selected="${categoriaId} != null and categoriaId == cat.id">
+                    </option>
+                </select>
             </div>
-        </div>
-        <div class="col-md-3">
-            <div class="card border-0 shadow-sm">
-                <div class="card-body text-center">
-                    <i class="bi bi-eye text-info fs-1"></i>
-                    <h4 class="mt-2">1,892</h4>
-                    <p class="text-muted mb-0">Visualizaciones</p>
-                </div>
+
+            <div class="col-md-1">
+                <button type="submit" class="btn btn-primary w-100">
+                    <i class="bi bi-funnel me-1"></i>Filtrar
+                </button>
             </div>
+        </form>
+
+
+        <!-- Estado vacío -->
+        <div th:if="${colecciones == null or #lists.isEmpty(colecciones)}" class="empty-state">
+            <i class="bi bi-collection"></i>
+            <h4 class="text-muted mt-3">No hay colecciones registradas</h4>
+            <p class="text-muted">El sistema no tiene colecciones cargadas en este momento.</p>
+            <a th:href="@{/colecciones/crear}" class="btn btn-primary">
+                <i class="bi bi-plus-circle me-1"></i>Crear Primera Colección
+            </a>
         </div>
-    </div>
 
-    <!-- Filtros y búsqueda -->
-    <div class="row mb-4">
-        <div class="col-md-8">
-            <div class="input-group">
-                <span class="input-group-text bg-white">
-                    <i class="bi bi-search text-muted"></i>
-                </span>
-                <input type="text" class="form-control" placeholder="Buscar colecciones..." style="border-left: none;">
-            </div>
-        </div>
-        <div class="col-md-4">
-            <select class="form-select">
-                <option value="">Todas las colecciones</option>
-                <option value="publica">Públicas</option>
-                <option value="privada">Privadas</option>
-                <option value="colaborativa">Colaborativas</option>
-                <option value="en-desarrollo">En Desarrollo</option>
-            </select>
-        </div>
-    </div>
+        <!-- Grid de Colecciones -->
+        <div class="row g-4" th:if="${colecciones != null and !#lists.isEmpty(colecciones)}">
+            <div class="col-lg-4 col-md-6" th:each="c : ${colecciones}">
+                <div class="card collection-card h-100">
+                    <!-- Encabezado con color por clase -->
+                    <div class="collection-header"
+                         th:classappend="${c.color} != null ? ' color_' + ${c.color} : ' color_GRIS'">
+                        <div class="collection-badge" th:text="${c.tipo} ?: 'Pública'">Pública</div>
 
-    <!-- Grid de Colecciones -->
-    <div class="row g-4">
+                        <div class="collection-icon">
+                            <!-- Icono según color -->
+                            <i class="bi"
+                               th:classappend="
+                    ${c.color} == 'AZUL'     ? ' bi-collection' :
+                    (${c.color} == 'VERDE'    ? ' bi-leaf' :
+                    (${c.color} == 'AMARILLO' ? ' bi-star' :
+                    (${c.color} == 'ROJO'     ? ' bi-shield-exclamation' :
+                    (${c.color} == 'CELESTE'  ? ' bi-compass' :
+                                                ' bi-folder'))))">
+                            </i>
+                        </div>
 
-        <!-- Colección: Independencias Latinoamericanas -->
-        <div class="col-lg-4 col-md-6">
-            <div class="card collection-card h-100">
-                <div class="collection-header">
-                    <div class="collection-badge">Pública</div>
-                    <div class="collection-icon">
-                        <i class="bi bi-flag"></i>
-                    </div>
-                    <h5 class="mb-2">Independencias Latinoamericanas</h5>
-                    <p class="mb-0 small opacity-75">Proceso independentista en América Latina durante los siglos XVIII y XIX</p>
+                        <h5 class="mb-2" th:text="${c.nombre}">Nombre de la colección</h5>
+                        <p class="mb-0 small opacity-75" th:text="${c.descripcion}">Descripción breve…</p>
 
-                    <div class="collection-stats">
-                        <div class="row text-center">
-                            <div class="col-4">
-                                <div class="fw-bold">23</div>
-                                <small>Hechos</small>
-                            </div>
-                            <div class="col-4">
-                                <div class="fw-bold">12</div>
-                                <small>Países</small>
-                            </div>
-                            <div class="col-4">
-                                <div class="fw-bold">85%</div>
-                                <small>Completo</small>
+                        <div class="collection-stats">
+                            <div class="row text-center">
+                                <div class="col-4">
+                                    <div class="fw-bold" th:text="${c.cantidadHechos} ?: 0">0</div>
+                                    <small>Hechos</small>
+                                </div>
+                                <div class="col-4">
+                                    <div class="fw-bold" th:text="${c.cantidadPaises} ?: 0">0</div>
+                                    <small>Países</small>
+                                </div>
+                                <div class="col-4">
+                                    <div class="fw-bold" th:text="${c.progreso != null ? c.progreso + '%' : '0%'}">0%</div>
+                                    <small>Completo</small>
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
-                <div class="card-body">
-                    <div class="d-flex justify-content-between align-items-center mb-3">
-                        <div>
-                            <small class="text-muted">Creado por</small>
-                            <div class="fw-semibold">Prof. María García</div>
-                        </div>
-                        <div class="text-end">
-                            <small class="text-muted">Última actualización</small>
-                            <div class="fw-semibold">15 Ene 2024</div>
-                        </div>
-                    </div>
 
-                    <div class="mb-3">
-                        <div class="d-flex flex-wrap gap-1">
-                            <span class="badge bg-primary">Historia</span>
-                            <span class="badge bg-success">Política</span>
-                            <span class="badge bg-warning text-dark">Independencia</span>
+                    <!-- Cuerpo -->
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between align-items-center mb-3">
+                            <div>
+                                <small class="text-muted">Creado por</small>
+                                <div class="fw-semibold" th:text="${c.creadoPor} ?: '—'">—</div>
+                            </div>
+                            <div class="text-end">
+                                <small class="text-muted">Última actualización</small>
+                                <div class="fw-semibold" th:text="${c.ultimaActualizacion} ?: '—'">—</div>
+                            </div>
                         </div>
-                    </div>
 
-                    <div class="d-flex justify-content-between">
-                        <a href="coleccion-detalle.html?id=1" class="btn btn-outline-primary btn-sm">
-                            <i class="bi bi-eye me-1"></i>Ver Detalle
-                        </a>
-                        <div class="btn-group" role="group">
-                            <a href="#" class="btn btn-outline-secondary btn-sm">
-                                <i class="bi bi-pencil"></i>
+                        <div class="mb-3" th:if="${c.tags != null and !#lists.isEmpty(c.tags)}">
+                            <div class="d-flex flex-wrap gap-1">
+                                <span class="badge bg-secondary" th:each="tag : ${c.tags}" th:text="${tag}">Tag</span>
+                            </div>
+                        </div>
+
+                        <div class="d-flex justify-content-between">
+                            <a class="btn btn-outline-primary btn-sm" th:href="@{/colecciones/get/{id}(id=${c.id})}">
+                                <i class="bi bi-eye me-1"></i>Ver Detalle
                             </a>
-                            <a href="#" class="btn btn-outline-secondary btn-sm">
-                                <i class="bi bi-share"></i>
-                            </a>
+                            <div class="btn-group" role="group">
+                                <a class="btn btn-outline-secondary btn-sm" th:href="@{#}">
+                                    <i class="bi bi-pencil"></i>
+                                </a>
+                                <a class="btn btn-outline-secondary btn-sm" th:href="@{#}">
+                                    <i class="bi bi-share"></i>
+                                </a>
+                            </div>
                         </div>
                     </div>
+
                 </div>
             </div>
         </div>
 
-        <!-- Colección: Revoluciones Industriales -->
-        <div class="col-lg-4 col-md-6">
-            <div class="card collection-card h-100">
-                <div class="collection-header" style="background: linear-gradient(135deg, #f59e0b, #fbbf24);">
-                    <div class="collection-badge">Colaborativa</div>
-                    <div class="collection-icon">
-                        <i class="bi bi-gear"></i>
-                    </div>
-                    <h5 class="mb-2">Revoluciones Industriales</h5>
-                    <p class="mb-0 small opacity-75">Transformaciones tecnológicas e industriales desde el siglo XVIII</p>
-
-                    <div class="collection-stats">
-                        <div class="row text-center">
-                            <div class="col-4">
-                                <div class="fw-bold">18</div>
-                                <small>Hechos</small>
-                            </div>
-                            <div class="col-4">
-                                <div class="fw-bold">8</div>
-                                <small>Países</small>
-                            </div>
-                            <div class="col-4">
-                                <div class="fw-bold">72%</div>
-                                <small>Completo</small>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="card-body">
-                    <div class="d-flex justify-content-between align-items-center mb-3">
-                        <div>
-                            <small class="text-muted">Creado por</small>
-                            <div class="fw-semibold">Dr. Carlos Mendez</div>
-                        </div>
-                        <div class="text-end">
-                            <small class="text-muted">Última actualización</small>
-                            <div class="fw-semibold">12 Ene 2024</div>
-                        </div>
-                    </div>
-
-                    <div class="mb-3">
-                        <div class="d-flex flex-wrap gap-1">
-                            <span class="badge" style="background: #6f42c1; color: white;">Tecnología</span>
-                            <span class="badge bg-info text-white">Económico</span>
-                            <span class="badge bg-secondary">Social</span>
-                        </div>
-                    </div>
-
-                    <div class="d-flex justify-content-between">
-                        <a href="coleccion-detalle.html?id=2" class="btn btn-outline-warning btn-sm">
-                            <i class="bi bi-eye me-1"></i>Ver Detalle
-                        </a>
-                        <div class="btn-group" role="group">
-                            <a href="#" class="btn btn-outline-secondary btn-sm">
-                                <i class="bi bi-pencil"></i>
-                            </a>
-                            <a href="#" class="btn btn-outline-secondary btn-sm">
-                                <i class="bi bi-share"></i>
-                            </a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Colección: Guerras Mundiales -->
-        <div class="col-lg-4 col-md-6">
-            <div class="card collection-card h-100">
-                <div class="collection-header" style="background: linear-gradient(135deg, #dc2626, #ef4444);">
-                    <div class="collection-badge">Pública</div>
-                    <div class="collection-icon">
-                        <i class="bi bi-shield-exclamation"></i>
-                    </div>
-                    <h5 class="mb-2">Guerras Mundiales del S.XX</h5>
-                    <p class="mb-0 small opacity-75">Conflictos globales que definieron el siglo XX</p>
-
-                    <div class="collection-stats">
-                        <div class="row text-center">
-                            <div class="col-4">
-                                <div class="fw-bold">31</div>
-                                <small>Hechos</small>
-                            </div>
-                            <div class="col-4">
-                                <div class="fw-bold">8</div>
-                                <small>Países</small>
-                            </div>
-                            <div class="col-4">
-                                <div class="fw-bold">72%</div>
-                                <small>Completo</small>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="card-body">
-                    <div class="d-flex justify-content-between align-items-center mb-3">
-                        <div>
-                            <small class="text-muted">Creado por</small>
-                            <div class="fw-semibold">Dr. José López</div>
-                        </div>
-                        <div class="text-end">
-                            <small class="text-muted">Última actualización</small>
-                            <div class="fw-semibold">26 Junio 2011</div>
-                        </div>
-                    </div>
-
-                    <div class="mb-3">
-                        <div class="d-flex flex-wrap gap-1">
-                            <span class="badge" style="background: #6f42c1; color: white;">Desorden</span>
-                            <span class="badge bg-info text-white">Caos</span>
-                            <span class="badge bg-secondary">Social</span>
-                        </div>
-                    </div>
-
-                    <div class="d-flex justify-content-between">
-                        <a href="coleccion-detalle.html?id=2" class="btn btn-outline-warning btn-sm">
-                            <i class="bi bi-eye me-1"></i>Ver Detalle
-                        </a>
-                        <div class="btn-group" role="group">
-                            <a href="#" class="btn btn-outline-secondary btn-sm">
-                                <i class="bi bi-pencil"></i>
-                            </a>
-                            <a href="#" class="btn btn-outline-secondary btn-sm">
-                                <i class="bi bi-share"></i>
-                            </a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <!-- Colección: Civilizaciones Antiguas -->
-        <div class="col-lg-4 col-md-6">
-            <div class="card collection-card h-100">
-                <div class="collection-header" style="background: linear-gradient(135deg, #059669, #10b981);">
-                    <div class="collection-badge">Colaborativa</div>
-                    <div class="collection-icon">
-                        <i class="bi bi-columns-gap"></i>
-                    </div>
-                    <h5 class="mb-2">Civilizaciones Antiguas</h5>
-                    <p class="mb-0 small opacity-75">Grandes civilizaciones de la antigüedad y sus legados</p>
-
-                    <div class="collection-stats">
-                        <div class="row text-center">
-                            <div class="col-4">
-                                <div class="fw-bold">42</div>
-                                <small>Hechos</small>
-                            </div>
-                            <div class="col-4">
-                                <div class="fw-bold">8</div>
-                                <small>Civilizaciones</small>
-                            </div>
-                            <div class="col-4">
-                                <div class="fw-bold">67%</div>
-                                <small>Completo</small>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="card-body">
-                    <div class="d-flex justify-content-between align-items-center mb-3">
-                        <div>
-                            <small class="text-muted">Creado por</small>
-                            <div class="fw-semibold">Dr. Roberto Silva</div>
-                        </div>
-                        <div class="text-end">
-                            <small class="text-muted">Última actualización</small>
-                            <div class="fw-semibold">18 Ene 2024</div>
-                        </div>
-                    </div>
-
-                    <div class="mb-3">
-                        <div class="d-flex flex-wrap gap-1">
-                            <span class="badge bg-success">Antigüedad</span>
-                            <span class="badge bg-info text-white">Cultural</span>
-                            <span class="badge bg-secondary">Arqueología</span>
-                        </div>
-                    </div>
-
-                    <div class="d-flex justify-content-between">
-                        <a href="coleccion-detalle.html?id=4" class="btn btn-outline-success btn-sm">
-                            <i class="bi bi-eye me-1"></i>Ver Detalle
-                        </a>
-                        <div class="btn-group" role="group">
-                            <a href="#" class="btn btn-outline-secondary btn-sm">
-                                <i class="bi bi-pencil"></i>
-                            </a>
-                            <a href="#" class="btn btn-outline-secondary btn-sm">
-                                <i class="bi bi-share"></i>
-                            </a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Colección: Exploradores y Descubrimientos -->
-        <div class="col-lg-4 col-md-6">
-            <div class="card collection-card h-100">
-                <div class="collection-header" style="background: linear-gradient(135deg, #0ea5e9, #38bdf8);">
-                    <div class="collection-badge">Pública</div>
-                    <div class="collection-icon">
-                        <i class="bi bi-compass"></i>
-                    </div>
-                    <h5 class="mb-2">Exploradores y Descubrimientos</h5>
-                    <p class="mb-0 small opacity-75">Grandes expediciones y descubrimientos geográficos</p>
-
-                    <div class="collection-stats">
-                        <div class="row text-center">
-                            <div class="col-4">
-                                <div class="fw-bold">29</div>
-                                <small>Hechos</small>
-                            </div>
-                            <div class="col-4">
-                                <div class="fw-bold">20</div>
-                                <small>Expediciones</small>
-                            </div>
-                            <div class="col-4">
-                                <div class="fw-bold">88%</div>
-                                <small>Completo</small>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="card-body">
-                    <div class="d-flex justify-content-between align-items-center mb-3">
-                        <div>
-                            <small class="text-muted">Creado por</small>
-                            <div class="fw-semibold">Prof. Ana López</div>
-                        </div>
-                        <div class="text-end">
-                            <small class="text-muted">Última actualización</small>
-                            <div class="fw-semibold">22 Ene 2024</div>
-                        </div>
-                    </div>
-
-                    <div class="mb-3">
-                        <div class="d-flex flex-wrap gap-1">
-                            <span class="badge bg-primary">Exploración</span>
-                            <span class="badge bg-info text-white">Geografía</span>
-                            <span class="badge bg-success">Navegación</span>
-                        </div>
-                    </div>
-
-                    <div class="d-flex justify-content-between">
-                        <a href="coleccion-detalle.html?id=5" class="btn btn-outline-info btn-sm">
-                            <i class="bi bi-eye me-1"></i>Ver Detalle
-                        </a>
-                        <div class="btn-group" role="group">
-                            <a href="#" class="btn btn-outline-secondary btn-sm">
-                                <i class="bi bi-pencil"></i>
-                            </a>
-                            <a href="#" class="btn btn-outline-secondary btn-sm">
-                                <i class="bi bi-share"></i>
-                            </a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-    </div>
     </main>
+    </body>
+</div>
+</html>

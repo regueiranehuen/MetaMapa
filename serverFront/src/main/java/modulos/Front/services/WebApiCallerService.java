@@ -2,8 +2,9 @@ package modulos.Front.services;
 
 import jakarta.servlet.http.HttpServletRequest;
 import modulos.Front.ApiCall;
-import modulos.Front.dtos.output.AuthResponseDTO;
-import org.springframework.data.crossstore.ChangeSetPersister;
+import modulos.Front.dtos.input.AuthResponseDTO;
+import modulos.Front.dtos.input.LoginDtoInput;
+import modulos.Front.dtos.input.TokenResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -15,52 +16,83 @@ import reactor.core.publisher.Mono;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class WebApiCallerService {
 
     private final WebClient webClient = WebClient.create("http://localhost:8083");
 
+    private String urlBase = "http://localhost:8080";
 
 
     // Method de ezequiel
-    /*public <T> T executeWithTokenRetry(ApiCall<T> apiCall) {
+    public <T> ResponseEntity<T> executeWithTokenRetry(
+            java.util.function.Function<String, reactor.core.publisher.Mono<ResponseEntity<T>>> apiCall) {
+
         String accessToken = getAccessTokenFromSession();
         String refreshToken = getRefreshTokenFromSession();
 
+        TokenResponse tr = TokenResponse.builder()
+                .accessToken(accessToken)
+                .refreshToken(refreshToken)
+                .build();
+
         if (accessToken == null) {
-            throw new RuntimeException("No hay token de acceso disponible");
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         }
 
         try {
-            // Primer intento con el token actual
-            return apiCall.execute(accessToken);
+            // 1) Primer intento con el access token actual
+            return apiCall.apply(accessToken).block();
+
         } catch (WebClientResponseException e) {
+            // 2) Si expiró (401/403) y tengo refresh → intento refrescar y reintentar
             if ((e.getStatusCode() == HttpStatus.UNAUTHORIZED || e.getStatusCode() == HttpStatus.FORBIDDEN)
                     && refreshToken != null) {
                 try {
-                    // Token expirado, intentar refresh
-                    AuthResponseDTO newTokens = refreshToken(refreshToken);
+                    AuthResponseDTO newTokens = refreshToken(tr);
 
-                    // Segundo intento con el nuevo token
-                    return apiCall.execute(newTokens.getAccessToken());
+                    if (newTokens == null || newTokens.getAccessToken() == null) {
+                        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+                    }
+
+                    // Guardar nuevos tokens en sesión
+                    ServletRequestAttributes attrs =
+                            (ServletRequestAttributes) RequestContextHolder.currentRequestAttributes();
+                    HttpServletRequest request = attrs.getRequest();
+                    request.getSession().setAttribute("accessToken", newTokens.getAccessToken());
+                    if (newTokens.getRefreshToken() != null) {
+                        request.getSession().setAttribute("refreshToken", newTokens.getRefreshToken());
+                    }
+
+                    // 3) Reintento con el nuevo access token
+                    try {
+                        return apiCall.apply(newTokens.getAccessToken()).block();
+                    } catch (WebClientResponseException e2) {
+                        return ResponseEntity.status(e2.getStatusCode()).build();
+                    } catch (Exception ex2) {
+                        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+                    }
                 } catch (Exception refreshError) {
-                    throw new RuntimeException("Error al refrescar token y reintentar: " + refreshError.getMessage(),
-                            refreshError);
+                    return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
                 }
             }
 
-            if (e.getStatusCode() == HttpStatus.NOT_FOUND) {
-                throw new RuntimeException("SOY UN ESTORBO");
-            }
+            // 4) Otros códigos HTTP → devuelvo el status correspondiente
+            return ResponseEntity.status(e.getStatusCode()).build();
 
-            throw new RuntimeException("Error en llamada al API: " + e.getMessage(), e);
         } catch (Exception e) {
-            throw new RuntimeException("Error inesperado al ejecutar la llamada al API", e);
+            // 5) Errores no HTTP (timeout, conexión, etc.)
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
-    }*/
+    }
 
-    public <T> ResponseEntity<T> executeWithTokenRetry(
+
+
+
+    // Falta lógica de refresh token
+    /*public <T> ResponseEntity<T> executeWithTokenRetry(
             java.util.function.Function<String, reactor.core.publisher.Mono<ResponseEntity<T>>> apiCall) {
 
         String accessToken = getAccessTokenFromSession();
@@ -72,45 +104,60 @@ public class WebApiCallerService {
 
         return apiCall.apply(accessToken)
                 .onErrorResume(WebClientResponseException.class, e -> {
-                    // Si el error es UNAUTHORIZED o FORBIDDEN, intento refrescar
-                    if ((e.getStatusCode() == HttpStatus.UNAUTHORIZED || e.getStatusCode() == HttpStatus.FORBIDDEN)
-                            && refreshToken != null) {
-                        return Mono.defer(() -> {
-                            AuthResponseDTO newTokens = refreshToken(refreshToken);
-                            return apiCall.apply(newTokens.getAccessToken());
-                        });
-                    }
+                    // Para cualquier otro error
 
-                    // Si es NOT_FOUND, devuelvo un 404 explícito
-                    if (e.getStatusCode() == HttpStatus.NOT_FOUND) {
-                        return Mono.just(ResponseEntity.status(HttpStatus.NOT_FOUND).build());
-                    }
-
-                    // Cualquier otro error: response 500 con mensaje
-                    return Mono.just(ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                            .body(null));
+                    return Mono.just(ResponseEntity.status(e.getStatusCode()).build());
                 })
                 .onErrorResume(Throwable.class, ex ->
                         Mono.just(ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build()))
                 .block(); // mantiene comportamiento bloqueante final
+    }*/
+
+
+
+
+
+    /**
+     * Refresca el access token usando el refresh token
+     */
+    private AuthResponseDTO refreshToken(TokenResponse tokenResponse) {
+        try {
+
+
+            AuthResponseDTO response = webClient
+                    .post()
+                    .uri(urlBase + "/auth/refresh")
+                    .bodyValue(tokenResponse)
+                    .retrieve()
+                    .bodyToMono(AuthResponseDTO.class)
+                    .block();
+
+            // Actualizar tokens en sesión
+            updateTokensInSession(response.getAccessToken(), response.getRefreshToken());
+            return response;
+
+        } catch (Exception e) {
+            throw new RuntimeException("Error al refrescar token: " + e.getMessage(), e);
+        }
     }
 
 
-    private AuthResponseDTO refreshToken(String refreshToken) {
-        return webClient.post()
-                .uri("/api/auth/refresh") // endpoint del backend
-                .bodyValue(Collections.singletonMap("refreshToken", refreshToken))
-                .exchangeToMono(response -> {
-                    if (response.statusCode().is2xxSuccessful()) {
-                        // Éxito → deserializa normalmente
-                        return response.bodyToMono(AuthResponseDTO.class);
-                    } else {
-                        // Cualquier otro status (401, 403, 500, etc.) → devolvemos vacío
-                        return Mono.empty();
-                    }
-                })
-                .blockOptional() // devuelve Optional<AuthResponseDTO>
-                .orElse(null);   // si vacío → null
+    /**
+     * Actualiza los tokens en la sesión HTTP actual.
+     */
+    private void updateTokensInSession(String newAccessToken, String newRefreshToken) {
+        ServletRequestAttributes attributes =
+                (ServletRequestAttributes) RequestContextHolder.currentRequestAttributes();
+        HttpServletRequest request = attributes.getRequest();
+
+        if (newAccessToken != null) {
+            request.getSession().setAttribute("accessToken", newAccessToken);
+        }
+
+        if (newRefreshToken != null) {
+            request.getSession().setAttribute("refreshToken", newRefreshToken);
+        }
+
     }
 
 
@@ -159,6 +206,67 @@ public class WebApiCallerService {
                         .toEntityList(elementType) // Mono<ResponseEntity<List<T>>>
         );
     }
+
+    public <T> ResponseEntity<T> getEntity(String url, Class<T> elementType){
+        return executeWithTokenRetry(token ->
+                webClient.get()
+                        .uri(url)
+                        .header("Authorization", "Bearer " + token)
+                        .retrieve()
+                        .toEntity(elementType)
+        );
+    }
+
+    public <T> ResponseEntity<T> postEntity(String url, Object body, Class<T> elementType){
+        return executeWithTokenRetry(token ->
+                webClient.post()
+                        .uri(url)
+                        .header("Authorization", "Bearer " + token)
+                        .bodyValue(body)
+                        .retrieve()
+                        .toEntity(elementType)
+        );
+    }
+
+    public <T> ResponseEntity<T> postEntity(String url, Class<T> elementType){
+        return executeWithTokenRetry(token ->
+                webClient.post()
+                        .uri(url)
+                        .header("Authorization", "Bearer " + token)
+                        .retrieve()
+                        .toEntity(elementType)
+        );
+    }
+
+
+
+    public <T> ResponseEntity<T> login(Object body, Class<T> elementType) {
+        try {
+            return webClient
+                    .post()
+                    .uri(urlBase + "/auth")
+                    .bodyValue(body)
+                    .retrieve()
+                    .toEntity(elementType)
+                    .block();
+
+
+        } catch (WebClientResponseException e) {
+
+            if (e.getStatusCode() == HttpStatus.NOT_FOUND) {
+                // Login fallido - credenciales incorrectas
+                return null;
+            }
+            // Otros errores HTTP
+            throw new RuntimeException("Error en el servicio de autenticación: " + e.getMessage(), e);
+
+        } catch (Exception e) {
+            throw new RuntimeException("Error de conexión con el servicio de autenticación: " + e.getMessage(), e);
+        }
+    }
+
+
+
 
 
 }
