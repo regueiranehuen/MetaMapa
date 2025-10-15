@@ -1,186 +1,56 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Gestión - MetaMapa</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css" rel="stylesheet">
-    <link href="styles.css" rel="stylesheet">
+
+    <!-- Bootstrap & Icons -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css" rel="stylesheet" />
 
     <style>
-        :root {
-            --primary-color: #4f46e5;
-            --admin-color: #059669;
-            --success-color: #059669;
-            --warning-color: #f59e0b;
-            --danger-color: #dc2626;
-        }
-
-
-        .nav-pills-custom .nav-link.active {
-            background-color: var(--admin-color);
-            color: white;
-        }
-
-        .nav-pills-custom .nav-link:hover:not(.active) {
-            background-color: #f8f9fa;
-            color: #333;
-        }
-
-        .admin-badge {
-            background: var(--admin-color);
-            color: white;
-            font-size: 0.75rem;
-            font-weight: 500;
-        }
-
-        .management-card {
-            background: white;
-            border-radius: 12px;
-            border: 1px solid #e9ecef;
-            transition: all 0.3s ease;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
-        }
-
-        .management-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 8px 25px rgba(0,0,0,0.15);
-        }
-
-        .tab-content-management {
-            display: none;
-        }
-
-        .tab-content-management:target {
-            display: block;
-        }
-
-        .tab-content-management#categorias {
-            display: block; /* Default */
-        }
-
-        .method-tab {
-            background: #f8f9fa;
-            border: 1px solid #dee2e6;
-            color: #666;
-            text-decoration: none;
-            transition: all 0.3s ease;
-        }
-
-        .method-tab.active {
-            background: var(--admin-color);
-            color: white;
-            border-color: var(--admin-color);
-        }
-
-        .method-tab:hover:not(.active) {
-            background: #e9ecef;
-            color: #333;
-        }
-
-        .btn-admin {
-            background: var(--admin-color);
-            border-color: var(--admin-color);
-            color: white;
-            font-weight: 600;
-        }
-
-        .btn-admin:hover {
-            background: #047857;
-            border-color: #047857;
-            color: white;
-            transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(5, 150, 105, 0.3);
-        }
-
-        .category-item {
-            background: #f8f9fa;
-            border: 1px solid #dee2e6;
-            border-radius: 8px;
-            padding: 15px;
-            margin-bottom: 10px;
-            transition: all 0.3s ease;
-        }
-
-        .category-item:hover {
-            background: #e9ecef;
-            transform: translateX(5px);
-        }
-
-        .synonym-badge {
-            background: #e3f2fd;
-            color: #1565c0;
-            border-radius: 15px;
-            padding: 4px 12px;
-            font-size: 0.8rem;
-            margin: 2px;
-            display: inline-block;
-        }
-
-        .synonym-input-group {
-            background: #f8f9fa;
-            border-radius: 8px;
-            padding: 15px;
-            margin-bottom: 15px;
-        }
-
-        .form-control:focus, .form-select:focus {
-            border-color: var(--admin-color);
-            box-shadow: 0 0 0 0.2rem rgba(5, 150, 105, 0.25);
-        }
-
-        .stats-card {
-            background: linear-gradient(135deg, var(--admin-color), #047857);
-            color: white;
-            border-radius: 12px;
-            padding: 20px;
-            text-align: center;
-        }
-
-        .stats-card h3 {
-            font-size: 2.5rem;
-            font-weight: bold;
-            margin-bottom: 5px;
-        }
-
-        .delete-btn {
-            background: var(--danger-color);
-            border: none;
-            color: white;
-            border-radius: 4px;
-            padding: 4px 8px;
-            font-size: 0.8rem;
-            transition: all 0.3s ease;
-        }
-
-        .delete-btn:hover {
-            background: #b91c1c;
-            transform: scale(1.05);
-        }
-
-        .search-highlight:focus {
-            border-color: var(--admin-color);
-            box-shadow: 0 0 0 0.2rem rgba(5, 150, 105, 0.25);
-        }
-
-        #categorias {
-            background: #fdfdfd;
-            border-radius: 0 0 12px 12px;
-            border-top: 4px solid var(--admin-color);
-        }
-
-        #sinonimos {
-            background: #fffaf5;
-            border-radius: 0 0 12px 12px;
-            border-top: 4px solid var(--warning-color);
-        }
-
+        :root { --primary-color:#4f46e5; --admin-color:#059669; --collection-color:#8b5cf6; --success-color:#059669; --warning-color:#f59e0b; --danger-color:#dc2626; }
+        body { background: linear-gradient(135deg,#667eea 0%,#764ba2 100%); min-height:100vh; }
+        .dashboard-header { background:white; box-shadow:0 2px 10px rgba(0,0,0,.1); }
+        .logo-icon{width:40px;height:40px;background:var(--primary-color);border-radius:8px;display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700}
+        .nav-pills-custom .nav-link.active{background-color:var(--admin-color);color:#fff}
+        .nav-pills-custom .nav-link:hover:not(.active){background-color:#f8f9fa;color:#333}
+        .management-card{background:#fff;border-radius:12px;border:1px solid #e9ecef;transition:all .3s ease;box-shadow:0 4px 20px rgba(0,0,0,.1)}
+        .tab-content-management{display:none}
+        .tab-content-management#categorias{display:block}
+        .method-tab{background:#f8f9fa;border:1px solid #dee2e6;color:#666;text-decoration:none;transition:all .3s ease;padding:15px 20px}
+        .method-tab.active{background:var(--admin-color);color:#fff;border-color:var(--admin-color)}
+        .method-tab:hover:not(.active){background:#e9ecef;color:#333}
+        .btn-admin{background:var(--admin-color);border-color:var(--admin-color);color:#fff;font-weight:600}
+        .btn-admin:hover{background:#047857;border-color:#047857;color:#fff;transform:translateY(-2px);box-shadow:0 4px 12px rgba(5,150,105,.3)}
+        .category-item{background:#f8f9fa;border:1px solid #dee2e6;border-radius:8px;padding:15px;margin-bottom:10px;transition:all .3s ease}
+        .category-item:hover{background:#e9ecef;transform:translateX(5px)}
+        .form-control:focus,.form-select:focus{border-color:var(--admin-color);box-shadow:0 0 0 .2rem rgba(5,150,105,.25)}
+        .stats-card{background:linear-gradient(135deg,var(--admin-color),#047857);color:#fff;border-radius:12px;padding:20px;text-align:center}
+        .stats-card h3{font-size:2.5rem;font-weight:700;margin-bottom:5px}
+        .delete-btn{background:var(--danger-color);border:none;color:#fff;border-radius:4px;padding:4px 8px;font-size:.8rem;transition:all .3s ease}
+        .delete-btn:hover{background:#b91c1c;transform:scale(1.05)}
+        .synonym-badge{background:#e3f2fd;color:#1565c0;border-radius:15px;padding:4px 12px;font-size:.8rem;margin:2px;display:inline-block}
+        .synonym-input-group{background:#f8f9fa;border-radius:8px;padding:15px;margin-bottom:15px}
+        .color-selector{display:flex;gap:10px;flex-wrap:wrap}
+        .color-option{width:50px;height:50px;border-radius:8px;cursor:pointer;border:3px solid transparent;transition:all .3s ease;position:relative}
+        .color-option:hover{transform:scale(1.1);box-shadow:0 4px 12px rgba(0,0,0,.2)}
+        .color-option input[type="radio"]{position:absolute;opacity:0}
+        .color-option input[type="radio"]:checked + .color-preview{border-color:#333;box-shadow:0 0 0 3px rgba(0,0,0,.1)}
+        .color-preview{width:100%;height:100%;border-radius:8px;border:3px solid transparent;transition:all .3s ease;display:flex;align-items:center;justify-content:center;color:#fff}
+        .color-AZUL{background:linear-gradient(135deg,#2563eb,#3b82f6)}
+        .color-VERDE{background:linear-gradient(135deg,#059669,#10b981)}
+        .color-AMARILLO{background:linear-gradient(135deg,#d97706,#f59e0b)}
+        .color-ROJO{background:linear-gradient(135deg,#dc2626,#ef4444)}
+        .color-CELESTE{background:linear-gradient(135deg,#0ea5e9,#38bdf8)}
+        .color-GRIS{background:linear-gradient(135deg,#6b7280,#9ca3af)}
+        #colecciones{background:#f5f3ff;border-radius:0 0 12px 12px;border-top:4px solid var(--collection-color)}
+        .fade-in{animation:fadeIn .5s ease-in}
+        @keyframes fadeIn{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
     </style>
 </head>
-
 <body>
-
 <!-- Header del Dashboard -->
 <header class="dashboard-header py-3">
     <div class="container-fluid">
@@ -193,11 +63,8 @@
                 </a>
             </div>
             <div class="col-md-6 text-end">
-                <!-- <span class="me-2">Bienvenido, <strong>Administrador</strong></span> -->
                 <span class="badge bg-dark me-2">ADMINISTRADOR</span>
-                <a href="index.html" class="btn btn-outline-secondary btn-sm">
-                    <i class="bi bi-box-arrow-right me-1"></i>Cerrar Sesión
-                </a>
+                <a href="index.html" class="btn btn-outline-secondary btn-sm"><i class="bi bi-box-arrow-right me-1"></i>Cerrar Sesión</a>
             </div>
         </div>
     </div>
@@ -207,117 +74,55 @@
 <nav class="bg-white border-bottom">
     <div class="container-fluid py-3">
         <ul class="nav nav-pills nav-pills-custom justify-content-center">
-            <li class="nav-item">
-                <a class="nav-link" href="dashboard.html">
-                    <i class="bi bi-file-text me-1"></i> Hechos
-                </a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="mapa.html">
-                    <i class="bi bi-map me-1"></i> Mapa
-                </a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="colecciones.html">
-                    <i class="bi bi-collection me-1"></i> Colecciones
-                </a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="contribuir.html">
-                    <i class="bi bi-plus me-1"></i> Contribuir
-                </a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="solicitudes.html">
-                    <i class="bi bi-clipboard-check me-1"></i> Solicitudes
-                    <span class="badge bg-danger ms-1">11</span>
-                </a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link active" href="gestion.html">
-                    <i class="bi bi-gear me-1"></i> Gestión
-                </a>
-            </li>
+            <li class="nav-item"><a class="nav-link" href="hecho.html"><i class="bi bi-file-text me-1"></i> Hechos</a></li>
+            <li class="nav-item"><a class="nav-link" href="mapa.html"><i class="bi bi-map me-1"></i> Mapa</a></li>
+            <li class="nav-item"><a class="nav-link" href="colecciones.html"><i class="bi bi-collection me-1"></i> Colecciones</a></li>
+            <li class="nav-item"><a class="nav-link" href="contribuir.html"><i class="bi bi-plus me-1"></i> Contribuir</a></li>
+            <li class="nav-item"><a class="nav-link" href="solicitudes.html"><i class="bi bi-clipboard-check me-1"></i> Solicitudes <span class="badge bg-danger ms-1">11</span></a></li>
+            <li class="nav-item"><a class="nav-link active" href="gestion.html"><i class="bi bi-gear me-1"></i> Gestión</a></li>
         </ul>
     </div>
 </nav>
 
 <!-- Contenido Principal - Gestión -->
 <main class="container py-4 fade-in">
-
-    <!-- Header de gestión -->
     <div class="text-center mb-5">
-        <h1 class="display-5 fw-bold text-white mb-3">
-            <i class="bi bi-gear-fill me-2"></i>
-            Gestión del Sistema
-        </h1>
-        <p class="lead text-white-50">
-            Administra categorías y sinónimos para mantener la consistencia de datos
-        </p>
+        <h1 class="display-5 fw-bold text-white mb-3"><i class="bi bi-gear-fill me-2"></i>Gestión del Sistema</h1>
+        <p class="lead text-white-50">Administra categorías, sinónimos y colecciones del sistema</p>
     </div>
 
     <!-- Estadísticas generales -->
     <div class="row mb-5">
-        <div class="col-md-3">
-            <div class="stats-card">
-                <h3>24</h3>
-                <p class="mb-0">Categorías</p>
-            </div>
-        </div>
-        <div class="col-md-3">
-            <div class="stats-card">
-                <h3>156</h3>
-                <p class="mb-0">Sinónimos</p>
-            </div>
-        </div>
-        <div class="col-md-3">
-            <div class="stats-card">
-                <h3>89</h3>
-                <p class="mb-0">Países</p>
-            </div>
-        </div>
-        <div class="col-md-3">
-            <div class="stats-card">
-                <h3>347</h3>
-                <p class="mb-0">Provincias</p>
-            </div>
-        </div>
+        <div class="col-md-3"><div class="stats-card"><h3>24</h3><p class="mb-0">Categorías</p></div></div>
+        <div class="col-md-3"><div class="stats-card"><h3>156</h3><p class="mb-0">Sinónimos</p></div></div>
+        <div class="col-md-3"><div class="stats-card"><h3>12</h3><p class="mb-0">Colecciones</p></div></div>
+        <div class="col-md-3"><div class="stats-card"><h3>347</h3><p class="mb-0">Hechos Totales</p></div></div>
     </div>
 
-    <!-- Panel de gestión -->
     <div class="management-card">
-
-        <!-- Pestañas de gestión -->
+        <!-- Tabs -->
         <div class="d-flex flex-wrap border-bottom">
-            <a href="#categorias" class="method-tab active flex-fill text-center py-3 d-block">
-                <i class="bi bi-tags me-2"></i>Gestión de Categorías
-            </a>
-            <a href="#sinonimos" class="method-tab flex-fill text-center py-3 d-block">
-                <i class="bi bi-link-45deg me-2"></i>Gestión de Sinónimos
-            </a>
+            <a href="#categorias" class="method-tab active flex-fill text-center d-block"><i class="bi bi-tags me-2"></i>Categorías</a>
+            <a href="#sinonimos" class="method-tab flex-fill text-center d-block"><i class="bi bi-link-45deg me-2"></i>Sinónimos</a>
+            <a href="#colecciones" class="method-tab flex-fill text-center d-block"><i class="bi bi-collection me-2"></i>Colecciones</a>
         </div>
 
-        <!-- Contenido: Gestión de Categorías -->
-        <div id="categorias" class="tab-content-management p-4">
+        <!-- Categorías -->
+        <section id="categorias" class="tab-content-management p-4">
             <div class="row">
                 <div class="col-lg-4">
                     <div class="card">
-                        <div class="card-header">
-                            <h5 class="mb-0">
-                                <i class="bi bi-plus-circle me-2"></i>Nueva Categoría
-                            </h5>
-                        </div>
+                        <div class="card-header"><h5 class="mb-0"><i class="bi bi-plus-circle me-2"></i>Nueva Categoría</h5></div>
                         <div class="card-body">
-                            <form action="gestion.html" method="get">
+                            <form>
                                 <div class="mb-3">
                                     <label class="form-label fw-semibold">Nombre de la Categoría *</label>
-                                    <input type="text" class="form-control" placeholder="Ej: Revolución" required>
-                                    <div class="form-text">Será visible para todos los usuarios</div>
+                                    <input type="text" class="form-control" placeholder="Ej: Revolución" required />
                                 </div>
                                 <div class="mb-3">
                                     <label class="form-label fw-semibold">Color de Identificación</label>
                                     <select class="form-select">
-                                        <option value="" disabled selected>Seleccionar tipo</option>
+                                        <option value="">Seleccionar color</option>
                                         <option value="primary">Azul</option>
                                         <option value="success">Verde</option>
                                         <option value="warning">Amarillo</option>
@@ -326,129 +131,132 @@
                                         <option value="secondary">Gris</option>
                                     </select>
                                 </div>
-                                <button type="submit" class="btn btn-admin w-100">
-                                    <i class="bi bi-plus me-1"></i>Crear Categoría
-                                </button>
+                                <button type="submit" class="btn btn-admin w-100"><i class="bi bi-plus me-1"></i>Crear Categoría</button>
                             </form>
                         </div>
                     </div>
                 </div>
-
                 <div class="col-lg-8">
                     <div class="card">
-                        <div class="card-header d-flex justify-content-between align-items-center">
-                            <h5 class="mb-0">
-                                <i class="bi bi-list me-2"></i>Categorías Existentes
-                            </h5>
-                            <div class="input-group" style="width: 300px;">
-                                <span class="input-group-text bg-white">
-                                    <i class="bi bi-search text-muted"></i>
-                                </span>
-                                <input type="text" class="form-control search-highlight" placeholder="Buscar categorías..." style="border-left: none;">
-                            </div>
-                        </div>
+                        <div class="card-header"><h5 class="mb-0"><i class="bi bi-list me-2"></i>Categorías Existentes</h5></div>
                         <div class="card-body">
                             <div class="category-item">
                                 <div class="d-flex justify-content-between align-items-center">
                                     <div>
                                         <h6 class="mb-1">Política</h6>
-                                        <small class="text-muted">Eventos relacionados con la política y gobierno</small>
+                                        <small class="text-muted">Eventos relacionados con política y gobierno</small>
                                     </div>
                                     <div class="d-flex align-items-center gap-2">
                                         <span class="badge bg-primary">47 hechos</span>
-                                        <button class="btn btn-outline-primary btn-sm">
-                                            <i class="bi bi-pencil"></i>
-                                        </button>
-                                        <button class="delete-btn">
-                                            <i class="bi bi-trash"></i>
-                                        </button>
+                                        <button class="btn btn-outline-primary btn-sm"><i class="bi bi-pencil"></i></button>
+                                        <button class="delete-btn"><i class="bi bi-trash"></i></button>
                                     </div>
                                 </div>
                             </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
 
-                            <div class="category-item">
-                                <div class="d-flex justify-content-between align-items-center">
-                                    <div>
-                                        <h6 class="mb-1">Exploración</h6>
-                                        <small class="text-muted">Descubrimientos geográficos y expediciones</small>
+        <!-- Sinónimos (Thymeleaf) -->
+        <section id="sinonimos" class="tab-content-management p-4">
+            <div class="row">
+                <div class="col-lg-4">
+                    <div class="card">
+                        <div class="card-header"><h5 class="mb-0"><i class="bi bi-plus-circle me-2"></i>Nuevo Sinónimo</h5></div>
+                        <div class="card-body">
+                            <form th:action="@{/sinonimos}" method="post">
+                                <div class="mb-3">
+                                    <label class="form-label fw-semibold">Tipo de Sinónimo *</label>
+                                    <select class="form-select" name="tipo" required>
+                                        <option value="" disabled th:selected="${#strings.isEmpty(param.tipo)}">Seleccionar tipo</option>
+                                        <option value="categoria" th:selected="${param.tipo=='categoria'}">Categoría</option>
+                                        <option value="pais" th:selected="${param.tipo=='pais'}">País</option>
+                                        <option value="provincia" th:selected="${param.tipo=='provincia'}">Provincia</option>
+                                        <option value="ciudad" th:selected="${param.tipo=='ciudad'}">Ciudad</option>
+                                    </select>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label fw-semibold">Término Principal *</label>
+                                    <input type="text" class="form-control" name="principal" placeholder="Ej: Incendio Forestal" required />
+                                    <div class="form-text">El nombre oficial o más comúnmente usado</div>
+                                </div>
+                                <div class="synonym-input-group">
+                                    <label class="form-label fw-semibold">Sinónimos *</label>
+                                    <div class="input-group mb-2">
+                                        <input type="text" class="form-control" name="sinonimos" placeholder="Ej: Incendio Bosque" required />
+                                    </div>
+                                    <div class="input-group mb-2">
+                                        <input type="text" class="form-control" name="sinonimos" placeholder="Ej: Fuego" />
+                                        <span class="input-group-text"><i class="bi bi-plus text-primary"></i></span>
+                                    </div>
+                                    <div class="input-group mb-2">
+                                        <input type="text" class="form-control" name="sinonimos" placeholder="Ej: Bosque en llamas" />
+                                        <span class="input-group-text"><i class="bi bi-plus text-primary"></i></span>
+                                    </div>
+                                    <div class="form-text">Agrega todas las variaciones conocidas del término</div>
+                                </div>
+                                <button type="submit" class="btn btn-admin w-100"><i class="bi bi-plus me-1"></i>Crear Sinónimos</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-8">
+                    <div class="card">
+                        <div class="card-header d-flex justify-content-between align-items-center">
+                            <h5 class="mb-0"><i class="bi bi-link-45deg me-2"></i>Sinónimos Existentes</h5>
+                            <form class="d-flex gap-2" method="get" th:action="@{/sinonimos}">
+                                <select class="form-select form-select-sm" style="width:150px" name="tipo">
+                                    <option th:value="" th:selected="${#strings.isEmpty(param.tipo)}">Todos los tipos</option>
+                                    <option th:value="categoria" th:selected="${param.tipo=='categoria'}">Categorías</option>
+                                    <option th:value="pais" th:selected="${param.tipo=='pais'}">Países</option>
+                                    <option th:value="provincia" th:selected="${param.tipo=='provincia'}">Provincias</option>
+                                    <option th:value="ciudad" th:selected="${param.tipo=='ciudad'}">Ciudades</option>
+                                </select>
+                                <div class="input-group" style="width:250px">
+                                    <span class="input-group-text bg-white"><i class="bi bi-search text-muted"></i></span>
+                                    <input type="text" class="form-control" name="q" th:value="${param.q}" placeholder="Buscar sinónimos..." style="border-left:none" />
+                                </div>
+                                <button class="btn btn-outline-secondary btn-sm" type="submit">Filtrar</button>
+                            </form>
+                        </div>
+                        <div class="card-body">
+                            <div class="category-item" th:each="s : ${sinonimos}">
+                                <div class="d-flex justify-content-between align-items-start">
+                                    <div class="flex-grow-1">
+                                        <div class="d-flex align-items-center mb-2">
+                                            <h6 class="mb-0 me-2" th:text="${s.principal}">Buenos Aires</h6>
+                                            <span class="badge bg-secondary" th:if="${s.tipo=='provincia'}">Provincia</span>
+                                            <span class="badge bg-primary" th:if="${s.tipo=='pais'}">País</span>
+                                            <span class="badge bg-warning text-dark" th:if="${s.tipo=='categoria'}">Categoría</span>
+                                            <span class="badge bg-info text-dark" th:if="${s.tipo=='ciudad'}">Ciudad</span>
+                                        </div>
+                                        <div>
+                                            <span class="synonym-badge" th:each="v : ${s.variantes}" th:text="${v}">CABA</span>
+                                        </div>
                                     </div>
                                     <div class="d-flex align-items-center gap-2">
-                                        <span class="badge bg-warning text-dark">23 hechos</span>
-                                        <button class="btn btn-outline-warning btn-sm">
-                                            <i class="bi bi-pencil"></i>
-                                        </button>
-                                        <button class="delete-btn">
-                                            <i class="bi bi-trash"></i>
-                                        </button>
+                                        <small class="text-muted" th:text="${s.usos} + ' usos'">23 usos</small>
+                                        <a class="btn btn-outline-primary btn-sm" th:href="@{'/sinonimos/'+${s.id}+'/editar'}"><i class="bi bi-pencil"></i></a>
+                                        <form th:action="@{'/sinonimos/'+${s.id}}" method="post" class="d-inline">
+                                            <input type="hidden" name="_method" value="delete" />
+                                            <button type="submit" class="delete-btn"><i class="bi bi-trash"></i></button>
+                                        </form>
                                     </div>
                                 </div>
                             </div>
-
-                            <div class="category-item">
-                                <div class="d-flex justify-content-between align-items-center">
-                                    <div>
-                                        <h6 class="mb-1">Guerra</h6>
-                                        <small class="text-muted">Conflictos armados y batallas históricas</small>
-                                    </div>
-                                    <div class="d-flex align-items-center gap-2">
-                                        <span class="badge bg-danger">31 hechos</span>
-                                        <button class="btn btn-outline-danger btn-sm">
-                                            <i class="bi bi-pencil"></i>
-                                        </button>
-                                        <button class="delete-btn">
-                                            <i class="bi bi-trash"></i>
-                                        </button>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="category-item">
-                                <div class="d-flex justify-content-between align-items-center">
-                                    <div>
-                                        <h6 class="mb-1">Independencia</h6>
-                                        <small class="text-muted">Procesos independentistas de naciones</small>
-                                    </div>
-                                    <div class="d-flex align-items-center gap-2">
-                                        <span class="badge bg-success">19 hechos</span>
-                                        <button class="btn btn-outline-success btn-sm">
-                                            <i class="bi bi-pencil"></i>
-                                        </button>
-                                        <button class="delete-btn">
-                                            <i class="bi bi-trash"></i>
-                                        </button>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="category-item">
-                                <div class="d-flex justify-content-between align-items-center">
-                                    <div>
-                                        <h6 class="mb-1">Cultural</h6>
-                                        <small class="text-muted">Eventos artísticos, literarios y culturales</small>
-                                    </div>
-                                    <div class="d-flex align-items-center gap-2">
-                                        <span class="badge bg-info">15 hechos</span>
-                                        <button class="btn btn-outline-info btn-sm">
-                                            <i class="bi bi-pencil"></i>
-                                        </button>
-                                        <button class="delete-btn">
-                                            <i class="bi bi-trash"></i>
-                                        </button>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="text-center mt-3">
-                                <nav aria-label="Navegación de categorías">
+                            <div class="text-center mt-3" th:if="${pageTotal > 1}">
+                                <nav aria-label="Navegación de sinónimos">
                                     <ul class="pagination pagination-sm justify-content-center">
-                                        <li class="page-item active">
-                                            <span class="page-link">1</span>
+                                        <li class="page-item" th:classappend="${page==1} ? ' disabled'">
+                                            <a class="page-link" th:href="@{/sinonimos(page=${page-1}, q=${param.q}, tipo=${param.tipo})}">&laquo;</a>
                                         </li>
-                                        <li class="page-item">
-                                            <a class="page-link" href="?page=2">2</a>
+                                        <li class="page-item" th:each="i : ${#numbers.sequence(1, pageTotal)}" th:classappend="${i==page} ? ' active'">
+                                            <a class="page-link" th:href="@{/sinonimos(page=${i}, q=${param.q}, tipo=${param.tipo})}" th:text="${i}">1</a>
                                         </li>
-                                        <li class="page-item">
-                                            <a class="page-link" href="?page=3">3</a>
+                                        <li class="page-item" th:classappend="${page==pageTotal} ? ' disabled'">
+                                            <a class="page-link" th:href="@{/sinonimos(page=${page+1}, q=${param.q}, tipo=${param.tipo})}">&raquo;</a>
                                         </li>
                                     </ul>
                                 </nav>
@@ -457,216 +265,124 @@
                     </div>
                 </div>
             </div>
-        </div>
+        </section>
 
-        <!-- Contenido: Gestión de Sinónimos -->
-        <div id="sinonimos" class="tab-content-management p-4">
+        <!-- Colecciones -->
+        <section id="colecciones" class="tab-content-management p-4">
             <div class="row">
-                <div class="col-lg-4">
-                    <div class="card">
-                        <div class="card-header">
-                            <h5 class="mb-0">
-                                <i class="bi bi-plus-circle me-2"></i>Nuevo Sinónimo
-                            </h5>
+                <div class="col-lg-12">
+                    <div class="card mb-4">
+                        <div class="card-header" style="background: var(--collection-color); color: white;">
+                            <h5 class="mb-0"><i class="bi bi-plus-circle me-2"></i>Crear Nueva Colección</h5>
                         </div>
                         <div class="card-body">
-                            <form action="gestion.html" method="get">
-                                <div class="mb-3">
-                                    <label class="form-label fw-semibold">Tipo de Sinónimo *</label>
-                                    <select class="form-select" required>
-                                        <option value="" disabled selected>Seleccionar tipo</option>
-                                        <option value="categoria">Categoría</option>
-                                        <option value="pais">País</option>
-                                        <option value="provincia">Provincia</option>
-                                    </select>
-                                </div>
-                                <div class="mb-3">
-                                    <label class="form-label fw-semibold">Término Principal *</label>
-                                    <input type="text" class="form-control" placeholder="Ej: Incendio Forestal" required>
-                                    <div class="form-text">El nombre oficial o más comúnmente usado</div>
-                                </div>
-                                <div class="synonym-input-group">
-                                    <label class="form-label fw-semibold">Sinónimos *</label>
-                                    <div class="input-group mb-2">
-                                        <input type="text" class="form-control" placeholder="Ej: Incendio Bosque" required>
+                            <form th:action="@{/colecciones}" method="post" th:object="${coleccion}">
+                                <input type="hidden" th:field="*{id_usuario}" />
+                                <div class="row g-3 mb-4">
+                                    <div class="col-12"><h6 class="border-bottom pb-2 mb-3"><i class="bi bi-info-circle me-2"></i>Información Básica</h6></div>
+                                    <div class="col-md-6">
+                                        <label class="form-label fw-semibold">Título *</label>
+                                        <input type="text" class="form-control" th:field="*{titulo}" placeholder="Ej: Conflictos del Siglo XX" minlength="3" required />
                                     </div>
-                                    <div class="input-group mb-2">
-                                        <input type="text" class="form-control" placeholder="Ej: Fuego">
-                                        <span class="input-group-text">
-                                            <i class="bi bi-plus text-primary"></i>
-                                        </span>
+                                    <div class="col-md-6">
+                                        <label class="form-label fw-semibold">Algoritmo de Consenso (opcional)</label>
+                                        <select class="form-select" th:field="*{algoritmoConsenso}">
+                                            <option th:value="" selected>— Ninguno —</option>
+                                            <option th:each="alg : ${algoritmosConsenso}" th:value="${alg.codigo}" th:text="${alg.nombre}">Mayoría Simple</option>
+                                            <option th:each="alg : ${algoritmosConsenso}" th:value="${alg.codigo}" th:text="${alg.nombre}">Mayoría Absoluta</option>
+                                            <option th:each="alg : ${algoritmosConsenso}" th:value="${alg.codigo}" th:text="${alg.nombre}">Multiples Menciones</option>
+                                        </select>
                                     </div>
-                                    <div class="input-group mb-2">
-                                        <input type="text" class="form-control" placeholder="Ej: Bosque en llamas">
-                                        <span class="input-group-text">
-                                            <i class="bi bi-plus text-primary"></i>
-                                        </span>
+                                    <div class="col-12">
+                                        <label class="form-label fw-semibold">Descripción *</label>
+                                        <textarea class="form-control" th:field="*{descripcion}" rows="3" placeholder="Describe el propósito y alcance..." minlength="10" required></textarea>
                                     </div>
-                                    <div class="form-text">Agrega todas las variaciones conocidas del término</div>
                                 </div>
-                                <button type="submit" class="btn btn-admin w-100">
-                                    <i class="bi bi-plus me-1"></i>Crear Sinónimos
-                                </button>
+                                <div class="row g-3 mb-4">
+                                    <div class="col-12"><h6 class="border-bottom pb-2 mb-3"><i class="bi bi-funnel me-2"></i>Criterios de Filtrado</h6></div>
+                                    <div class="col-12 col-md-4">
+                                        <label class="form-label fw-semibold">Categoría *</label>
+                                        <input type="text" class="form-control" placeholder="Ej: Política" required />
+                                    </div>
+                                    <div class="col-12 col-md-4">
+                                        <label class="form-label fw-semibold">País</label>
+                                        <input type="text" class="form-control" placeholder="Ej: Argentina" />
+                                    </div>
+                                    <div class="col-12 col-md-4">
+                                        <label class="form-label fw-semibold">Provincia</label>
+                                        <input type="text" class="form-control" placeholder="Ej: Buenos Aires" />
+                                    </div>
+                                    <div class="col-md-4">
+                                        <label class="form-label fw-semibold">Origen</label>
+                                        <select class="form-select" th:field="*{criterios.origen}">
+                                            <option th:value="">Cualquiera</option>
+                                            <option th:value="0">Estático</option>
+                                            <option th:value="1">Dinámico</option>
+                                            <option th:value="2">Proxy</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <label class="form-label fw-semibold">Contenido Multimedia</label>
+                                        <select class="form-select" th:field="*{criterios.contenidoMultimedia}">
+                                            <option th:value="">Cualquiera</option>
+                                            <option th:value="1">Con multimedia</option>
+                                            <option th:value="0">Sin multimedia</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <label class="form-label fw-semibold">Título (contiene)</label>
+                                        <input type="text" class="form-control" th:field="*{criterios.titulo}" placeholder="Ej: Revolución" />
+                                    </div>
+                                    <div class="col-12">
+                                        <label class="form-label fw-semibold">Descripción (contiene)</label>
+                                        <input type="text" class="form-control" th:field="*{criterios.descripcion}" placeholder="Texto presente en la descripción" />
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label class="form-label fw-semibold">Fecha del Acontecimiento (desde / hasta)</label>
+                                        <div class="input-group">
+                                            <input type="date" class="form-control" th:field="*{criterios.fechaAcontecimientoInicial}" />
+                                            <span class="input-group-text">a</span>
+                                            <input type="date" class="form-control" th:field="*{criterios.fechaAcontecimientoFinal}" />
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label class="form-label fw-semibold">Fecha de Carga (desde / hasta)</label>
+                                        <div class="input-group">
+                                            <input type="date" class="form-control" th:field="*{criterios.fechaCargaInicial}" />
+                                            <span class="input-group-text">a</span>
+                                            <input type="date" class="form-control" th:field="*{criterios.fechaCargaFinal}" />
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="d-flex justify-content-end pt-3 border-top">
+                                    <button type="submit" class="btn btn-admin"><i class="bi bi-check-lg me-1"></i>Crear Colección</button>
+                                </div>
                             </form>
                         </div>
                     </div>
-                </div>
 
-                <div class="col-lg-8">
-                    <div class="card">
-                        <div class="card-header d-flex justify-content-between align-items-center">
-                            <h5 class="mb-0">
-                                <i class="bi bi-link-45deg me-2"></i>Sinónimos Existentes
-                            </h5>
-                            <div class="d-flex gap-2">
-                                <select class="form-select form-select-sm" style="width: 150px;">
-                                    <option value="">Todos los tipos</option>
-                                    <option value="categoria">Categorías</option>
-                                    <option value="pais">Países</option>
-                                    <option value="provincia">Provincias</option>
-                                    <option value="ciudad">Ciudades</option>
-                                </select>
-                                <div class="input-group" style="width: 250px;">
-                                    <span class="input-group-text bg-white">
-                                        <i class="bi bi-search text-muted"></i>
-                                    </span>
-                                    <input type="text" class="form-control search-highlight" placeholder="Buscar sinónimos..." style="border-left: none;">
-                                </div>
-                            </div>
-                        </div>
-                        <div class="card-body">
-                            <!-- Sinónimo: Buenos Aires -->
-                            <div class="category-item">
-                                <div class="d-flex justify-content-between align-items-start">
-                                    <div class="flex-grow-1">
-                                        <div class="d-flex align-items-center mb-2">
-                                            <h6 class="mb-0 me-2">Buenos Aires</h6>
-                                            <span class="badge bg-secondary">Provincia</span>
-                                        </div>
-                                        <div>
-                                            <span class="synonym-badge">Ciudad Autónoma de Buenos Aires</span>
-                                            <span class="synonym-badge">CABA</span>
-                                            <span class="synonym-badge">Capital Federal</span>
-                                        </div>
-                                    </div>
-                                    <div class="d-flex align-items-center gap-2">
-                                        <small class="text-muted">23 usos</small>
-                                        <button class="btn btn-outline-primary btn-sm">
-                                            <i class="bi bi-pencil"></i>
-                                        </button>
-                                        <button class="delete-btn">
-                                            <i class="bi bi-trash"></i>
-                                        </button>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <!-- Sinónimo: Estados Unidos -->
-                            <div class="category-item">
-                                <div class="d-flex justify-content-between align-items-start">
-                                    <div class="flex-grow-1">
-                                        <div class="d-flex align-items-center mb-2">
-                                            <h6 class="mb-0 me-2">Estados Unidos</h6>
-                                            <span class="badge bg-primary">País</span>
-                                        </div>
-                                        <div>
-                                            <span class="synonym-badge">Estados Unidos de América</span>
-                                            <span class="synonym-badge">EE.UU.</span>
-                                            <span class="synonym-badge">USA</span>
-                                            <span class="synonym-badge">América</span>
-                                        </div>
-                                    </div>
-                                    <div class="d-flex align-items-center gap-2">
-                                        <small class="text-muted">47 usos</small>
-                                        <button class="btn btn-outline-primary btn-sm">
-                                            <i class="bi bi-pencil"></i>
-                                        </button>
-                                        <button class="delete-btn">
-                                            <i class="bi bi-trash"></i>
-                                        </button>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <!-- Sinónimo: Reino Unido -->
-                            <div class="category-item">
-                                <div class="d-flex justify-content-between align-items-start">
-                                    <div class="flex-grow-1">
-                                        <div class="d-flex align-items-center mb-2">
-                                            <h6 class="mb-0 me-2">Reino Unido</h6>
-                                            <span class="badge bg-primary">País</span>
-                                        </div>
-                                        <div>
-                                            <span class="synonym-badge">Reino Unido de Gran Bretaña</span>
-                                            <span class="synonym-badge">Gran Bretaña</span>
-                                            <span class="synonym-badge">Inglaterra</span>
-                                            <span class="synonym-badge">UK</span>
-                                        </div>
-                                    </div>
-                                    <div class="d-flex align-items-center gap-2">
-                                        <small class="text-muted">31 usos</small>
-                                        <button class="btn btn-outline-primary btn-sm">
-                                            <i class="bi bi-pencil"></i>
-                                        </button>
-                                        <button class="delete-btn">
-                                            <i class="bi bi-trash"></i>
-                                        </button>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <!-- Sinónimo: Revolución -->
-                            <div class="category-item">
-                                <div class="d-flex justify-content-between align-items-start">
-                                    <div class="flex-grow-1">
-                                        <div class="d-flex align-items-center mb-2">
-                                            <h6 class="mb-0 me-2">Revolución</h6>
-                                            <span class="badge bg-warning text-dark">Categoría</span>
-                                        </div>
-                                        <div>
-                                            <span class="synonym-badge">Revuelta</span>
-                                            <span class="synonym-badge">Levantamiento</span>
-                                            <span class="synonym-badge">Insurrección</span>
-                                        </div>
-                                    </div>
-                                    <div class="d-flex align-items-center gap-2">
-                                        <small class="text-muted">31 usos</small>
-                                        <button class="btn btn-outline-primary btn-sm">
-                                            <i class="bi bi-pencil"></i>
-                                        </button>
-                                        <button class="delete-btn">
-                                            <i class="bi bi-trash"></i>
-                                        </button>
-                                    </div>
-                                </div>
-                            </div>
-
-
-                        <div class="text-center mt-3">
-                            <nav aria-label="Navegación de sinónimos">
-                                <ul class="pagination pagination-sm justify-content-center">
-                                    <li class="page-item active">
-                                        <span class="page-link">1</span>
-                                    </li>
-                                    <li class="page-item">
-                                        <a class="page-link" href="?page=2">2</a>
-                                    </li>
-                                    <li class="page-item">
-                                        <a class="page-link" href="?page=3">3</a>
-                                    </li>
-                                </ul>
-                            </nav>
-                        </div>
-
-                    </div>
                 </div>
             </div>
-        </div>
+        </section>
     </div>
-    </div>
-
 </main>
 
-
+<!-- JS mínimo para tabs -->
+<script>
+    (function(){
+      var tabs=document.querySelectorAll('.method-tab');
+      var panels=document.querySelectorAll('.tab-content-management');
+      function show(id){
+        panels.forEach(function(p){p.style.display=(p.id===id)?'block':'none'});
+        tabs.forEach(function(t){t.classList.toggle('active', t.getAttribute('href')==='#'+id)});
+        if(history&&history.replaceState){history.replaceState(null,'','#'+id)}
+      }
+      tabs.forEach(function(tab){
+        tab.addEventListener('click',function(e){e.preventDefault();show(this.getAttribute('href').substring(1));});
+      });
+      var initial=(location.hash||'#categorias').substring(1);
+      if(document.getElementById(initial)){show(initial)}
+    })();
+</script>
 </body>
 </html>

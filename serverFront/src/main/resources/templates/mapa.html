@@ -3,10 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mapa Estático - MetaMapa</title>
+    <title>Mapa - MetaMapa</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css" rel="stylesheet">
-    <link href="styles.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.css" />
 
     <style>
         :root {
@@ -23,190 +23,76 @@
             border-radius: 12px;
             overflow: hidden;
             box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
-            position: relative;
         }
 
-        .static-map {
-            width: 100%;
+        #map {
             height: 600px;
-            background-image: url('https://tile.openstreetmap.org/3/3/4.png'),
-                              url('https://tile.openstreetmap.org/3/4/4.png');
-            background-size: 300px 300px;
-            background-repeat: repeat;
-            position: relative;
-            background-color: #a8cdf0;
-        }
-
-        /* Overlay con imagen de mapa SVG más realista */
-        .map-overlay {
-            position: absolute;
-            top: 0;
-            left: 0;
             width: 100%;
-            height: 100%;
-            background: linear-gradient(135deg, #e0f2fe 0%, #b3e5fc 30%, #81c784 60%, #8bc34a 100%);
-            background-image:
-                radial-gradient(circle at 20% 30%, #4caf50 2px, transparent 2px),
-                radial-gradient(circle at 80% 20%, #2196f3 1px, transparent 1px),
-                radial-gradient(circle at 60% 80%, #ff9800 1px, transparent 1px);
         }
 
-        .marker {
-            position: absolute;
-            width: 25px;
-            height: 25px;
-            background: #dc2626;
-            border: 3px solid white;
-            border-radius: 50%;
+        .fact-list-item {
+            padding: 12px;
+            border-bottom: 1px solid #f1f5f9;
             cursor: pointer;
+            transition: background-color 0.2s ease;
+        }
+
+        .fact-list-item:hover {
+            background-color: #f8f9fa;
+        }
+
+        .fact-list-item:last-child {
+            border-bottom: none;
+        }
+
+        .fact-list-item.selected {
+            background-color: #e7f3ff;
+            border-left: 3px solid var(--primary-color);
+        }
+
+        .custom-marker {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            border: 3px solid white;
             box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
-            z-index: 10;
-            transform: translate(-50%, -50%);
-            transition: all 0.3s ease;
-        }
-
-        .marker:hover {
-            transform: translate(-50%, -50%) scale(1.3);
-            z-index: 20;
-        }
-
-        .marker.politica { background: #4f46e5; }
-        .marker.exploracion { background: #059669; }
-        .marker.guerra { background: #dc2626; }
-        .marker.independencia { background: #f59e0b; }
-        .marker.cientifica { background: #7c3aed; }
-
-        /* Posiciones de marcadores basadas en porcentajes */
-        .marker-cordoba { top: 70%; left: 55%; }
-        .marker-bsas { top: 75%; left: 52%; }
-        .marker-rosario { top: 68%; left: 50%; }
-        .marker-bahamas { top: 45%; left: 25%; }
-        .marker-berlin { top: 25%; left: 70%; }
-        .marker-mexico { top: 50%; left: 20%; }
-
-        /* Tooltips CSS puros */
-        .marker[data-tooltip] {
-            position: relative;
-        }
-
-        .marker[data-tooltip]:hover::before {
-            content: attr(data-tooltip);
-            position: absolute;
-            bottom: 140%;
-            left: 50%;
-            transform: translateX(-50%);
-            background: #333;
-            color: white;
-            padding: 8px 12px;
-            border-radius: 6px;
-            font-size: 12px;
-            white-space: nowrap;
-            z-index: 1000;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.3);
-        }
-
-        .marker[data-tooltip]:hover::after {
-            content: '';
-            position: absolute;
-            bottom: 120%;
-            left: 50%;
-            transform: translateX(-50%);
-            border: 6px solid transparent;
-            border-top-color: #333;
-            z-index: 1000;
-        }
-
-        /* Modal usando checkbox hack - SIN JavaScript */
-        .modal-trigger {
-            display: none;
-        }
-
-        .modal-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.7);
-            z-index: 1000;
-            opacity: 0;
-            visibility: hidden;
-            transition: all 0.3s ease;
             display: flex;
             align-items: center;
             justify-content: center;
+            font-weight: bold;
+            color: white;
+            cursor: pointer;
         }
 
-        .modal-trigger:checked + .modal-overlay {
-            opacity: 1;
-            visibility: visible;
-        }
+        .marker-politica { background: #4f46e5; }
+        .marker-exploracion { background: #059669; }
+        .marker-guerra { background: #dc2626; }
+        .marker-independencia { background: #f59e0b; }
+        .marker-cientifica { background: #7c3aed; }
 
-        .modal-content {
-            background: white;
-            border-radius: 12px;
-            padding: 30px;
-            width: 90%;
-            max-width: 500px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
-            position: relative;
-            transform: translateY(-30px);
-            transition: transform 0.3s ease;
-        }
-
-        .modal-trigger:checked + .modal-overlay .modal-content {
-            transform: translateY(0);
-        }
-
-        .modal-close {
-            position: absolute;
-            top: 15px;
-            right: 20px;
-            font-size: 28px;
-            color: #666;
-            text-decoration: none;
-            line-height: 1;
-        }
-
-        .modal-close:hover {
-            color: #333;
-        }
-
-        .legend {
-            position: absolute;
-            bottom: 20px;
-            left: 20px;
-            background: white;
-            padding: 15px;
+        .leaflet-popup-content-wrapper {
             border-radius: 8px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
-            z-index: 10;
         }
 
-        .legend-item {
-            display: flex;
-            align-items: center;
-            margin-bottom: 8px;
+        .popup-content h6 {
+            margin-bottom: 10px;
+            color: var(--primary-color);
         }
 
-        .legend-item:last-child {
-            margin-bottom: 0;
-        }
-
-        .legend-dot {
-            width: 12px;
-            height: 12px;
-            border-radius: 50%;
-            border: 2px solid white;
-            margin-right: 8px;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.3);
+        .popup-content .badge {
+            font-size: 0.75rem;
         }
 
         @media (max-width: 768px) {
-            .static-map {
+            #map {
                 height: 400px;
             }
+
+            .map-sidebar {
+                margin-top: 20px;
+            }
         }
+
     </style>
 </head>
 
@@ -238,7 +124,7 @@
     <div class="container-fluid py-3">
         <ul class="nav nav-pills nav-pills-custom justify-content-center">
             <li class="nav-item">
-                <a class="nav-link" href="dashboard.html">
+                <a class="nav-link" href="hecho.html">
                     <i class="bi bi-file-text me-1"></i> Hechos
                 </a>
             </li>
@@ -272,21 +158,21 @@
     </div>
 </nav>
 
-<!-- Contenido Principal -->
-<main class="container-fluid py-4">
+<!-- Contenido Principal - Mapa -->
+<main class="container-fluid py-4 fade-in">
 
-    <!-- Controles -->
+    <!-- Controles de búsqueda y filtrado -->
     <div class="row mb-4">
         <div class="col-md-8">
             <div class="input-group">
                 <span class="input-group-text bg-white">
                     <i class="bi bi-search text-muted"></i>
                 </span>
-                <input type="text" class="form-control" placeholder="Buscar ubicaciones..." style="border-left: none;">
+                <input type="text" id="searchInput" class="form-control" placeholder="Buscar ubicaciones en el mapa..." style="border-left: none;">
             </div>
         </div>
         <div class="col-md-4">
-            <select class="form-select">
+            <select class="form-select" id="categoryFilter">
                 <option value="">Todas las categorías</option>
                 <option value="politica">Política</option>
                 <option value="exploracion">Exploración</option>
@@ -297,282 +183,429 @@
         </div>
     </div>
 
-    <!-- Container del Mapa -->
+    <!-- Container principal del mapa -->
     <div class="map-container">
+        <!-- Header del mapa -->
         <div class="bg-light border-bottom p-4">
             <div class="d-flex align-items-center">
                 <i class="bi bi-globe text-primary fs-2 me-3"></i>
                 <div>
-                    <h3 class="mb-1">Mapa de Hechos Históricos</h3>
-                    <p class="text-muted mb-0">Haz clic en los marcadores para ver detalles</p>
+                    <h3 class="mb-1">Mapa Mundial de Hechos Históricos</h3>
+                    <p class="text-muted mb-0">Haz clic en los marcadores para ver detalles de cada evento histórico</p>
                 </div>
             </div>
         </div>
 
-        <div class="static-map">
-            <div class="map-overlay"></div>
-
-            <!-- Marcadores -->
-            <label for="modal-cordoba" class="marker marker-politica marker-cordoba"
-                   data-tooltip="Fundación de Córdoba - 1573"></label>
-
-            <label for="modal-bsas" class="marker marker-politica marker-bsas"
-                   data-tooltip="Revolución de Mayo - 1810"></label>
-
-            <label for="modal-rosario" class="marker marker-independencia marker-rosario"
-                   data-tooltip="Manifestación DDHH - 2025"></label>
-
-            <label for="modal-bahamas" class="marker marker-exploracion marker-bahamas"
-                   data-tooltip="Descubrimiento América - 1492"></label>
-
-            <label for="modal-berlin" class="marker marker-politica marker-berlin"
-                   data-tooltip="Caída Muro Berlín - 1989"></label>
-
-            <label for="modal-mexico" class="marker marker-independencia marker-mexico"
-                   data-tooltip="Independencia México - 1810"></label>
-
-            <!-- Leyenda -->
-            <div class="legend">
-                <h6 class="mb-2 fw-bold">Categorías</h6>
-                <div class="legend-item">
-                    <div class="legend-dot" style="background: #4f46e5;"></div>
-                    <small>Política</small>
-                </div>
-                <div class="legend-item">
-                    <div class="legend-dot" style="background: #059669;"></div>
-                    <small>Exploración</small>
-                </div>
-                <div class="legend-item">
-                    <div class="legend-dot" style="background: #dc2626;"></div>
-                    <small>Guerra</small>
-                </div>
-                <div class="legend-item">
-                    <div class="legend-dot" style="background: #f59e0b;"></div>
-                    <small>Independencia</small>
-                </div>
-                <div class="legend-item">
-                    <div class="legend-dot" style="background: #7c3aed;"></div>
-                    <small>Científica</small>
-                </div>
+        <!-- Contenido principal del mapa -->
+        <div class="row g-0">
+            <!-- Área del mapa -->
+            <div class="col-lg-8">
+                <div id="map"></div>
             </div>
-        </div>
-    </div>
 
-    <!-- Lista de eventos -->
-    <div class="row mt-4">
-        <div class="col-12">
-            <div class="card">
-                <div class="card-header d-flex justify-content-between align-items-center">
-                    <h5 class="mb-0">Eventos en el Mapa</h5>
-                    <span class="badge bg-primary">6 eventos</span>
-                </div>
-                <div class="card-body">
-                    <div class="row">
-                        <div class="col-md-4 mb-3">
-                            <div class="border rounded p-3">
-                                <div class="d-flex justify-content-between align-items-start mb-2">
-                                    <h6 class="mb-0">Fundación de Córdoba</h6>
-                                    <span class="badge" style="background: #4f46e5; color: white;">Política</span>
-                                </div>
-                                <p class="small text-muted mb-2">Fundación de la ciudad por Jerónimo Luis de Cabrera</p>
-                                <div class="small text-muted">
-                                    <div><i class="bi bi-geo-alt me-1"></i>Córdoba, Argentina</div>
-                                    <div><i class="bi bi-calendar me-1"></i>6 de Julio de 1573</div>
-                                </div>
+            <!-- Sidebar con información -->
+            <div class="col-lg-4 border-start bg-white">
+                <div class="p-4">
+                    <!-- Estado inicial -->
+                    <div id="defaultView" class="text-center py-4 mb-4 bg-light rounded">
+                        <i class="bi bi-bullseye text-muted" style="font-size: 3rem;"></i>
+                        <h5 class="mt-3 mb-2">Selecciona un evento</h5>
+                        <p class="text-muted small mb-0">Haz clic en cualquier marcador del mapa para ver información detallada</p>
+                    </div>
+
+                    <!-- Vista de detalle del hecho seleccionado -->
+                    <div id="factDetail" class="d-none">
+                        <div class="mb-3">
+                            <button class="btn btn-sm btn-outline-secondary mb-3" onclick="clearSelection()">
+                                <i class="bi bi-arrow-left me-1"></i>Volver
+                            </button>
+                            <h5 id="factTitle" class="fw-bold"></h5>
+                            <span id="factCategory" class="badge mb-3"></span>
+                        </div>
+                        <p id="factDescription" class="text-muted mb-3"></p>
+                        <div class="mb-3">
+                            <div class="d-flex align-items-center mb-2">
+                                <i class="bi bi-geo-alt text-muted me-2"></i>
+                                <span id="factLocation" class="small"></span>
+                            </div>
+                            <div class="d-flex align-items-center mb-2">
+                                <i class="bi bi-calendar text-muted me-2"></i>
+                                <span id="factDate" class="small"></span>
+                            </div>
+                            <div class="d-flex align-items-center">
+                                <i class="bi bi-folder2 text-muted me-2"></i>
+                                <span id="factMedia" class="small text-warning"></span>
                             </div>
                         </div>
+                        <div class="d-grid gap-2">
+                            <button class="btn btn-primary btn-sm">
+                                <i class="bi bi-eye me-1"></i>Ver Detalles Completos
+                            </button>
+                            <button class="btn btn-outline-danger btn-sm">
+                                <i class="bi bi-exclamation-triangle me-1"></i>Reportar
+                            </button>
+                        </div>
+                    </div>
 
-                        <div class="col-md-4 mb-3">
-                            <div class="border rounded p-3">
-                                <div class="d-flex justify-content-between align-items-start mb-2">
-                                    <h6 class="mb-0">Revolución de Mayo</h6>
-                                    <span class="badge" style="background: #4f46e5; color: white;">Política</span>
-                                </div>
-                                <p class="small text-muted mb-2">Inicio del proceso independentista argentino</p>
-                                <div class="small text-muted">
-                                    <div><i class="bi bi-geo-alt me-1"></i>Buenos Aires, Argentina</div>
-                                    <div><i class="bi bi-calendar me-1"></i>25 de Mayo de 1810</div>
-                                </div>
-                            </div>
+                    <!-- Lista de hechos disponibles -->
+                    <div>
+                        <div class="d-flex justify-content-between align-items-center mb-3">
+                            <h6 class="fw-bold mb-0">Eventos en el Mapa</h6>
+                            <span class="badge bg-primary" id="eventCount">6 eventos</span>
                         </div>
 
-                        <div class="col-md-4 mb-3">
-                            <div class="border rounded p-3">
-                                <div class="d-flex justify-content-between align-items-start mb-2">
-                                    <h6 class="mb-0">Descubrimiento de América</h6>
-                                    <span class="badge" style="background: #059669; color: white;">Exploración</span>
-                                </div>
-                                <p class="small text-muted mb-2">Llegada de Colón al continente americano</p>
-                                <div class="small text-muted">
-                                    <div><i class="bi bi-geo-alt me-1"></i>San Salvador, Bahamas</div>
-                                    <div><i class="bi bi-calendar me-1"></i>12 de Octubre de 1492</div>
-                                </div>
-                            </div>
+                        <!-- Lista de eventos -->
+                        <div class="border rounded" id="factsList">
+                            <!-- Los elementos se generarán dinámicamente -->
                         </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
+
+    <!-- Estadísticas del mapa -->
+    <div class="row mt-4">
+        <div class="col-md-3">
+            <div class="card border-0 shadow-sm">
+                <div class="card-body text-center">
+                    <i class="bi bi-pin-map text-primary fs-1"></i>
+                    <h5 class="mt-2" id="statsEvents">6</h5>
+                    <p class="text-muted mb-0 small">Eventos Mostrados</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card border-0 shadow-sm">
+                <div class="card-body text-center">
+                    <i class="bi bi-globe text-success fs-1"></i>
+                    <h5 class="mt-2" id="statsCountries">5</h5>
+                    <p class="text-muted mb-0 small">Países Representados</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card border-0 shadow-sm">
+                <div class="card-body text-center">
+                    <i class="bi bi-calendar-range text-warning fs-1"></i>
+                    <h5 class="mt-2">500+</h5>
+                    <p class="text-muted mb-0 small">Años de Historia</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card border-0 shadow-sm">
+                <div class="card-body text-center">
+                    <i class="bi bi-eye text-info fs-1"></i>
+                    <h5 class="mt-2">1,247</h5>
+                    <p class="text-muted mb-0 small">Visualizaciones Hoy</p>
+                </div>
+            </div>
+        </div>
+    </div>
 </main>
 
-<!-- Modales sin JavaScript -->
-<input type="checkbox" id="modal-cordoba" class="modal-trigger">
-<div class="modal-overlay">
-    <div class="modal-content">
-        <label for="modal-cordoba" class="modal-close">&times;</label>
-        <h4 class="mb-3 text-primary">
-            <i class="bi bi-geo-alt me-2"></i>
-            Fundación de Córdoba
-        </h4>
-        <span class="badge mb-3" style="background: #4f46e5; color: white;">Política</span>
-        <p class="mb-3">La ciudad de Córdoba fue fundada el 6 de julio de 1573 por Jerónimo Luis de Cabrera, convirtiéndose en uno de los centros urbanos más importantes del Virreinato del Río de la Plata.</p>
-        <div class="row mb-3">
-            <div class="col-6">
-                <small class="text-muted d-block">Fecha</small>
-                <strong>6 de Julio de 1573</strong>
-            </div>
-            <div class="col-6">
-                <small class="text-muted d-block">Ubicación</small>
-                <strong>Córdoba, Argentina</strong>
-            </div>
-        </div>
-        <div class="d-grid">
-            <label for="modal-cordoba" class="btn btn-secondary">Cerrar</label>
-        </div>
-    </div>
-</div>
+<!-- Importo una libreria js de Mapa -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.js"></script>
+<script>
+    // Datos de hechos históricos con coordenadas reales
+    const historicalFacts = [
+        {
+            id: 1,
+            title: "Revolución de Mayo",
+            category: "politica",
+            description: "Inicio del proceso independentista argentino que marcó el comienzo de la lucha por la independencia.",
+            location: "Buenos Aires, Argentina",
+            date: "24 de Mayo de 1810",
+            multimedia: "3 archivos multimedia",
+            lat: -34.6118,
+            lng: -58.3960
+        },
+        {
+            id: 2,
+            title: "Descubrimiento de América",
+            category: "exploracion",
+            description: "Llegada de Cristóbal Colón al continente americano, evento que cambió la historia mundial.",
+            location: "San Salvador, Bahamas",
+            date: "12 de Octubre de 1492",
+            multimedia: "5 archivos multimedia",
+            lat: 24.0625,
+            lng: -74.5350
+        },
+        {
+            id: 3,
+            title: "Caída del Muro de Berlín",
+            category: "politica",
+            description: "Fin simbólico de la Guerra Fría y reunificación alemana después de décadas de división.",
+            location: "Berlín, Alemania",
+            date: "9 de Noviembre de 1989",
+            multimedia: "8 archivos multimedia",
+            lat: 52.5200,
+            lng: 13.4050
+        },
+        {
+            id: 4,
+            title: "Independencia de México",
+            category: "independencia",
+            description: "Grito de Dolores que inició la independencia mexicana con Miguel Hidalgo.",
+            location: "Dolores Hidalgo, México",
+            date: "16 de Septiembre de 1810",
+            multimedia: "4 archivos multimedia",
+            lat: 21.1619,
+            lng: -100.9317
+        },
+        {
+            id: 5,
+            title: "Primera Guerra Mundial",
+            category: "guerra",
+            description: "Conflicto global que involucró a las principales potencias mundiales entre 1914 y 1918.",
+            location: "Europa, África, Asia",
+            date: "28 de Julio de 1914",
+            multimedia: "15 archivos multimedia",
+            lat: 49.2827,
+            lng: -123.1207
+        },
+        {
+            id: 6,
+            title: "Revolución Industrial",
+            category: "cientifica",
+            description: "Período de transformación económica, social y tecnológica iniciado en Gran Bretaña.",
+            location: "Manchester, Reino Unido",
+            date: "1760 - 1840",
+            multimedia: "12 archivos multimedia",
+            lat: 53.4808,
+            lng: -2.2426
+        },
+        {
+            id: 7,
+            title: "Fundación de Córdoba",
+            category: "politica",
+            description: "Fundación de la ciudad de Córdoba por Jerónimo Luis de Cabrera.",
+            location: "Córdoba, Argentina",
+            date: "6 de Julio de 1573",
+            multimedia: "2 archivos multimedia",
+            lat: -31.4201,
+            lng: -64.1888
+        }
+    ];
 
-<input type="checkbox" id="modal-bsas" class="modal-trigger">
-<div class="modal-overlay">
-    <div class="modal-content">
-        <label for="modal-bsas" class="modal-close">&times;</label>
-        <h4 class="mb-3 text-primary">
-            <i class="bi bi-geo-alt me-2"></i>
-            Revolución de Mayo
-        </h4>
-        <span class="badge mb-3" style="background: #4f46e5; color: white;">Política</span>
-        <p class="mb-3">Inicio del proceso independentista argentino que marcó el comienzo de la lucha por la independencia del dominio español.</p>
-        <div class="row mb-3">
-            <div class="col-6">
-                <small class="text-muted d-block">Fecha</small>
-                <strong>25 de Mayo de 1810</strong>
-            </div>
-            <div class="col-6">
-                <small class="text-muted d-block">Ubicación</small>
-                <strong>Buenos Aires, Argentina</strong>
-            </div>
-        </div>
-        <div class="d-grid">
-            <label for="modal-bsas" class="btn btn-secondary">Cerrar</label>
-        </div>
-    </div>
-</div>
+    // Variables globales
+    let map; // Lo uso para referenciar el objeto de la libreria de js del mapa
+    let markers = [];
+    let selectedFactId = null;
 
-<input type="checkbox" id="modal-rosario" class="modal-trigger">
-<div class="modal-overlay">
-    <div class="modal-content">
-        <label for="modal-rosario" class="modal-close">&times;</label>
-        <h4 class="mb-3 text-primary">
-            <i class="bi bi-geo-alt me-2"></i>
-            Revolución de Mayo
-        </h4>
-        <span class="badge mb-3" style="background: #4f46e5; color: white;">Política</span>
-        <p class="mb-3">Inicio del proceso independentista argentino que marcó el comienzo de la lucha por la independencia del dominio español.</p>
-        <div class="row mb-3">
-            <div class="col-6">
-                <small class="text-muted d-block">Fecha</small>
-                <strong>25 de Mayo de 1810</strong>
-            </div>
-            <div class="col-6">
-                <small class="text-muted d-block">Ubicación</small>
-                <strong>Rosario, Argentina</strong>
-            </div>
-        </div>
-        <div class="d-grid">
-            <label for="modal-rosario" class="btn btn-secondary">Cerrar</label>
-        </div>
-    </div>
-</div>
+    // Inicializar el mapa
+    function initMap() {
+        map = L.map('map').setView([-20, -60], 3);
 
-<input type="checkbox" id="modal-bahamas" class="modal-trigger">
-<div class="modal-overlay">
-    <div class="modal-content">
-        <label for="modal-bahamas" class="modal-close">&times;</label>
-        <h4 class="mb-3 text-primary">
-            <i class="bi bi-geo-alt me-2"></i>
-            Revolución de Mayo
-        </h4>
-        <span class="badge mb-3" style="background: #4f46e5; color: white;">Política</span>
-        <p class="mb-3">Inicio del proceso independentista argentino que marcó el comienzo de la lucha por la independencia del dominio español.</p>
-        <div class="row mb-3">
-            <div class="col-6">
-                <small class="text-muted d-block">Fecha</small>
-                <strong>25 de Mayo de 1810</strong>
-            </div>
-            <div class="col-6">
-                <small class="text-muted d-block">Ubicación</small>
-                <strong>Rosario, Argentina</strong>
-            </div>
-        </div>
-        <div class="d-grid">
-            <label for="modal-bahamas" class="btn btn-secondary">Cerrar</label>
-        </div>
-    </div>
-</div>
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '© OpenStreetMap contributors'
+        }).addTo(map);
 
-<input type="checkbox" id="modal-berlin" class="modal-trigger">
-<div class="modal-overlay">
-    <div class="modal-content">
-        <label for="modal-berlin" class="modal-close">&times;</label>
-        <h4 class="mb-3 text-primary">
-            <i class="bi bi-geo-alt me-2"></i>
-            Revolución de Mayo
-        </h4>
-        <span class="badge mb-3" style="background: #4f46e5; color: white;">Política</span>
-        <p class="mb-3">Inicio del proceso independentista argentino que marcó el comienzo de la lucha por la independencia del dominio español.</p>
-        <div class="row mb-3">
-            <div class="col-6">
-                <small class="text-muted d-block">Fecha</small>
-                <strong>25 de Mayo de 1810</strong>
-            </div>
-            <div class="col-6">
-                <small class="text-muted d-block">Ubicación</small>
-                <strong>Rosario, Argentina</strong>
-            </div>
-        </div>
-        <div class="d-grid">
-            <label for="modal-berlin" class="btn btn-secondary">Cerrar</label>
-        </div>
-    </div>
-</div>
+        addMarkersToMap();
+        generateFactsList();
+        updateStats();
+    }
 
-<input type="checkbox" id="modal-mexico" class="modal-trigger">
-<div class="modal-overlay">
-    <div class="modal-content">
-        <label for="modal-mexico" class="modal-close">&times;</label>
-        <h4 class="mb-3 text-primary">
-            <i class="bi bi-geo-alt me-2"></i>
-            Revolución de Mayo
-        </h4>
-        <span class="badge mb-3" style="background: #4f46e5; color: white;">Política</span>
-        <p class="mb-3">Inicio del proceso independentista argentino que marcó el comienzo de la lucha por la independencia del dominio español.</p>
-        <div class="row mb-3">
-            <div class="col-6">
-                <small class="text-muted d-block">Fecha</small>
-                <strong>25 de Mayo de 1810</strong>
-            </div>
-            <div class="col-6">
-                <small class="text-muted d-block">Ubicación</small>
-                <strong>Rosario, Argentina</strong>
-            </div>
-        </div>
-        <div class="d-grid">
-            <label for="modal-mexico" class="btn btn-secondary">Cerrar</label>
-        </div>
-    </div>
-</div>
+    // Agregar marcadores al mapa, Los dibuja
+    function addMarkersToMap(factsToShow = historicalFacts) {
+        // Limpiar marcadores existentes
+        markers.forEach(marker => map.removeLayer(marker));
+        markers = [];
 
+        factsToShow.forEach(fact => {
+            const markerIcon = L.divIcon({
+                className: 'custom-marker',
+                html: `<div class="custom-marker marker-${fact.category}">${fact.title.charAt(0)}</div>`,
+                iconSize: [30, 30],
+                iconAnchor: [15, 15]
+            });
+
+            const marker = L.marker([fact.lat, fact.lng], { icon: markerIcon })
+                .addTo(map)
+                .bindPopup(createPopupContent(fact))
+                .on('click', () => selectFact(fact.id));
+
+            markers.push(marker);
+        });
+    }
+
+    // Crear contenido del popup, defino los colores
+    function createPopupContent(fact) {
+        const categoryColors = {
+            politica: '#4f46e5',
+            exploracion: '#059669',
+            guerra: '#dc2626',
+            independencia: '#f59e0b',
+            cientifica: '#7c3aed'
+        };
+
+        return `
+            <div class="popup-content">
+                <h6>${fact.title}</h6>
+                <span class="badge" style="background-color: ${categoryColors[fact.category]}; color: white;">
+                    ${fact.category.charAt(0).toUpperCase() + fact.category.slice(1)}
+                </span>
+                <p class="small mt-2 mb-2">${fact.description}</p>
+                <div class="small text-muted">
+                    <div><i class="bi bi-geo-alt me-1"></i>${fact.location}</div>
+                    <div><i class="bi bi-calendar me-1"></i>${fact.date}</div>
+                </div>
+            </div>
+        `;
+    }
+
+    // Seleccionar un hecho
+    function selectFact(factId) {
+        selectedFactId = factId;
+        const fact = historicalFacts.find(f => f.id === factId);
+
+        // Actualizar vista de detalles
+        document.getElementById('defaultView').classList.add('d-none');
+        document.getElementById('factDetail').classList.remove('d-none');
+
+        document.getElementById('factTitle').textContent = fact.title;
+        document.getElementById('factDescription').textContent = fact.description;
+        document.getElementById('factLocation').textContent = fact.location;
+        document.getElementById('factDate').textContent = fact.date;
+        document.getElementById('factMedia').textContent = fact.multimedia;
+
+        // Actualizar badge de categoría
+        const categoryBadge = document.getElementById('factCategory');
+        const categoryColors = {
+            politica: '#4f46e5',
+            exploracion: '#059669',
+            guerra: '#dc2626',
+            independencia: '#f59e0b',
+            cientifica: '#7c3aed'
+        };
+
+        categoryBadge.textContent = fact.category.charAt(0).toUpperCase() + fact.category.slice(1);
+        categoryBadge.style.backgroundColor = categoryColors[fact.category];
+        categoryBadge.style.color = 'white';
+
+        // Actualizar lista visual
+        updateFactsList();
+
+        // Centrar el mapa en el marcador
+        map.setView([fact.lat, fact.lng], 6);
+    }
+
+    // Limpiar selección
+    function clearSelection() {
+        selectedFactId = null;
+        document.getElementById('defaultView').classList.remove('d-none');
+        document.getElementById('factDetail').classList.add('d-none');
+        updateFactsList();
+        map.setView([-20, -60], 3);
+    }
+
+    // Generar lista de hechos
+    function generateFactsList() {
+        const factsList = document.getElementById('factsList');
+        factsList.innerHTML = '';
+
+        historicalFacts.forEach(fact => {
+            const categoryColors = {
+                politica: 'primary',
+                exploracion: 'success',
+                guerra: 'danger',
+                independencia: 'warning',
+                cientifica: 'secondary'
+            };
+
+            const factElement = document.createElement('div');
+            factElement.className = `fact-list-item ${selectedFactId === fact.id ? 'selected' : ''}`;
+            factElement.onclick = () => selectFact(fact.id);
+
+            factElement.innerHTML = `
+                <div class="d-flex justify-content-between align-items-center">
+                    <div>
+                        <div class="fw-semibold small">${fact.title}</div>
+                        <div class="text-muted small">
+                            <i class="bi bi-geo-alt me-1"></i>${fact.location}
+                        </div>
+                        <div class="text-muted small">
+                            <i class="bi bi-calendar me-1"></i>${fact.date}
+                        </div>
+                    </div>
+                    <span class="badge bg-${categoryColors[fact.category]} text-white">
+                        ${fact.category.charAt(0).toUpperCase() + fact.category.slice(1)}
+                    </span>
+                </div>
+            `;
+
+            factsList.appendChild(factElement);
+        });
+    }
+
+    // Actualizar lista de hechos
+    function updateFactsList() {
+        const factElements = document.querySelectorAll('.fact-list-item');
+        factElements.forEach((element, index) => {
+            if (historicalFacts[index].id === selectedFactId) {
+                element.classList.add('selected');
+            } else {
+                element.classList.remove('selected');
+            }
+        });
+    }
+
+    // Filtrar por categoría
+    function filterByCategory() {
+        const categoryFilter = document.getElementById('categoryFilter').value;
+        const filteredFacts = categoryFilter ?
+            historicalFacts.filter(fact => fact.category === categoryFilter) :
+            historicalFacts;
+
+        addMarkersToMap(filteredFacts);
+        updateEventCount(filteredFacts.length);
+    }
+
+    // Buscar hechos
+    function searchFacts() {
+        const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+        const categoryFilter = document.getElementById('categoryFilter').value;
+
+        let filteredFacts = historicalFacts;
+
+        if (categoryFilter) {
+            filteredFacts = filteredFacts.filter(fact => fact.category === categoryFilter);
+        }
+
+        if (searchTerm) {
+            filteredFacts = filteredFacts.filter(fact =>
+                fact.title.toLowerCase().includes(searchTerm) ||
+                fact.location.toLowerCase().includes(searchTerm) ||
+                fact.description.toLowerCase().includes(searchTerm)
+            );
+        }
+
+        addMarkersToMap(filteredFacts);
+        updateEventCount(filteredFacts.length);
+    }
+
+    // Actualizar contador de eventos
+    function updateEventCount(count) {
+        document.getElementById('eventCount').textContent = `${count} eventos`;
+        document.getElementById('statsEvents').textContent = count;
+    }
+
+    // Actualizar estadísticas
+    function updateStats() {
+        const countries = [...new Set(historicalFacts.map(fact =>
+            fact.location.split(',').pop().trim()
+        ))].length;
+        document.getElementById('statsCountries').textContent = countries;
+    }
+
+    // Event listeners
+    document.getElementById('categoryFilter').addEventListener('change', filterByCategory);
+    document.getElementById('searchInput').addEventListener('input', searchFacts);
+
+    // Inicializar mapa cuando se carga la página
+    document.addEventListener('DOMContentLoaded', initMap);
+</script>
 
 </body>
 </html>

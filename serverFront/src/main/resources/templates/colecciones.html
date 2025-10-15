@@ -30,7 +30,7 @@
             .empty-state { text-align:center; padding:60px 20px; color:#6b7280; }
             .empty-state i { font-size:4rem; margin-bottom:20px; opacity:.5; }
 
-            /* ====== COLORES POR CLASE (no backend) ====== */
+            /* ====== COLORES POR CLASE ====== */
             .color_AZUL    { background: linear-gradient(135deg, #2563eb, #3b82f6); }
             .color_VERDE   { background: linear-gradient(135deg, #059669, #10b981); }
             .color_AMARILLO{ background: linear-gradient(135deg, #d97706, #f59e0b); }
@@ -69,17 +69,21 @@
     <nav class="bg-white border-bottom">
         <div class="container-fluid py-3">
             <ul class="nav nav-pills nav-pills-custom justify-content-center">
-                <li class="nav-item"><a class="nav-link" th:href="@{/dashboard}"><i class="bi bi-file-text me-1"></i> Hechos</a></li>
-                <li class="nav-item"><a class="nav-link" th:href="@{/mapa}"><i class="bi bi-map me-1"></i> Mapa</a></li>
-                <li class="nav-item"><a class="nav-link active" th:href="@{/colecciones/get-all}"><i class="bi bi-collection me-1"></i> Colecciones</a></li>
-                <li class="nav-item"><a class="nav-link" th:href="@{/contribuir}"><i class="bi bi-plus me-1"></i> Contribuir</a></li>
                 <li class="nav-item">
-                    <a class="nav-link" th:href="@{/solicitudes}">
+                    <a class="nav-link" href="hecho.html">
+                        <i class="bi bi-file-text me-1"></i> Hechos
+                    </a>
+                </li>
+                <li class="nav-item"><a class="nav-link" href="mapa.html"><i class="bi bi-map me-1"></i> Mapa</a></li>
+                <li class="nav-item"><a class="nav-link active" href="colecciones.html"><i class="bi bi-collection me-1"></i> Colecciones</a></li>
+                <li class="nav-item"><a class="nav-link" href="contribuir.html"><i class="bi bi-plus me-1"></i> Contribuir</a></li>
+                <li class="nav-item">
+                    <a class="nav-link" href="solicitudes.html">
                         <i class="bi bi-clipboard-check me-1"></i> Solicitudes
                         <span class="badge bg-danger ms-1" th:text="${cantidadSolicitudes}">11</span>
                     </a>
                 </li>
-                <li class="nav-item"><a class="nav-link" th:href="@{/gestion}"><i class="bi bi-gear me-1"></i> Gestión</a></li>
+                <li class="nav-item"><a class="nav-link" href="gestion.html"><i class="bi bi-gear me-1"></i> Gestión</a></li>
             </ul>
         </div>
     </nav>
@@ -204,9 +208,9 @@
                             </div>
                         </div>
 
-                        <div class="mb-3" th:if="${c.tags != null and !#lists.isEmpty(c.tags)}">
+                        <div class="mb-3" th:if="${c.categorias != null and !#lists.isEmpty(c.categorias)}">
                             <div class="d-flex flex-wrap gap-1">
-                                <span class="badge bg-secondary" th:each="tag : ${c.tags}" th:text="${tag}">Tag</span>
+                                <span class="badge bg-secondary" th:each="tag : ${c.categorias}" th:text="${categoria}">Categoria</span>
                             </div>
                         </div>
 

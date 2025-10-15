@@ -1,4 +1,4 @@
-<html th:replace="~{layout/base :: html}">
+<html th:replace="~{layout/base :: html}" xmlns:th="http://www.thymeleaf.org">
 <div th:fragment="contenido" class="row">
     <head>
         <meta charset="UTF-8">
@@ -16,13 +16,6 @@
             .fact-card:hover { transform:translateY(-5px); box-shadow:0 8px 25px rgba(0,0,0,0.15); }
             .fact-category { background:#f8f9fa; color:#495057; font-size:.75rem; font-weight:500; border-radius:15px; }
             .fact-multimedia { background:#ffc107; color:#856404; font-size:.75rem; font-weight:500; border-radius:12px; }
-            .modal-checkbox { display:none; }
-            .modal-overlay { position:fixed; inset:0; background:rgba(0,0,0,.5); z-index:1050; opacity:0; visibility:hidden; transition:all .3s ease; display:flex; align-items:center; justify-content:center; }
-            .modal-checkbox:checked + .modal-overlay { opacity:1; visibility:visible; }
-            .modal-content-custom { background:white; border-radius:12px; padding:30px; width:90%; max-width:500px; box-shadow:0 10px 30px rgba(0,0,0,.3); position:relative; transform:translateY(-20px); transition:transform .3s ease; }
-            .modal-checkbox:checked + .modal-overlay .modal-content-custom { transform:translateY(0); }
-            .close-modal { position:absolute; top:15px; right:20px; font-size:24px; color:#666; text-decoration:none; line-height:1; }
-            .close-modal:hover { color:#333; }
             .search-highlight:focus { border-color:var(--primary-color); box-shadow:0 0 0 .2rem rgba(79,70,229,.25); }
             .nav-pills-custom .nav-link { color:#666; border-radius:25px; padding:10px 20px; margin:0 5px; transition:all .3s ease; }
             .nav-pills-custom .nav-link.active { background-color:var(--primary-color); color:white; }
@@ -60,7 +53,7 @@
         <div class="container-fluid py-3">
             <ul class="nav nav-pills nav-pills-custom justify-content-center">
                 <li class="nav-item">
-                    <a class="nav-link active" href="dashboard.html">
+                    <a class="nav-link active" href="hecho.html">
                         <i class="bi bi-file-text me-1"></i> Hechos
                     </a>
                 </li>
@@ -125,8 +118,6 @@
             </div></div></div>
         </div>
 
-        <!-- Grid de Hechos -->
-
         <!-- Estado vacío de Hechos -->
         <div th:if="${hechos == null or #lists.isEmpty(hechos)}" class="text-center py-5">
             <i class="bi bi-file-earmark-text display-1 text-muted"></i>
@@ -138,6 +129,7 @@
             </a>
         </div>
 
+        <!-- Grid de Hechos -->
         <div class="row g-4" th:if="${hechos != null and !#lists.isEmpty(hechos)}">
             <div class="col-md-6 col-lg-4" th:each="hecho : ${hechos}">
                 <div class="card fact-card h-100 border-0 shadow-sm">
@@ -162,58 +154,21 @@
                             <a th:href="@{/detalle/{id}(id=${hecho.id})}" class="btn btn-outline-primary btn-sm">
                                 <i class="bi bi-eye me-1"></i>Ver Detalles
                             </a>
-                            <label th:for="${'report-modal-' + hecho.id}" class="btn btn-report btn-danger btn-sm">
+
+                            <!-- Reportar: ahora navega a la página standalone -->
+                            <a th:href="@{/hechos/{id}/reportar(id=${hecho.id})}"
+                               class="btn btn-report btn-danger btn-sm">
                                 <i class="bi bi-exclamation-triangle me-1"></i>Reportar
-                            </label>
+                            </a>
                         </div>
                     </div>
                 </div>
 
-                <!-- Checkbox + Modal único por hecho -->
-                <input type="checkbox" class="modal-checkbox" th:id="${'report-modal-' + hecho.id}">
-                <div class="modal-overlay">
-                    <div class="modal-content-custom">
-                        <label class="close-modal" th:for="${'report-modal-' + hecho.id}">&times;</label>
-                        <h4 class="mb-3">
-                            <i class="bi bi-exclamation-triangle text-danger me-2"></i>
-                            Reportar: <span th:text="${hecho.titulo}">Revolución de Mayo</span>
-                        </h4>
-                        <form th:action="@{/hechos/{id}/reportar(id=${hecho.id})}" method="post">
-                            <!-- CSRF opcional (si usás Spring Security) -->
-                            <input type="hidden" th:if="${_csrf != null}" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
-
-                            <div class="mb-3">
-                                <label class="form-label fw-semibold">Motivo del reporte</label>
-                                <select class="form-select" name="motivo" required>
-                                    <option value="">Selecciona un motivo</option>
-                                    <option value="informacion-incorrecta">Información incorrecta</option>
-                                    <option value="contenido-inapropiado">Contenido inapropiado</option>
-                                    <option value="spam">Spam</option>
-                                    <option value="violacion-derechos">Violación de derechos</option>
-                                    <option value="otro">Otro</option>
-                                </select>
-                            </div>
-                            <div class="mb-3">
-                                <label class="form-label fw-semibold">Descripción del problema</label>
-                                <textarea class="form-control" name="descripcion" rows="4" maxlength="500"
-                                          placeholder="Describe el problema (máx. 500 caracteres)..." required></textarea>
-                                <div class="form-text text-end">0/500 caracteres</div>
-                            </div>
-                            <div class="d-flex justify-content-end gap-2">
-                                <label class="btn btn-secondary" th:for="${'report-modal-' + hecho.id}">Cancelar</label>
-                                <button type="submit" class="btn btn-danger">
-                                    <i class="bi bi-send me-1"></i>Enviar Reporte
-                                </button>
-                            </div>
-                        </form>
-                    </div>
-                </div>
 
             </div>
         </div>
 
-
-        <!-- Paginación (tu hardcode actual; cuando pages en backend, lo hacemos dinámico) -->
+        <!-- Paginación (hardcode de ejemplo) -->
         <nav aria-label="Navegación de hechos" class="mt-5">
             <ul class="pagination justify-content-center">
                 <li class="page-item disabled">
