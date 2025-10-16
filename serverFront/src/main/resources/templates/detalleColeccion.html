@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title th:text="${coleccion.nombre} + ' — MetaMapa'">Detalle de Colección — MetaMapa</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
+    <style>
+        :root{ --mm-primary:#4f46e5; --mm-muted:#6b7280; }
+        body{background:#f5f7fb;min-height:100vh;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif}
+        .navbar{ background:#ffffff; border-bottom:1px solid #eef2f7; }
+        .brand-pill{width:34px;height:34px;border-radius:10px;background:linear-gradient(135deg,#6b5cff,#8b5cf6);
+          color:#fff;display:inline-flex;align-items:center;justify-content:center;font-weight:800;margin-right:.5rem}
+        .page-wrap{padding:28px 0}
+        .card-elev{background:#fff;border:1px solid #e5e7eb;border-radius:16px;box-shadow:0 10px 24px rgba(2,6,23,.05)}
+        .badge-soft{background:#eef2ff;border:1px solid #e2e8f0;color:#334155}
+        .chip{display:inline-flex;align-items:center;gap:.35rem;padding:.25rem .55rem;border-radius:999px;border:1px solid #e2e8f0;background:#f8fafc}
+        .field-label{font-size:.85rem;color:var(--mm-muted);margin-bottom:.2rem}
+        .btn-ghost{background:transparent;border:1px solid #cbd5e1}
+        .btn-danger-soft{background:#fee2e2;border:1px solid #fecaca;color:#991b1b}
+        .btn-danger-soft:hover{background:#fecaca}
+        .centered-header{max-width:900px;margin:0 auto;text-align:center}
+        .content-narrow{max-width:980px;margin:0 auto}
+        .stat{display:flex;flex-direction:column;align-items:center;padding:10px 0}
+        .stat .num{font-weight:700;font-size:1.15rem}
+        .muted{color:var(--mm-muted)}
+        /* Colores compatibles con tu grid de colecciones */
+        .color_AZUL{ background: linear-gradient(135deg,#2563eb,#3b82f6); }
+        .color_VERDE{ background: linear-gradient(135deg,#059669,#10b981); }
+        .color_AMARILLO{ background: linear-gradient(135deg,#d97706,#f59e0b); }
+        .color_ROJO{ background: linear-gradient(135deg,#dc2626,#ef4444); }
+        .color_CELESTE{ background: linear-gradient(135deg,#0ea5e9,#38bdf8); }
+        .color_GRIS{ background: linear-gradient(135deg,#6b7280,#9ca3af); }
+        .header-ribbon{border-radius:14px; padding:18px; color:#fff; box-shadow:0 8px 24px rgba(2,6,23,.12)}
+    </style>
+</head>
+<body>
+
+<nav class="navbar navbar-expand-lg">
+    <div class="container">
+        <a class="navbar-brand d-flex align-items-center" th:href="@{/}">
+            <span class="brand-pill">M</span><span class="fw-bold">MetaMapa</span>
+        </a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navMain">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div id="navMain" class="collapse navbar-collapse">
+            <ul class="navbar-nav me-auto">
+                <li class="nav-item"><a class="nav-link" th:href="@{/hechos}">Hechos</a></li>
+                <li class="nav-item"><a class="nav-link" th:href="@{/mapa}">Mapa</a></li>
+                <li class="nav-item"><a class="nav-link active" th:href="@{/colecciones}">Colecciones</a></li>
+                <li class="nav-item"><a class="nav-link" th:href="@{/contribuir}">Contribuir</a></li>
+                <li class="nav-item"><a class="nav-link" th:href="@{/solicitudes}">Solicitudes</a></li>
+                <li class="nav-item"><a class="nav-link" th:href="@{/gestion}">Gestión</a></li>
+            </ul>
+            <div class="d-flex align-items-center gap-2">
+                <a class="btn btn-ghost" th:href="@{/colecciones}">
+                    <i class="bi bi-arrow-left me-1"></i> Volver al listado
+                </a>
+                <a class="btn btn-primary" th:href="@{/perfil}">
+                    <i class="bi bi-person-circle me-1"></i> Mi Perfil
+                </a>
+            </div>
+        </div>
+    </div>
+</nav>
+
+<section class="page-wrap">
+    <div class="container content-narrow">
+
+        <!-- Breadcrumb -->
+        <nav aria-label="breadcrumb" class="mb-3">
+            <ol class="breadcrumb justify-content-center">
+                <li class="breadcrumb-item"><a th:href="@{/}">Inicio</a></li>
+                <li class="breadcrumb-item"><a th:href="@{/colecciones}">Colecciones</a></li>
+                <li class="breadcrumb-item active" aria-current="page" th:text="${coleccion.nombre}">Detalle</li>
+            </ol>
+        </nav>
+
+        <!-- Header con color -->
+        <div class="mb-4 centered-header">
+            <div class="header-ribbon"
+                 th:classappend="${coleccion.color} != null ? ' color_' + ${coleccion.color} : ' color_GRIS'">
+                <div class="d-flex flex-wrap justify-content-center align-items-center gap-2 mb-2">
+                    <span class="badge bg-dark-subtle text-dark" th:text="${coleccion.tipo} ?: 'Pública'">Pública</span>
+                    <span class="badge bg-light text-dark border" th:if="${coleccion.estado != null}" th:text="${coleccion.estado}">Activa</span>
+                </div>
+                <h1 class="h3 m-0" th:text="${coleccion.nombre}">Nombre de la colección</h1>
+                <div class="d-flex justify-content-center gap-2 mt-3">
+                    <a class="btn btn-light btn-sm" th:href="@{/colecciones/get/{id}(id=${coleccion.id})}">
+                        <i class="bi bi-arrow-clockwise me-1"></i> Refrescar
+                    </a>
+                    <!-- Único botón Eliminar (solo admin) -->
+                    <button class="btn btn-danger-soft btn-sm" data-bs-toggle="modal" data-bs-target="#modalEliminar"
+                            th:if="${isAdmin}">
+                        <i class="bi bi-trash me-1"></i> Eliminar
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div class="row g-4 justify-content-center">
+
+            <!-- Columna principal -->
+            <div class="col-lg-10">
+                <!-- Descripción -->
+                <div class="card-elev p-4 mb-4">
+                    <h5 class="mb-3 text-center"><i class="bi bi-info-circle me-2"></i>Descripción</h5>
+                    <p class="mb-0" th:text="${coleccion.descripcion}">Descripción de la colección…</p>
+                </div>
+
+                <!-- Metadatos (Categoría a la izquierda, País/Provincia a la derecha) -->
+                <div class="card-elev p-4 mb-4">
+                    <h6 class="text-uppercase text-muted mb-3 text-center">Metadatos</h6>
+                    <div class="row g-3">
+                        <!-- Categoría -->
+                        <div class="col-md-6"
+                             th:if="${coleccion.categoria != null or (coleccion.categorias != null and !#lists.isEmpty(coleccion.categorias))}">
+                            <div class="field-label">Categoría</div>
+                            <div class="d-flex flex-wrap align-items-center gap-2">
+                                <span class="badge badge-soft" th:if="${coleccion.categoria != null}" th:text="${coleccion.categoria}">Categoría</span>
+                                <span class="badge badge-soft" th:each="c : ${coleccion.categorias}" th:if="${coleccion.categorias != null}" th:text="${c}">Categoría</span>
+                            </div>
+                        </div>
+                        <!-- País / Provincia (equivale a tu idea de “Ubicación” junto a Categoría) -->
+                        <div class="col-md-6"
+                             th:if="${coleccion.pais != null or coleccion.provincia != null}">
+                            <div class="field-label">Ubicación</div>
+                            <div class="d-flex flex-wrap align-items-center gap-2">
+                <span class="chip" th:if="${coleccion.pais != null}">
+                  <i class="bi bi-flag"></i>
+                  <span th:text="${coleccion.pais}">País</span>
+                </span>
+                                <span class="chip" th:if="${coleccion.provincia != null}">
+                  <i class="bi bi-geo-alt"></i>
+                  <span th:text="${coleccion.provincia}">Provincia</span>
+                </span>
+                            </div>
+                        </div>
+
+                        <!-- Creador / Última actualización -->
+                        <div class="col-md-6">
+                            <div class="field-label">Creado por</div>
+                            <div th:text="${coleccion.creadoPor} ?: '—'">—</div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="field-label">Última actualización</div>
+                            <div th:text="${coleccion.ultimaActualizacion} ?: '—'">—</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Criterios de Filtrado (como en el alta) -->
+                <div class="card-elev p-4 mb-4">
+                    <h6 class="text-uppercase text-muted mb-3 text-center">Criterios de filtrado</h6>
+                    <div class="row g-3">
+                        <div class="col-md-4">
+                            <div class="field-label">Origen</div>
+                            <div th:text="${coleccion.criterios?.origen ?: 'Cualquiera'}">Cualquiera</div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="field-label">Contenido Multimedia</div>
+                            <div th:text="${coleccion.criterios?.contenidoMultimedia ?: 'Cualquiera'}">Cualquiera</div>
+                        </div>
+                        <div class="col-md-4" th:if="${coleccion.criterios?.tituloContiene != null}">
+                            <div class="field-label">Título (contiene)</div>
+                            <div th:text="${coleccion.criterios.tituloContiene}">—</div>
+                        </div>
+
+                        <div class="col-md-12" th:if="${coleccion.criterios?.descripcionContiene != null}">
+                            <div class="field-label">Descripción (contiene)</div>
+                            <div th:text="${coleccion.criterios.descripcionContiene}">—</div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <div class="field-label">Fecha del Acontecimiento</div>
+                            <div>
+                                <span th:text="${coleccion.criterios?.fechaAcontecimientoDesde != null ? #temporals.format(coleccion.criterios.fechaAcontecimientoDesde, 'dd/MM/yyyy') : '—'}">—</span>
+                                <span class="muted"> a </span>
+                                <span th:text="${coleccion.criterios?.fechaAcontecimientoHasta != null ? #temporals.format(coleccion.criterios.fechaAcontecimientoHasta, 'dd/MM/yyyy') : '—'}">—</span>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="field-label">Fecha de Carga</div>
+                            <div>
+                                <span th:text="${coleccion.criterios?.fechaCargaDesde != null ? #temporals.format(coleccion.criterios.fechaCargaDesde, 'dd/MM/yyyy') : '—'}">—</span>
+                                <span class="muted"> a </span>
+                                <span th:text="${coleccion.criterios?.fechaCargaHasta != null ? #temporals.format(coleccion.criterios.fechaCargaHasta, 'dd/MM/yyyy') : '—'}">—</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Algoritmo de Consenso -->
+                <div class="card-elev p-4 mb-4" th:if="${coleccion.algoritmoConsenso != null}">
+                    <h6 class="text-uppercase text-muted mb-2 text-center">Algoritmo de Consenso</h6>
+                    <div class="d-flex justify-content-center">
+            <span class="badge bg-secondary-subtle text-dark border"
+                  th:text="${coleccion.algoritmoConsenso}">Ninguno</span>
+                    </div>
+                </div>
+
+                <!-- Estadísticas -->
+                <div class="card-elev p-4 mb-4">
+                    <h6 class="text-uppercase text-muted mb-3 text-center">Estadísticas</h6>
+                    <div class="row text-center">
+                        <div class="col-4 stat">
+                            <div class="num" th:text="${coleccion.cantidadHechos} ?: 0">0</div>
+                            <small class="muted">Hechos</small>
+                        </div>
+                        <div class="col-4 stat">
+                            <div class="num" th:text="${coleccion.cantidadPaises} ?: 0">0</div>
+                            <small class="muted">Países</small>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Acciones secundarias -->
+                <div class="d-flex justify-content-center gap-2 mb-4">
+                    <a class="btn btn-outline-secondary" th:href="@{/colecciones}">
+                        <i class="bi bi-list me-1"></i> Volver al listado
+                    </a>
+                    <a class="btn btn-outline-primary" th:href="@{/colecciones/editar/{id}(id=${coleccion.id})}">
+                        <i class="bi bi-pencil me-1"></i> Editar
+                    </a>
+                    <a class="btn btn-outline-success" th:href="@{/colecciones/aplicar/{id}(id=${coleccion.id})}">
+                        <i class="bi bi-play-circle me-1"></i> Ejecutar búsqueda
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Modal eliminar -->
+        <div class="modal fade" id="modalEliminar" tabindex="-1" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header border-0">
+                        <h5 class="modal-title">
+                            <i class="bi bi-exclamation-triangle text-danger me-2"></i>
+                            Confirmar eliminación
+                        </h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+                    </div>
+                    <div class="modal-body">
+                        <p class="mb-0">
+                            Vas a eliminar la colección <strong th:text="${coleccion.nombre}">esta colección</strong>.
+                            Esta acción no se puede deshacer.
+                        </p>
+                    </div>
+                    <div class="modal-footer border-0">
+                        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancelar</button>
+                        <form th:action="@{/colecciones/{id}/eliminar(id=${coleccion.id})}" method="post" class="m-0 p-0">
+                            <input type="hidden" name="_method" value="delete"/>
+                            <input type="hidden" th:if="${_csrf != null}" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+                            <button type="submit" class="btn btn-danger">
+                                <i class="bi bi-trash3 me-1"></i> Eliminar definitivamente
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</section>
+
+<footer class="py-4" style="background:#0b1220;color:#cbd5e1">
+    <div class="container d-flex flex-column flex-md-row justify-content-between align-items-center gap-2">
+        <div class="d-flex align-items-center">
+            <span class="brand-pill me-2">M</span>
+            <div>
+                <div class="fw-semibold">MetaMapa</div>
+                <small class="text-secondary">Sistema de Mapeos Colaborativos</small>
+            </div>
+        </div>
+        <div class="d-flex gap-3">
+            <a href="#" style="color:#cbd5e1;text-decoration:none"><i class="bi bi-file-earmark-text me-1"></i> Términos</a>
+            <a href="#" style="color:#cbd5e1;text-decoration:none"><i class="bi bi-shield-lock me-1"></i> Privacidad</a>
+            <a href="#" style="color:#cbd5e1;text-decoration:none"><i class="bi bi-envelope me-1"></i> Contacto</a>
+        </div>
+        <small class="text-center text-md-end">© 2025 MetaMapa</small>
+    </div>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

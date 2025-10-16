@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title th:text="${hecho.titulo} + ' — MetaMapa'">Detalle del Hecho — MetaMapa</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
+    <style>
+        :root{ --mm-primary:#4f46e5; --mm-muted:#6b7280; }
+        body{background:#f5f7fb;min-height:100vh;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif}
+        .navbar{ background:#ffffff; border-bottom:1px solid #eef2f7; }
+        .brand-pill{width:34px;height:34px;border-radius:10px;background:linear-gradient(135deg,#6b5cff,#8b5cf6);
+          color:#fff;display:inline-flex;align-items:center;justify-content:center;font-weight:800;margin-right:.5rem}
+        .page-wrap{padding:28px 0}
+        .card-elev{background:#fff;border:1px solid #e5e7eb;border-radius:16px;box-shadow:0 10px 24px rgba(2,6,23,.05)}
+        .badge-soft{background:#eef2ff;border:1px solid #e2e8f0;color:#334155}
+        .chip{display:inline-flex;align-items:center;gap:.35rem;padding:.25rem .55rem;border-radius:999px;border:1px solid #e2e8f0;background:#f8fafc}
+        .field-label{font-size:.85rem;color:var(--mm-muted);margin-bottom:.2rem}
+        .btn-ghost{background:transparent;border:1px solid #cbd5e1}
+        .btn-danger-soft{background:#fee2e2;border:1px solid #fecaca;color:#991b1b}
+        .btn-danger-soft:hover{background:#fecaca}
+        .centered-header{max-width:900px;margin:0 auto;text-align:center}
+        .content-narrow{max-width:980px;margin:0 auto}
+        .gallery img{width:100%;height:180px;object-fit:cover;border-radius:10px;border:1px solid #e5e7eb}
+        .muted{color:var(--mm-muted)}
+    </style>
+</head>
+<body>
+
+<nav class="navbar navbar-expand-lg">
+    <div class="container">
+        <a class="navbar-brand d-flex align-items-center" th:href="@{/}">
+            <span class="brand-pill">M</span><span class="fw-bold">MetaMapa</span>
+        </a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navMain">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div id="navMain" class="collapse navbar-collapse">
+            <ul class="navbar-nav me-auto">
+                <li class="nav-item"><a class="nav-link" th:href="@{/hechos}">Hechos</a></li>
+                <li class="nav-item"><a class="nav-link" th:href="@{/mapa}">Mapa</a></li>
+                <li class="nav-item"><a class="nav-link" th:href="@{/colecciones}">Colecciones</a></li>
+                <li class="nav-item"><a class="nav-link" th:href="@{/contribuir}">Contribuir</a></li>
+                <li class="nav-item"><a class="nav-link" th:href="@{/solicitudes}">Solicitudes</a></li>
+                <li class="nav-item"><a class="nav-link" th:href="@{/gestion}">Gestión</a></li>
+            </ul>
+            <div class="d-flex align-items-center gap-2">
+                <a class="btn btn-ghost" th:href="@{/hechos}">
+                    <i class="bi bi-arrow-left me-1"></i> Volver al listado
+                </a>
+                <a class="btn btn-primary" th:href="@{/perfil}">
+                    <i class="bi bi-person-circle me-1"></i> Mi Perfil
+                </a>
+            </div>
+        </div>
+    </div>
+</nav>
+
+<section class="page-wrap">
+    <div class="container content-narrow">
+
+        <!-- Para mostrar donde esta ubicado -->
+        <nav aria-label="breadcrumb" class="mb-3">
+            <ol class="breadcrumb justify-content-center">
+                <li class="breadcrumb-item"><a th:href="@{/}">Inicio</a></li>
+                <li class="breadcrumb-item"><a th:href="@{/hechos}">Hechos</a></li>
+                <li class="breadcrumb-item active" aria-current="page" th:text="${hecho.titulo}">Detalle</li>
+            </ol>
+        </nav>
+
+        <!-- Encabezado (sin ubicación) -->
+        <div class="card-elev p-4 mb-4 centered-header">
+            <div class="d-flex flex-wrap justify-content-center align-items-center gap-2 mb-2">
+                <span class="badge badge-soft" th:if="${hecho.categoria != null}" th:text="${hecho.categoria}">Categoría</span>
+                <span class="badge badge-soft" th:each="c : ${hecho.categorias}" th:if="${hecho.categorias != null}" th:text="${c}">Categoría</span>
+                <span class="badge text-bg-secondary" th:if="${hecho.estado != null}" th:text="${hecho.estado}">Estado</span>
+            </div>
+
+            <h1 class="h3 m-0" th:text="${hecho.titulo}">Título del hecho</h1>
+
+            <div class="d-flex justify-content-center gap-2 mt-3">
+                <a class="btn btn-outline-primary" th:href="@{/detalle/{id}(id=${hecho.id})}">
+                    <i class="bi bi-arrow-clockwise me-1"></i> Refrescar
+                </a>
+                <!-- Eliminar (visible solo para admin) -->
+                <button class="btn btn-danger-soft" data-bs-toggle="modal" data-bs-target="#modalEliminar"
+                        th:if="${isAdmin}">
+                    <i class="bi bi-trash me-1"></i> Eliminar
+                </button>
+            </div>
+        </div>
+
+        <div class="row g-4 justify-content-center">
+            <div class="col-lg-10">
+                <!-- Descripción -->
+                <div class="card-elev p-4 mb-4">
+                    <h5 class="mb-3 text-center"><i class="bi bi-info-circle me-2"></i>Descripción</h5>
+                    <p class="mb-0" th:text="${hecho.descripcion}">
+                        Descripción completa del hecho contribuido…
+                    </p>
+                </div>
+
+                <!-- Datos -->
+                <div class="card-elev p-4 mb-4">
+                    <h6 class="text-uppercase text-muted mb-3 text-center">Datos Hecho</h6>
+                    <div class="row g-3">
+                        <div class="col-md-6">
+                            <div class="field-label">Fecha del acontecimiento</div>
+                            <div th:text="${#temporals.format(hecho.fechaAcontecimiento, 'dd/MM/yyyy')}">—</div>
+                        </div>
+
+                        <div class="col-md-6" th:if="${hecho.fechaFin != null}">
+                            <div class="field-label">Fecha de fin</div>
+                            <div th:text="${#temporals.format(hecho.fechaFin, 'dd/MM/yyyy')}">—</div>
+                        </div>
+
+                        <div class="col-md-6" th:if="${hecho.origen != null}">
+                            <div class="field-label">Origen</div>
+                            <div th:text="${hecho.origen}">Dinámico / Estático / Proxy</div>
+                        </div>
+
+                        <div class="col-md-6" th:if="${hecho.contribuyente != null}">
+                            <div class="field-label">Contribuyente</div>
+                            <div>
+                                <span th:text="${hecho.contribuyente.nombre}">Usuario</span>
+                                <span class="muted" th:if="${hecho.contribuidoEl != null}">
+                  · <i class="bi bi-clock me-1"></i>
+                  <span th:text="${#temporals.format(hecho.contribuidoEl, 'dd/MM/yyyy HH:mm')}">—</span>
+                </span>
+                            </div>
+                        </div>
+
+                        <!-- Categoría -->
+                        <div class="col-md-6"
+                             th:if="${hecho.categoria != null or (hecho.categorias != null and !#lists.isEmpty(hecho.categorias))}">
+                            <div class="field-label">Categoría</div>
+                            <div class="d-flex flex-wrap align-items-center gap-2">
+                                <span class="badge badge-soft" th:if="${hecho.categoria != null}" th:text="${hecho.categoria}">Categoría</span>
+                                <span class="badge badge-soft" th:each="c : ${hecho.categorias}" th:if="${hecho.categorias != null}" th:text="${c}">Categoría</span>
+                            </div>
+                        </div>
+
+                        <!-- Ubicación necesitamos chequear que tipo de ubicacions tenemos, o siempre moistramos ubicacion sin latitud y longitud -->
+                        <div class="col-md-6" th:if="${hecho.ubicacion != null or (hecho.latitud != null and hecho.longitud != null)}">
+                            <div class="field-label">Ubicación</div>
+                            <div class="d-flex flex-column">
+                                <div class="d-flex align-items-center gap-2">
+                                    <i class="bi bi-geo-alt muted"></i>
+                                    <span th:text="${hecho.ubicacion != null ? hecho.ubicacion : '—'}">Ubicación</span>
+                                </div>
+                                <small class="muted mt-1" th:if="${hecho.latitud != null and hecho.longitud != null}">
+                                    <i class="bi bi-compass me-1"></i>
+                                    <span th:text="${hecho.latitud}">-34.60</span>, <span th:text="${hecho.longitud}">-58.38</span>
+                                </small>
+                                <small class="muted mt-1" th:if="${(hecho.latitud == null or hecho.longitud == null) and hecho.ubicacion != null}">
+                                    <a th:href="${'https://www.google.com/maps/search/?api=1&query=' + #urls.encode(hecho.ubicacion)}"
+                                       target="_blank" rel="noopener">Abrir en mapa</a>
+                                </small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Fuentes (si existen) -->
+                <div class="card-elev p-4 mb-4" th:if="${hecho.fuentes != null && !#lists.isEmpty(hecho.fuentes)}">
+                    <h5 class="mb-3 text-center"><i class="bi bi-link-45deg me-2"></i>Fuentes</h5>
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item" th:each="f : ${hecho.fuentes}">
+                            <i class="bi bi-box-arrow-up-right me-2"></i>
+                            <a th:href="${f.url}" th:text="${f.descripcion != null ? f.descripcion : f.url}" target="_blank" rel="noopener">Fuente</a>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- Multimedia tambien si existen chequeo -->
+                <div class="card-elev p-4 mb-4" th:if="${hecho.archivos != null && !#lists.isEmpty(hecho.archivos)}">
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <h5 class="m-0"><i class="bi bi-image me-2"></i>Multimedia</h5>
+                        <span class="badge text-bg-light"><i class="bi bi-folder2 me-1"></i><span th:text="${#lists.size(hecho.archivos)}">0</span> archivos</span>
+                    </div>
+                    <div class="row gallery g-3">
+                        <div class="col-6 col-md-4" th:each="a : ${hecho.archivos}">
+                            <a th:href="${a.url}" target="_blank" rel="noopener" class="d-block">
+                                <img th:if="${#strings.containsIgnoreCase(a.mime,'image')}" th:src="${a.url}" alt="" />
+                                <div th:if="${!#strings.containsIgnoreCase(a.mime,'image')}"
+                                     class="d-flex flex-column align-items-center justify-content-center p-3 border rounded-3">
+                                    <i class="bi bi-file-earmark-text fs-2 mb-1"></i>
+                                    <small th:text="${a.nombre != null ? a.nombre : a.url}">archivo</small>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="d-flex justify-content-center gap-2 mb-4">
+                    <a class="btn btn-outline-secondary" th:href="@{/hechos}">
+                        <i class="bi bi-list me-1"></i> Volver al listado
+                    </a>
+                    <a class="btn btn-outline-danger" th:href="@{/hechos/{id}/reportar(id=${hecho.id})}">
+                        <i class="bi bi-flag me-1"></i> Reportar
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Modal eliminar -->
+        <div class="modal fade" id="modalEliminar" tabindex="-1" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header border-0">
+                        <h5 class="modal-title">
+                            <i class="bi bi-exclamation-triangle text-danger me-2"></i>
+                            Confirmar eliminación
+                        </h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+                    </div>
+                    <div class="modal-body">
+                        <p class="mb-0">
+                            Vas a eliminar el hecho <strong th:text="${hecho.titulo}">este hecho</strong>.
+                            Esta acción no se puede deshacer.
+                        </p>
+                    </div>
+                    <div class="modal-footer border-0">
+                        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancelar</button>
+                        <form th:action="@{/hechos/{id}/eliminar(id=${hecho.id})}" method="post" class="m-0 p-0">
+                            <input type="hidden" name="_method" value="delete"/>
+                            <input type="hidden" th:if="${_csrf != null}" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+                            <button type="submit" class="btn btn-danger">
+                                <i class="bi bi-trash3 me-1"></i> Eliminar definitivamente
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</section>
+
+<footer class="py-4" style="background:#0b1220;color:#cbd5e1">
+    <div class="container d-flex flex-column flex-md-row justify-content-between align-items-center gap-2">
+        <div class="d-flex align-items-center">
+            <span class="brand-pill me-2">M</span>
+            <div>
+                <div class="fw-semibold">MetaMapa</div>
+                <small class="text-secondary">Sistema de Mapeos Colaborativos</small>
+            </div>
+        </div>
+        <div class="d-flex gap-3">
+            <a href="#" style="color:#cbd5e1;text-decoration:none"><i class="bi bi-file-earmark-text me-1"></i> Términos</a>
+            <a href="#" style="color:#cbd5e1;text-decoration:none"><i class="bi bi-shield-lock me-1"></i> Privacidad</a>
+            <a href="#" style="color:#cbd5e1;text-decoration:none"><i class="bi bi-envelope me-1"></i> Contacto</a>
+        </div>
+        <small class="text-center text-md-end">© 2025 MetaMapa</small>
+    </div>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

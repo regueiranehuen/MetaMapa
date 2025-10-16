@@ -1,209 +1,318 @@
 <!DOCTYPE html>
-<html th:replace="~{layout/base :: html}">
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MetaMapa - Sistema de Mapeos Colaborativos</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css" rel="stylesheet">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>MetaMapa — Inicio</title>
+
+    <!-- Bootstrap + Icons -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
+
     <style>
-        :root {
-            --primary-color: #4f46e5;
-            --secondary-color: #667eea;
+        :root{
+          --mm-primary:#6b5cff;
+          --mm-muted:#64748b;
         }
-
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        body{
+          background: radial-gradient(1200px 600px at 50% -150px, #e8ecf6 0%, #f5f7fb 45%, #ffffff 100%);
         }
+        /* NAV */
+        .navbar{ background:#ffffff; border-bottom:1px solid #eef2f7; }
+        .brand-pill{width:36px;height:36px;border-radius:10px;background:linear-gradient(135deg,#6b5cff,#8b5cf6);
+          color:#fff;display:inline-flex;align-items:center;justify-content:center;font-weight:800;margin-right:.5rem}
+        .btn-outline-dark-subtle{border:1px solid #e5e7eb;color:#111827;background:#fff}
+        .btn-outline-dark-subtle:hover{background:#f8fafc}
 
-        .landing-container {
-            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
-            min-height: 100vh;
-        }
+        /* HERO */
+        .hero{padding:64px 0 56px}
+        .hero h1{font-weight:800; letter-spacing:.3px}
+        .hero p.lead{color:#475569}
+        .btn-ghost{background:transparent;border:1px solid #cbd5e1}
 
-        .logo-icon {
-            width: 40px;
-            height: 40px;
-            background: var(--primary-color);
-            border-radius: 8px;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            font-weight: bold;
-            font-size: 18px;
-        }
+        /* SECTIONS */
+        .stats-band{background:linear-gradient(180deg,#f7f8ff 0%,#ffffff 100%)}
+        .stat-card{background:#fff;border:1px solid #eef2f7;border-radius:16px;box-shadow:0 10px 24px rgba(2,6,23,.06)}
+        .feature-card{background:#fff;border:1px solid #eef2f7;border-radius:16px;box-shadow:0 8px 20px rgba(2,6,23,.05);height:100%}
+        .feature-icon{width:56px;height:56px;border-radius:14px;display:flex;align-items:center;justify-content:center;color:#fff;font-size:26px}
+        .icon-blue{background:linear-gradient(135deg,#6366f1,#3b82f6)}
+        .icon-amber{background:linear-gradient(135deg,#f59e0b,#fbbf24)}
+        .icon-pink{background:linear-gradient(135deg,#ec4899,#f472b6)}
 
-        .hero-section {
-            text-align: center;
-            padding: 100px 20px;
-        }
+        /* NOSOTROS */
+        .team-card{background:#fff;border:1px solid #eef2f7;border-radius:16px;box-shadow:0 8px 20px rgba(2,6,23,.05);height:100%}
+        .team-avatar{width:72px;height:72px;border-radius:50%;object-fit:cover;border:3px solid #fff;box-shadow:0 6px 18px rgba(2,6,23,.12)}
+        .avatar-initials{width:72px;height:72px;border-radius:50%;display:flex;align-items:center;justify-content:center;
+          font-weight:700;color:#fff;border:3px solid #fff;box-shadow:0 6px 18px rgba(2,6,23,.12);
+          background:linear-gradient(135deg,#6b5cff,#8b5cf6)}
+        .social a{color:#64748b;margin-right:.5rem}
+        .social a:hover{color:#111827}
+        .badge-soft{background:#f1f5ff;border:1px solid #e2e8f0}
 
-        .hero-title {
-            font-size: 3.5rem;
-            font-weight: bold;
-            color: #333;
-            margin-bottom: 30px;
-            line-height: 1.2;
-        }
-
-        .feature-icon {
-            width: 80px;
-            height: 80px;
-            border-radius: 16px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin: 0 auto 20px;
-            font-size: 36px;
-            color: white;
-        }
-
-        .feature-icon.blue { background: var(--primary-color); }
-        .feature-icon.yellow { background: #f59e0b; }
-        .feature-icon.pink { background: #ec4899; }
-
-        .btn-custom-primary {
-            background-color: var(--primary-color);
-            border-color: var(--primary-color);
-            color: white;
-        }
-
-        .btn-custom-primary:hover {
-            background-color: #3730a3;
-            border-color: #3730a3;
-            color: white;
-            transform: translateY(-2px);
-        }
-
-        .card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 30px rgba(0,0,0,0.15);
-            transition: all 0.3s ease;
-        }
-
-        .btn:hover {
-            transform: translateY(-2px);
-            transition: all 0.2s ease;
-        }
-
-        @media (max-width: 768px) {
-            .hero-title {
-                font-size: 2.5rem;
-            }
-        }
+        /* Footer */
+        footer{background:#0b1220;color:#cbd5e1}
+        footer a{color:#cbd5e1;text-decoration:none}
+        footer a:hover{opacity:.9}
     </style>
 </head>
-
 <body>
 
-<div class="landing-container">
-    <header class="container-fluid py-3">
-        <div class="row align-items-center">
-            <div class="col-md-6">
-                <a href="index.html" class="text-decoration-none text-dark d-flex align-items-center">
-                    <div class="logo-icon me-2">M</div>
-                    <span class="fs-3 fw-bold">MetaMapa</span>
+<!-- NAVBAR -->
+<nav class="navbar navbar-expand-lg">
+    <div class="container">
+        <a class="navbar-brand d-flex align-items-center" href="index.html">
+            <span class="brand-pill">M</span><span class="fw-bold">MetaMapa</span>
+        </a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navMain">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div id="navMain" class="collapse navbar-collapse">
+            <ul class="navbar-nav me-auto">
+                <li class="nav-item"><a class="nav-link" href="hecho.html">Hechos</a></li>
+                <li class="nav-item"><a class="nav-link" href="mapa.html">Mapa</a></li>
+                <li class="nav-item"><a class="nav-link" href="colecciones.html">Colecciones</a></li>
+                <li class="nav-item"><a class="nav-link" href="contribuir.html">Contribuir</a></li>
+                <li class="nav-item"><a class="nav-link" href="solicitudes.html">Solicitudes</a></li>
+                <li class="nav-item"><a class="nav-link" href="gestion.html">Gestión</a></li>
+            </ul>
+            <div class="d-flex align-items-center gap-2">
+                <!-- <a class="btn btn-outline-dark-subtle" th:href="@{/login}" th:if="${logueado == false}"> -->
+                <a class="btn btn-primary" href="login.html">
+                    <i class="bi bi-box-arrow-in-right me-1"></i> Iniciar Sesión
+                </a>
+                <!-- <a class="btn btn-primary" th:href="@{/perfil}" th:if="${logueado == true}"> -->
+                <a class="btn btn-primary" href="perfil.html">
+                    <i class="bi bi-person-circle me-1"></i> Mi Perfil
                 </a>
             </div>
-            <div class="col-md-6 text-end">
-                <a href="hecho.html?mode=anonimo" class="btn btn-outline-secondary me-2">Acceso Anónimo</a>
-                <a href="login.html" class="btn btn-custom-primary">Iniciar Sesión</a>
-            </div>
         </div>
-    </header>
+    </div>
+</nav>
 
-    <main>
-        <section class="hero-section">
-            <div class="container">
-                <h1 class="hero-title">Recopilación, Visualización y Mapeo Colaborativo de Información</h1>
-                <p class="lead fs-5 text-muted mb-5">
-                    MetaMapa es un sistema de código abierto diseñado para ONGs, universidades y
-                    organismos estatales que permite la gestión colaborativa de información
-                    geolocalizada de manera segura y transparente.
-                </p>
-                <div class="d-flex justify-content-center gap-3 flex-wrap">
-                    <a href="hecho.html" class="btn btn-dark btn-lg px-4">
-                        <i class="bi bi-eye me-2"></i>Explorar Hechos
-                    </a>
-                    <a href="login.html" class="btn btn-outline-dark btn-lg px-4">
-                        <i class="bi bi-plus-circle me-2"></i>Contribuir
-                    </a>
+<!-- HERO -->
+<section class="hero text-center">
+    <div class="container">
+        <h1 class="display-4">
+            Recopilación, Visualización y Mapeo<br>
+            Colaborativo de Información
+        </h1>
+        <p class="lead mt-3">
+            MetaMapa es un sistema de código abierto diseñado para ONGs, universidades y organismos estatales
+            que permite la gestión colaborativa de información geolocalizada de manera segura y transparente.
+        </p>
+        <div class="d-flex justify-content-center gap-2 mt-3">
+            <a href="hecho.html" class="btn btn-dark btn-lg">
+                <i class="bi bi-compass me-1"></i> Explorar Hechos
+            </a>
+            <a href="contribuir.html" class="btn btn-ghost btn-lg">
+                <i class="bi bi-plus-lg me-1"></i> Contribuir
+            </a>
+        </div>
+    </div>
+</section>
+
+<!-- BANDAS / CONTENIDOS EXTRA -->
+<section class="stats-band py-4">
+    <div class="container">
+        <div class="row g-3">
+            <div class="col-6 col-md-3">
+                <div class="stat-card p-3 text-center">
+                    <div class="h3 m-0">12k+</div>
+                    <small class="text-muted">Hechos</small>
                 </div>
             </div>
-        </section>
-
-        <section class="container my-5 py-5">
-            <h2 class="text-center fs-1 mb-5">Funcionalidades Principales</h2>
-            <div class="row g-4">
-                <div class="col-md-4">
-                    <div class="card h-100 border-0 shadow-sm text-center p-4">
-                        <div class="feature-icon blue mx-auto">
-                            <i class="bi bi-eye"></i>
-                        </div>
-                        <h3 class="card-title">Visualización</h3>
-                        <p class="card-text">
-                            Accede a mapas interactivos con hechos geolocalizados. Filtra por categoría, fecha,
-                            ubicación y fuente para encontrar información relevante.
-                        </p>
-                        <a href="dashboard.html" class="btn btn-custom-primary mt-auto">
-                            <i class="bi bi-arrow-right me-1"></i>Ver Hechos
-                        </a>
-                    </div>
-                </div>
-                <div class="col-md-4">
-                    <div class="card h-100 border-0 shadow-sm text-center p-4">
-                        <div class="feature-icon yellow mx-auto">
-                            <i class="bi bi-plus-circle"></i>
-                        </div>
-                        <h3 class="card-title">Contribución</h3>
-                        <p class="card-text">
-                            Sube nuevos hechos con información multimedia, solicita modificaciones y reporta contenido
-                            inapropiado de manera colaborativa.
-                        </p>
-                        <a href="contribuir.html" class="btn btn-warning text-white mt-auto">
-                            <i class="bi bi-arrow-right me-1"></i>Contribuir
-                        </a>
-                    </div>
-                </div>
-                <div class="col-md-4">
-                    <div class="card h-100 border-0 shadow-sm text-center p-4">
-                        <div class="feature-icon pink mx-auto">
-                            <i class="bi bi-gear"></i>
-                        </div>
-                        <h3 class="card-title">Administración</h3>
-                        <p class="card-text">
-                            Gestiona colecciones, evalúa solicitudes, configura algoritmos de consenso y mantiene la
-                            calidad de la información.
-                        </p>
-                        <a href="login.html" class="btn" style="background: #ec4899; color: white;" class="mt-auto">
-                            <i class="bi bi-arrow-right me-1"></i>Administrar
-                        </a>
-                    </div>
+            <div class="col-6 col-md-3">
+                <div class="stat-card p-3 text-center">
+                    <div class="h3 m-0">1.2k</div>
+                    <small class="text-muted">Colecciones</small>
                 </div>
             </div>
-        </section>
-    </main>
-
-    <footer class="container-fluid bg-white py-4 mt-5">
-        <div class="container">
-            <div class="row align-items-center">
-                <div class="col-md-6">
-                    <div class="d-flex align-items-center">
-                        <div class="logo-icon me-2">M</div>
-                        <span class="fw-bold">MetaMapa</span>
-                        <span class="text-muted ms-2">© 2025</span>
-                    </div>
+            <div class="col-6 col-md-3">
+                <div class="stat-card p-3 text-center">
+                    <div class="h3 m-0">98%</div>
+                    <small class="text-muted">Solicitudes resueltas</small>
                 </div>
-                <div class="col-md-6 text-end">
-                    <a href="#" class="text-decoration-none text-muted me-3">Términos</a>
-                    <a href="#" class="text-decoration-none text-muted me-3">Privacidad</a>
-                    <a href="#" class="text-decoration-none text-muted">Contacto</a>
+            </div>
+            <div class="col-6 col-md-3">
+                <div class="stat-card p-3 text-center">
+                    <div class="h3 m-0">999</div>
+                    <small class="text-muted">Organizaciones</small>
                 </div>
             </div>
         </div>
-    </footer>
-</div>
+    </div>
+</section>
 
+<section class="py-5">
+    <div class="container">
+        <div class="row g-4">
+            <div class="col-md-4">
+                <div class="feature-card p-4 h-100">
+                    <div class="feature-icon icon-blue mb-3"><i class="bi bi-window-sidebar"></i></div>
+                    <h5 class="fw-bold">Visualización Interactiva</h5>
+                    <p class="text-muted mb-3">Explorá el mapa con filtros combinados por fecha, zona y fuente. Guardá y comparte tus hallazgos.</p>
+                    <a href="mapa.html" class="btn btn-outline-primary"><i class="bi bi-map me-1"></i> Ver mapa</a>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="feature-card p-4 h-100">
+                    <div class="feature-icon icon-amber mb-3"><i class="bi bi-stack"></i></div>
+                    <h5 class="fw-bold">Contribución Colaborativa</h5>
+                    <p class="text-muted mb-3">Subí nuevos hechos, agregá contenido multimedia y pedí cambios para mejorar la calidad.</p>
+                    <a href="contribuir.html" class="btn btn-warning text-dark"><i class="bi bi-plus-circle me-1"></i> Contribuir</a>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="feature-card p-4 h-100">
+                    <div class="feature-icon icon-pink mb-3"><i class="bi bi-gear-wide-connected"></i></div>
+                    <h5 class="fw-bold">Gestión Avanzada</h5>
+                    <p class="text-muted mb-3">Evaluá solicitudes, configurá consenso y mantené la integridad con flujos claros.</p>
+                    <a href="gestion.html" class="btn btn-primary" style="background:#ec4899;border-color:#ec4899"><i class="bi bi-sliders me-1"></i> Administrar</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Creadores -->
+<section class="pb-5">
+    <div class="container">
+        <h2 class="h4 fw-bold text-center mb-4">Creadores</h2>
+        <div class="row g-4 justify-content-center">
+
+            <div class="col-12 col-sm-6 col-lg-3">
+                <div class="team-card p-4 text-center h-100">
+                    <!-- Con foto: -->
+                    <!-- <img src="/images/team/lucas.jpg" alt="Lucas Varela" class="team-avatar mb-3"> -->
+                    <!-- Sin foto (iniciales): -->
+                    <div class="avatar-initials mx-auto mb-3">LV</div>
+
+                    <h6 class="fw-bold mb-1">Kukitas</h6>
+                    <div class="text-muted small mb-3">Ingeniero Naval</div>
+                    <div class="social">
+                        <a href="https://github.com/LucasVarelaa?tab=overview&from=2024-08-01&to=2024-08-21" aria-label="GitHub"><i class="bi bi-github"></i></a>
+                        <a href="https://www.linkedin.com/in/lucas-varela-056346265/" aria-label="LinkedIn"><i class="bi bi-linkedin"></i></a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-12 col-sm-6 col-lg-3">
+                <div class="team-card p-4 text-center h-100">
+                    <!-- <img src="/images/team/nehuen.jpg" alt="Nehuen" class="team-avatar mb-3"> -->
+                    <div class="avatar-initials mx-auto mb-3">NR</div>
+                    <h6 class="fw-bold mb-1">Newi Uwu</h6>
+                    <div class="text-muted small mb-3">Ingeniero Mecanico</div>
+                    <div class="social">
+                        <a href="https://github.com/regueiranehuen"><i class="bi bi-github"></i></a>
+                        <a href="https://www.linkedin.com/in/nehuen-regueira/"><i class="bi bi-linkedin"></i></a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-12 col-sm-6 col-lg-3">
+                <div class="team-card p-4 text-center h-100">
+                    <!-- <img src="/images/team/ana.jpg" alt="Ana" class="team-avatar mb-3"> -->
+                    <div class="avatar-initials mx-auto mb-3">LB</div>
+                    <h6 class="fw-bold mb-1">Kukita</h6>
+                    <div class="text-muted small mb-3">Ingeniero Aeroespacial</div>
+                    <div class="social">
+                        <a href="https://github.com/LuccaBertani"><i class="bi bi-github"></i></a>
+                        <a href="https://www.linkedin.com/in/lucca-bertani-25168135a/"><i class="bi bi-linkedin"></i></a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-12 col-sm-6 col-lg-3">
+                <div class="team-card p-4 text-center h-100">
+                    <!-- <img src="/images/team/matias.jpg" alt="Matías" class="team-avatar mb-3"> -->
+                    <div class="avatar-initials mx-auto mb-3">MI</div>
+                    <h6 class="fw-bold mb-1">Mauro</h6>
+                    <div class="text-muted small mb-3">Ingeniero</div>
+                    <div class="social">
+                        <a href="#"><i class="bi bi-github"></i></a>
+                        <a href="#"><i class="bi bi-linkedin"></i></a>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</section>
+
+
+
+<section class="pb-5">
+    <div class="container">
+        <h2 class="h4 fw-bold text-center mb-4">Preguntas Frecuentes</h2>
+        <div class="row justify-content-center">
+            <div class="col-lg-8">
+                <div class="accordion" id="faq">
+                    <div class="accordion-item">
+                        <h2 class="accordion-header" id="q1">
+                            <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#a1">
+                                ¿Necesito estar logueado para contribuir?
+                            </button>
+                        </h2>
+                        <div id="a1" class="accordion-collapse collapse show" data-bs-parent="#faq">
+                            <div class="accordion-body">Sí. Podés explorar sin cuenta, pero para subir hechos o solicitar cambios necesitás iniciar sesión.</div>
+                        </div>
+                    </div>
+                    <div class="accordion-item">
+                        <h2 class="accordion-header" id="q2">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#a2">
+                                ¿Cómo se verifica la calidad de la información?
+                            </button>
+                        </h2>
+                        <div id="a2" class="accordion-collapse collapse" data-bs-parent="#faq">
+                            <div class="accordion-body">Contamos con revisiones por pares y reglas de consenso configurables para garantizar integridad y trazabilidad.</div>
+                        </div>
+                    </div>
+                    <div class="accordion-item">
+                        <h2 class="accordion-header" id="q3">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#a3">
+                                ¿Puedo exportar datos?
+                            </button>
+                        </h2>
+                        <div id="a3" class="accordion-collapse collapse" data-bs-parent="#faq">
+                            <div class="accordion-body">Sí, desde Gestión podés exportar colecciones y reportes en formatos abiertos.</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Para contribuir -->
+<section class="pb-5">
+    <div class="container">
+        <div class="p-4 p-md-5 bg-light rounded-4 text-center border">
+            <h3 class="fw-bold mb-2">¿Listo para colaborar?</h3>
+            <p class="text-muted mb-4">Unite y ayudanos a mantener el mapa vivo y confiable.</p>
+            <a href="contribuir.html" class="btn btn-primary btn-lg"><i class="bi bi-plus-circle me-1"></i> Contribuir ahora</a>
+        </div>
+    </div>
+</section>
+
+
+<footer class="py-4 mt-auto">
+    <div class="container d-flex flex-column flex-md-row justify-content-between align-items-center gap-2">
+        <div class="d-flex align-items-center">
+            <span class="brand-pill me-2">M</span>
+            <div>
+                <div class="fw-semibold">MetaMapa</div>
+                <small class="text-secondary">Sistema de Mapeos Colaborativos</small>
+            </div>
+        </div>
+        <div class="d-flex gap-3">
+            <a href="#"><i class="bi bi-file-earmark-text me-1"></i> Términos</a>
+            <a href="#"><i class="bi bi-shield-lock me-1"></i> Privacidad</a>
+            <a href="#"><i class="bi bi-envelope me-1"></i> Contacto</a>
+        </div>
+        <small class="text-center text-md-end">© 2025 MetaMapa</small>
+    </div>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
