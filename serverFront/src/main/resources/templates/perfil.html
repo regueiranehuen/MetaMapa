@@ -191,6 +191,39 @@
                     <li>Si cambiás tu usuario, tus firmas visibles en los hechos se actualizan.</li>
                 </ul>
             </div>
+            <!-- Mensajes del sistema -->
+            <div id="mensajes" class="profile-card p-4 mt-3">
+                <div class="d-flex justify-content-between align-items-center mb-2">
+                    <h6 class="mb-0"><i class="bi bi-inbox me-2"></i>Mensajes del sistema</h6>
+                </div>
+
+                <!-- Estado vacío -->
+                <div th:if="${mensajes == null or #lists.isEmpty(mensajes)}" class="text-muted small">
+                    No tenés mensajes por ahora.
+                </div>
+
+                <!-- Lista -->
+                <div class="list-group" th:if="${mensajes != null and !#lists.isEmpty(mensajes)}">
+                    <a class="list-group-item list-group-item-action d-flex justify-content-between align-items-start"
+                       th:each="m : ${mensajes}">
+                        <div class="me-3">
+                            <div class="fw-semibold" th:text="${m.asunto}">Solicitud rechazada</div>
+                            <div class="text-muted small" th:text="${m.cuerpo}">
+                                Tu solicitud sobre “Revolución Cubana” fue rechazada: falta fuente verificable.
+                            </div>
+                            <div class="text-muted small mt-1">
+                                <i class="bi bi-clock me-1"></i><span th:text="${#temporals.format(m.fecha,'dd/MM/yyyy HH:mm')}">hace 2 h</span>
+                            </div>
+                        </div>
+                        <div class="text-nowrap">
+                            <span class="badge bg-primary" th:if="${!m.leido}">Nuevo</span>
+                            <form th:action="@{/perfil/mensajes/{id}/leer(id=${m.id})}" method="post" class="d-inline ms-2">
+                                <button class="btn btn-sm btn-outline-secondary">Marcar leído</button>
+                            </form>
+                        </div>
+                    </a>
+                </div>
+            </div>
         </div>
     </div>
 </main>
