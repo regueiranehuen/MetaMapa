@@ -1,11 +1,11 @@
 package modulos.Front.services;
 
-import modulos.Front.dtos.output.CategoriaDto;
-import modulos.Front.dtos.output.PaisDto;
+import modulos.Front.dtos.output.CategoriaDTO;
+import modulos.Front.dtos.output.PaisDTO;
 import modulos.Front.dtos.input.GetHechosColeccionInputDTO;
 import modulos.Front.dtos.input.ImportacionHechosInputDTO;
 import modulos.Front.dtos.input.SolicitudHechoInputDTO;
-import modulos.Front.dtos.output.ProvinciaDto;
+import modulos.Front.dtos.output.ProvinciaDTO;
 import modulos.Front.dtos.output.VisualizarHechosOutputDTO;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -42,14 +42,14 @@ public class HechosService {
     }
 
     public ResponseEntity<?> getPaises() {
-        return webApiCallerService.getListSinToken(this.hechoServiceUrl + "/public/paises/get-all", PaisDto.class);
+        return webApiCallerService.getListSinToken(this.hechoServiceUrl + "/public/paises/get-all", PaisDTO.class);
     }
 
     public ResponseEntity<?> getProvinciasByIdPais(Long id_pais) {
-        return webApiCallerService.getListSinToken(this.hechoServiceUrl + "/public/provincias?id_pais="+id_pais, ProvinciaDto.class);
+        return webApiCallerService.getListSinToken(this.hechoServiceUrl + "/public/provincias?id_pais="+id_pais, ProvinciaDTO.class);
     }
 
     public ResponseEntity<?> getCategorias() {
-        return webApiCallerService.getListSinToken(this.hechoServiceUrl + "/public/categorias/get-all", CategoriaDto.class);
+        return webApiCallerService.getListSinToken(this.hechoServiceUrl + "/public/categorias/get-all", CategoriaDTO.class);
     }
 }
