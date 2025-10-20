@@ -2,10 +2,10 @@ package modulos.Front.controllers;
 
 import lombok.AllArgsConstructor;
 import modulos.Front.BodyToListConverter;
-import modulos.Front.dtos.output.CategoriaDto;
+import modulos.Front.dtos.output.CategoriaDTO;
 import modulos.Front.dtos.input.SolicitudHechoInputDTO;
-import modulos.Front.dtos.output.PaisDto;
-import modulos.Front.dtos.output.ProvinciaDto;
+import modulos.Front.dtos.output.PaisDTO;
+import modulos.Front.dtos.output.ProvinciaDTO;
 import modulos.Front.services.HechosService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -99,19 +99,19 @@ public class HomeController {
             return "redirect:/404";
         }
 
-        List<PaisDto> paises = BodyToListConverter.bodyToList(rtaPaises, PaisDto.class);
-        List<CategoriaDto> categorias = BodyToListConverter.bodyToList(rtaCategorias, CategoriaDto.class);
+        List<PaisDTO> paises = BodyToListConverter.bodyToList(rtaPaises, PaisDTO.class);
+        List<CategoriaDTO> categorias = BodyToListConverter.bodyToList(rtaCategorias, CategoriaDTO.class);
         model.addAttribute("paises", paises);
         model.addAttribute("categorias", categorias);
 
         // Provincias si ya hay país seleccionado
-        List<ProvinciaDto> provincias = java.util.Collections.emptyList();
+        List<ProvinciaDTO> provincias = java.util.Collections.emptyList();
         if (solicitudHecho != null && solicitudHecho.getId_pais() != null) {
             ResponseEntity<?> rtaProv = hechosService.getProvinciasByIdPais(solicitudHecho.getId_pais());
             if (!rtaProv.getStatusCode().is2xxSuccessful()) {
                 return "redirect:/404";
             }
-            provincias = BodyToListConverter.bodyToList(rtaProv, ProvinciaDto.class);
+            provincias = BodyToListConverter.bodyToList(rtaProv, ProvinciaDTO.class);
         }
         model.addAttribute("provincias", provincias);
 
