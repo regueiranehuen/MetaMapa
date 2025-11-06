@@ -27,9 +27,13 @@
 ---
 
 <p align="center">
+  <img src="img/4.png" width=100% alt="Ejemplo 4"/>
+</p>
+
+---
+
+<p align="center">
   <img src="img/3.png" width=100% alt="Ejemplo 3"/>
 </p>
 
-<p align="center">
-  <img src="img/4.png" width=100% alt="Ejemplo 4"/>
-</p>
+
