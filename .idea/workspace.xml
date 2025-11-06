@@ -4,17 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="f850432b-1600-446e-abba-2862d1cc44e3" name="Changes" comment="Merge branch 'entrega_6' of https://github.com/dds-utn/2025-tpa-mi-no-grupo-17 into entrega_6&#10;&#10;# Conflicts:&#10;#&#9;.idea/workspace.xml">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/serverBack/src/main/java/modulos/agregacion/controllers/SolicitudHechoController.java" beforeDir="false" afterPath="$PROJECT_DIR$/serverBack/src/main/java/modulos/agregacion/controllers/SolicitudHechoController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/serverBack/src/main/java/modulos/agregacion/repositories/DbDinamica/ISolicitudRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/serverBack/src/main/java/modulos/agregacion/repositories/DbDinamica/ISolicitudRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/serverBack/src/main/java/modulos/agregacion/services/SolicitudHechoService.java" beforeDir="false" afterPath="$PROJECT_DIR$/serverBack/src/main/java/modulos/agregacion/services/SolicitudHechoService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/serverBack/target/classes/modulos/agregacion/controllers/SolicitudHechoController.class" beforeDir="false" afterPath="$PROJECT_DIR$/serverBack/target/classes/modulos/agregacion/controllers/SolicitudHechoController.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/serverBack/target/classes/modulos/agregacion/repositories/DbDinamica/ISolicitudRepository.class" beforeDir="false" afterPath="$PROJECT_DIR$/serverBack/target/classes/modulos/agregacion/repositories/DbDinamica/ISolicitudRepository.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/serverBack/target/classes/modulos/agregacion/services/SolicitudHechoService.class" beforeDir="false" afterPath="$PROJECT_DIR$/serverBack/target/classes/modulos/agregacion/services/SolicitudHechoService.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/serverFront/src/main/resources/templates/solicitudes.html" beforeDir="false" afterPath="$PROJECT_DIR$/serverFront/src/main/resources/templates/solicitudes.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/serverFront/target/classes/templates/solicitudes.html" beforeDir="false" afterPath="$PROJECT_DIR$/serverFront/target/classes/templates/solicitudes.html" afterDir="false" />
-    </list>
+    <list default="true" id="f850432b-1600-446e-abba-2862d1cc44e3" name="Changes" comment="Merge branch 'entrega_6' of https://github.com/dds-utn/2025-tpa-mi-no-grupo-17 into entrega_6&#10;&#10;# Conflicts:&#10;#&#9;.idea/workspace.xml" />
     <list id="3bb68fa4-4cba-440f-a626-e70e60e396a9" name="Changes by germa" comment="" />
     <list id="f13608ce-ca7b-462a-b1c3-e6566403784d" name="Changes by Lucas" comment="" />
     <list id="bd2f9c59-412c-4d85-95af-559cd31f93a3" name="Changes by merce" comment="" />
@@ -63,36 +53,36 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;Application.ServerBackApplication.executor&quot;: &quot;Run&quot;,
-    &quot;Application.ServerFrontApplication.executor&quot;: &quot;Run&quot;,
-    &quot;DefaultHtmlFileTemplate&quot;: &quot;HTML File&quot;,
-    &quot;RequestMappingsPanelOrder0&quot;: &quot;0&quot;,
-    &quot;RequestMappingsPanelOrder1&quot;: &quot;1&quot;,
-    &quot;RequestMappingsPanelWidth0&quot;: &quot;75&quot;,
-    &quot;RequestMappingsPanelWidth1&quot;: &quot;75&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
-    &quot;Spring Boot.MetaMapaApplication (1).executor&quot;: &quot;Run&quot;,
-    &quot;Spring Boot.MetaMapaApplication.executor&quot;: &quot;Run&quot;,
-    &quot;Spring Boot.ServerBackApplication.executor&quot;: &quot;Run&quot;,
-    &quot;Spring Boot.ServerFrontApplication.executor&quot;: &quot;Run&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;entrega__6&quot;,
-    &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
-    &quot;junie.onboarding.icon.badge.shown&quot;: &quot;true&quot;,
-    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;: &quot;C:/Users/nehue/Escritorio/Facultad/Diseño de Sistemas/2025-tpa-mi-no-grupo-17/serverBack/src/main/java/modulos/shared/dtos/output&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;run.configurations.included.in.services&quot;: &quot;true&quot;,
-    &quot;to.speed.mode.migration.done&quot;: &quot;true&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "Application.ServerBackApplication.executor": "Run",
+    "Application.ServerFrontApplication.executor": "Run",
+    "DefaultHtmlFileTemplate": "HTML File",
+    "RequestMappingsPanelOrder0": "0",
+    "RequestMappingsPanelOrder1": "1",
+    "RequestMappingsPanelWidth0": "75",
+    "RequestMappingsPanelWidth1": "75",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.git.unshallow": "true",
+    "Spring Boot.MetaMapaApplication (1).executor": "Run",
+    "Spring Boot.MetaMapaApplication.executor": "Run",
+    "Spring Boot.ServerBackApplication.executor": "Run",
+    "Spring Boot.ServerFrontApplication.executor": "Run",
+    "git-widget-placeholder": "entrega__6",
+    "ignore.virus.scanning.warn.message": "true",
+    "junie.onboarding.icon.badge.shown": "true",
+    "kotlin-language-version-configured": "true",
+    "last_opened_file_path": "C:/Users/nehue/Escritorio/MetaMapa",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "run.configurations.included.in.services": "true",
+    "to.speed.mode.migration.done": "true",
+    "vue.rearranger.settings.migration": "true"
   }
-}</component>
+}]]></component>
   <component name="ReactorSettings">
     <option name="notificationShown" value="true" />
   </component>
@@ -326,6 +316,7 @@
       <workItem from="1762293536170" duration="4184000" />
       <workItem from="1762365499111" duration="11095000" />
       <workItem from="1762412710394" duration="2431000" />
+      <workItem from="1762453620657" duration="300000" />
     </task>
     <task id="LOCAL-00001" summary="Merge branch 'entrega_6' of https://github.com/dds-utn/2025-tpa-mi-no-grupo-17 into entrega_6&#10;&#10;# Conflicts:&#10;#&#9;.idea/workspace.xml">
       <option name="closed" value="true" />
