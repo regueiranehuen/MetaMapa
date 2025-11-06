@@ -41,7 +41,6 @@ public class CustomAuthProvider implements AuthenticationProvider {
     @Override
     public Authentication authenticate(Authentication authentication) throws AuthenticationException {
 
-        System.out.println("SOY UNA CAGADA DE LABURO");
 
         String username = authentication.getName(); // Llega del form de login
         String password = authentication.getCredentials().toString();

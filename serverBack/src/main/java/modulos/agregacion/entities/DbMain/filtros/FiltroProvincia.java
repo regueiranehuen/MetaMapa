@@ -48,9 +48,6 @@ public class FiltroProvincia extends Filtro{
             return (root, query, cb) -> cb.disjunction(); // Nunca se cumple
         }
 
-        for (Long id : ubicaciones_ids) {
-            System.out.println("SOY UNA MIERDA EN PROVINCIA: " + id);
-        }
 
         return (root, query, cb) -> {
             Path<Long> pathUbicacionId = root

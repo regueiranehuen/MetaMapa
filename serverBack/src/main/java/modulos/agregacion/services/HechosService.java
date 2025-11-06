@@ -396,10 +396,6 @@ Para colecciones no modificadas → reviso solo los hechos cambiados
 
             hechosFiltrados.addAll(hechosFiltradosEstatica);
 
-            for (HechoDinamica hd: hechosFiltradosDinamica){
-                System.out.println("HECHO DE MIERDA CON TITULO: " + hd.getAtributosHecho().getTitulo());
-            }
-
             hechosFiltrados.addAll(hechosFiltradosDinamica);
             hechosFiltrados.addAll(hechosFiltradosProxy);
 
@@ -410,9 +406,7 @@ Para colecciones no modificadas → reviso solo los hechos cambiados
             List<VisualizarHechosOutputDTO> outputDTO = hechosFiltrados.stream()
                     .map(hecho -> crearHechoDto(hecho, VisualizarHechosOutputDTO.class))
                     .toList();
-            for (VisualizarHechosOutputDTO hecho: outputDTO){
-                System.out.println("HECHO DE MIERDA CON TITULO: " + hecho.getTitulo());
-            }
+
             return ResponseEntity.status(HttpStatus.OK).body(outputDTO);
         } else if (OrigenConexion.fromCodigo(inputDTO.getOrigenConexion()).equals(OrigenConexion.PROXY)) {
             List<HechoMetamapaResponse> outputDTO = hechosFiltrados.stream()
@@ -446,9 +440,7 @@ Para colecciones no modificadas → reviso solo los hechos cambiados
                     .ifPresent(dto::setFechaCarga);
 
             System.out.println("TITULO HECHO: " + hecho.getAtributosHecho().getTitulo());
-            if (hecho.getAtributosHecho().getFuente() == null)
-                System.out.println("soretito");
-            else
+            if (hecho.getAtributosHecho().getFuente() != null)
                 dto.setFuente(hecho.getAtributosHecho().getFuente().codigoEnString());
 
             Optional.ofNullable(hechoMemoria.getAtributosHecho().getUbicacion())

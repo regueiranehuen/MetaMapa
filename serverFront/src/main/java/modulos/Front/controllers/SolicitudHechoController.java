@@ -64,7 +64,6 @@ public class SolicitudHechoController {
 
     @PostMapping("/public/subir-hecho")
     public String enviarSolicitudSubirHecho(@Valid @ModelAttribute SolicitudHechoInputDTO dto, RedirectAttributes ra){
-        System.out.println("SOY UNA PIJITA");
 
         System.out.println("HOLA SOY UNA DESCRIPCION FELIZ: " + dto.getDescripcion());
 

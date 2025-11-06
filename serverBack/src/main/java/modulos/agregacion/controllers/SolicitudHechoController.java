@@ -54,7 +54,6 @@ public class SolicitudHechoController {
     @PostMapping("/public/subir-hecho")
     public ResponseEntity<?> enviarSolicitudSubirHecho(@Valid @RequestBody SolicitudHechoInputDTO dtoInput, @AuthenticationPrincipal String username){
         System.out.println("HOLAAA");
-        System.out.println("SOY UN PELOTUDO DE MIERDA " + username);
         return solicitudHechoService.solicitarSubirHecho(dtoInput, username); // 200 o 401
     }
 

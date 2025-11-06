@@ -37,7 +37,6 @@ public class ColeccionController {
     @GetMapping("/crear")
     @PreAuthorize("hasRole('ADMINISTRADOR')")
     public String getFormularioColeccion(@ModelAttribute("coleccionForm") ColeccionInputDTO inputDTO, Model model){
-        System.out.println("SOY UN PELOTUDO");
         ResponseEntity<?> rtaCategorias = hechosService.getCategorias();
         ResponseEntity<?> rtaPaises = hechosService.getPaises();
         if (rtaCategorias.getBody() != null){
@@ -107,9 +106,7 @@ public class ColeccionController {
             model.addAttribute("titulo", "Listado de colecciones");
             return "colecciones";
         }
-        else{
-            System.out.println("SOY UN ESTORBO");
-        }
+
         return "redirect:/" + rta.getStatusCode().value();
     }
 

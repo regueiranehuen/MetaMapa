@@ -76,10 +76,8 @@ public class UsuarioController {
 
         if(usuarioDto != null) {
             System.out.println("NOMBRE: " + usuarioDto.getNombreDeUsuario());
-        } else {
-            System.out.println("SOY UNA MIERDA");
         }
-            model.addAttribute("usuario", usuarioDto);
+        model.addAttribute("usuario", usuarioDto);
 
         return "perfil";
     }

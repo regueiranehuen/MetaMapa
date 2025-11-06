@@ -48,9 +48,6 @@ public class FiltroPais extends Filtro {
             return (root, query, cb) -> cb.disjunction(); // Nunca se cumple
         }
 
-        for(Long id: ubicaciones_ids){
-            System.out.println("SOY UNA MIERDA EN PAIS: " + id);
-        }
 
         return (root, query, cb) -> {
 

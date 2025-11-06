@@ -100,8 +100,6 @@ incluir automáticamente todos los hechos de categoría “Incendio forestal” 
     public ResponseEntity<?> crearColeccion(ColeccionInputDTO dtoInput, String username) {
 
 
-        System.out.println("PAISES DEL ORTO IDS: " + dtoInput.getCriterios().getPaisId());
-
         ResponseEntity<?> rta = checkeoAdmin(username);
 
         if (!rta.getStatusCode().is2xxSuccessful()){
@@ -174,9 +172,6 @@ incluir automáticamente todos los hechos de categoría “Incendio forestal” 
                 .collect(Collectors.toCollection(ArrayList::new)); // mutable ✅
         coleccion.setCriterios(filtrosJuntos);
 
-        for(Filtro filtro : filtrosJuntos){
-            System.out.println("SKIBIDI " + filtro.getClass());
-        }
 
         coleccionesRepo.saveAndFlush(coleccion);
         return ResponseEntity.status(HttpStatus.CREATED).body("La colección se creó correctamente");
@@ -519,59 +514,3 @@ Esto asegura que la colección refleje solo los hechos de las fuentes actualment
     }
 }
 
-/*
-* BIENVENIDO!!! LLEGASTE AL CONTENEDOR DE MIERDA
-*
-* public ResponseEntity<?> refrescarColecciones(Long idUsuario){
-        Usuario usuario = usuariosRepo.findById(idUsuario).orElse(null);
-        if (usuario!= null && !usuario.getRol().equals(Rol.ADMINISTRADOR)){
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("No tenés permisos para ejecutar esta acción");
-        }
-        this.refrescarColeccionesCronjob();
-        return ResponseEntity.status(HttpStatus.OK).body("Se refrescaron las colecciones correctamente");
-    }
-
-    private void actualizarHechosModificadosAColecciones(List<Coleccion> colecciones, List<Hecho> hechos){
-
-        for (Coleccion coleccion: colecciones){
-            List<Hecho> hechosColeccion = coleccion.getHechos();
-
-            for (Hecho hecho: hechos){
-
-                Long hechoId = hecho.getId();
-
-                Hecho hechoEncontrado = hechosColeccion.stream()
-                        .filter(h -> h.getId().equals(hechoId))
-                        .findFirst().orElse(null);
-                if (hechoEncontrado != null && !Filtrador.hechoPasaFiltros(coleccion.getCriterios(), hecho)){
-                    hechosColeccion.remove(hecho);
-                }
-            }
-        }
-
-    }
-
-    public void setearFalseModificado(List<Hecho> hechos, List<Coleccion> colecciones){
-        for (Hecho hecho : hechos){
-            hecho.getAtributosHecho().setModificado(false);
-        }
-        for (Coleccion coleccion : colecciones){
-            coleccion.setModificado(false);
-        }
-    }
-
-    public void mapearHechosAColecciones(List<Coleccion> colecciones, List<Hecho> hechos){
-
-        for (Coleccion coleccion : colecciones){
-            List<Hecho> hechosFiltrados = Filtrador.aplicarFiltros(coleccion.getCriterios(), hechos);
-            for (Hecho hecho : hechosFiltrados) {
-                if (!coleccion.getHechos().contains(hecho)){
-                    coleccion.addHechos(hecho);
-                }
-            }
-
-        }
-
-    }
-*
-* */
