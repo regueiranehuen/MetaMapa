@@ -1,5 +1,4 @@
 # Trabajo Práctico Anual Diseño de Sistemas de Información 2025: MetaMapa 
-#### (aún en desarrollo)
 
 ## El presente trabajo consiste en una aplicación web en la cual se pueden cargar hechos y visualizarlos en un mapa interactivo.
 
