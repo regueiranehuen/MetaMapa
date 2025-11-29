@@ -83,8 +83,30 @@
         .form-control,.form-select{border-radius:10px;border:1px solid #e9ecef;transition:all .2s ease}
         .form-control:focus,.form-select:focus{border-color:var(--mm-primary);box-shadow:0 0 0 .2rem rgba(102,126,234,.15)}
 
+        .top-action-button-v2 { position: absolute; right: 15px;top: 50px;z-index: 10;}
+        .btn-icon-top-action { background: linear-gradient(135deg, #f97316, #ea580c); border: none;color: #fff;padding: .6rem 1.5rem;border-radius: 10px;font-size: .88rem;font-weight: 600;display: inline-flex;align-items: center;text-decoration: none;transition: all .2s ease;box-shadow: 0 4px 10px rgba(234, 88, 12, .3);}
+        .btn-icon-top-action:hover {transform: translateY(-2px);box-shadow: 0 6px 16px rgba(234, 88, 12, .4);color: #fff;}
+
         /* Scroll suave */
         html{scroll-behavior:smooth}
+
+        /* Estilo para el texto con gradiente animado, para que se vea con degrade y violeta */
+        .animated-gradient-text {
+            background: linear-gradient(90deg, #667eea, #764ba2, #667eea);
+            background-size: 200% auto;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: gradient-animation 4s ease infinite;
+            /* CAMBIO CLAVE: Usa display: block para que ocupe toda la línea */
+            display: block;
+            padding: 0 5px;
+        }
+
+        @keyframes gradient-animation {
+            0% { background-position: 0% center; }
+            50% { background-position: 100% center; }
+            100% { background-position: 0% center; }
+        }
 
         /* Responsive */
         @media (max-width:991px){
@@ -92,6 +114,8 @@
             .nav-item{margin:.25rem 0}
         }
     </style>
+    <meta name="_csrf" th:content="${_csrf.token}"/>
+    <meta name="_csrf_header" th:content="${_csrf.headerName}"/>
 </head>
 <body>
 
@@ -132,7 +156,28 @@
         </div>
     </div>
 </nav>
+<!-- ALERTAS GLOBALES -->
+<div class="container mt-4" style="max-width: 900px;">
 
+    <!-- Éxito -->
+    <div th:if="${msgExito != null}"
+         class="alert alert-success alert-dismissible fade show shadow-sm"
+         role="alert">
+        <i class="bi bi-check-circle-fill me-2"></i>
+        <span th:text="${msgExito}">Operación exitosa</span>
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+    </div>
+
+    <!-- Error -->
+    <div th:if="${msgError != null}"
+         class="alert alert-danger alert-dismissible fade show shadow-sm"
+         role="alert">
+        <i class="bi bi-exclamation-triangle-fill me-2"></i>
+        <span th:text="${msgError}">Ocurrió un error</span>
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+    </div>
+
+</div>
 <main class="container py-4" th:replace="~{::contenido}"></main>
 
 <footer class="py-5 mt-auto">
@@ -160,6 +205,7 @@
                     <a th:href="@{/public/contribuir}"><i class="bi bi-arrow-right me-2"></i>Contribuir</a>
                 </div>
             </div>
+
 
             <div class="col-lg-4 col-md-6">
                 <h6 class="fw-bold mb-3">Legal y Contacto</h6>

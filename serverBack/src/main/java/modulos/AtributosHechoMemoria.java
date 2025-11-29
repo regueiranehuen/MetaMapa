@@ -13,6 +13,7 @@ import modulos.agregacion.entities.atributosHecho.ContenidoMultimedia;
 import modulos.agregacion.entities.atributosHecho.Origen;
 import modulos.agregacion.entities.atributosHecho.TipoContenido;
 
+import java.time.LocalDateTime;
 import java.time.ZonedDateTime;
 import java.util.List;
 
@@ -27,7 +28,7 @@ public class AtributosHechoMemoria {
 
     private String descripcion;
 
-    private ZonedDateTime fechaAcontecimiento;
+    private LocalDateTime fechaAcontecimiento;
 
     private List<ContenidoMultimedia> contenidoMultimedia;
 
@@ -35,9 +36,9 @@ public class AtributosHechoMemoria {
 
     private Origen origen;
 
-    private ZonedDateTime fechaCarga;
+    private LocalDateTime fechaCarga;
 
-    private ZonedDateTime fechaUltimaActualizacion;
+    private LocalDateTime fechaUltimaActualizacion;
 
     private Boolean modificado;
 

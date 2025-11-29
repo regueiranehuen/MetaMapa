@@ -1,32 +1,38 @@
-<!-- templates/colecciones.html -->
-<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="https://www.thymeleaf.org/extras/spring-security" th:replace="~{layout/base :: html}">
+<!DOCTYPE html>
+<html lang="es"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="https://www.thymeleaf.org/extras/spring-security"
+      th:replace="~{layout/base :: html}">
+
 <main th:fragment="contenido">
 
-    <!-- Header -->
-    <section class="hero-section text-center py-5 mb-4">
-        <div class="container">
-            <div class="row align-items-center justify-content-between g-4">
-                <div class="col-lg-7 text-lg-start">
-                    <div class="d-inline-flex align-items-center gap-2 mb-3 badge-pill">
+    <section class="contribute-hero">
+        <div class="container position-relative">
+
+            <div class="row align-items-center justify-content-center">
+                <div class="col-lg-8 text-center">
+
+                    <span class="contribute-badge mb-3">
                         <i class="bi bi-collection"></i>
                         <span>Organiza tu conocimiento</span>
-                    </div>
-                    <h1 class="display-5 fw-bold mb-3">
-                        <span th:text="${titulo} ?: 'Colecciones'">Colecciones</span>
+                    </span>
+
+                    <h1 class="display-5 fw-bold mb-2 animated-gradient-text">
+                        Listado de Colecciones
                     </h1>
                     <p class="lead text-muted mb-0">
                         Organizá y curá conjuntos de hechos históricos relacionados en colecciones temáticas
                     </p>
                 </div>
-                <div class="col-lg-auto">
-                    <a th:href="@{/colecciones/crear}" class="btn btn-primary btn-lg px-4 shadow-sm" sec:authorize="hasRole('ADMINISTRADOR')">
-                        <i class="bi bi-plus-circle me-2"></i>Nueva colección
-                    </a>
-                </div>
             </div>
 
-            <!-- Controles: contador + selector -->
-            <div class="container pt-4 d-flex flex-wrap justify-content-end align-items-center gap-3"
+            <div sec:authorize="hasRole('ADMINISTRADOR')" class="top-action-button-v2">
+                <a th:href="@{/colecciones/crear}" class="btn-icon-top-action">
+                    <i class="bi bi-plus-circle me-2"></i>Nueva colección
+                </a>
+            </div>
+
+            <div class="d-flex flex-wrap justify-content-end align-items-center gap-3 pt-4"
                  th:if="${colecciones != null and !#lists.isEmpty(colecciones)}">
                 <span class="results-badge-inline">
                     <i class="bi bi-check-circle-fill"></i>
@@ -47,11 +53,11 @@
                     </select>
                 </div>
             </div>
+
         </div>
     </section>
 
     <section class="container pb-5">
-        <!-- Estado vacío -->
         <div th:if="${colecciones == null or #lists.isEmpty(colecciones)}" class="empty-state">
             <div class="empty-icon">
                 <i class="bi bi-collection"></i>
@@ -63,7 +69,6 @@
             </a>
         </div>
 
-        <!-- Grid -->
         <div id="coleccionesGrid" class="row g-4" th:if="${colecciones != null and !#lists.isEmpty(colecciones)}">
             <div class="col-12 col-sm-6 col-lg-4 col-xxl-3 coleccion-item" th:each="c : ${colecciones}">
                 <div class="collection-card">
@@ -92,9 +97,11 @@
     </section>
 
     <style>
+        .contribute-hero{padding:80px 0 40px;background:radial-gradient(ellipse 1400px 800px at 50% -100px,rgba(102,126,234,.12) 0%,transparent 50%);position:relative;overflow:hidden}
+        .contribute-hero::before{content:'';position:absolute;inset:0;background:url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%236b5cff' fill-opacity='0.03'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");pointer-events:none}
+        .contribute-badge{background:linear-gradient(135deg,rgba(79,70,229,.12),rgba(129,140,248,.12));color:#4f46e5;padding:.6rem 1.5rem;border-radius:999px;font-size:.85rem;font-weight:600;display:inline-flex;align-items:center;gap:.4rem;border:1px solid rgba(79,70,229,.22)}
         .hero-section{background:radial-gradient(ellipse 1400px 800px at 50% -100px,rgba(102,126,234,.15) 0%,rgba(255,255,255,0) 50%);position:relative}
         .hero-section::before{content:'';position:absolute;top:0;left:0;right:0;bottom:0;background:url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%236b5cff' fill-opacity='0.03'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");opacity:.5;pointer-events:none}
-        .badge-pill{background:rgba(107,92,255,.1);color:#6b5cff;padding:.5rem 1rem;border-radius:50px;font-size:.875rem;font-weight:600}
         .results-badge-inline{background:#fff;padding:.5rem 1rem;border-radius:12px;border:1px solid #e9ecef;display:inline-flex;align-items:center;gap:.5rem;font-weight:600;color:#1a202c;font-size:.875rem;box-shadow:0 2px 8px rgba(0,0,0,.05)}
         .results-badge-inline i{color:#10b981;font-size:1rem}
         .empty-state{text-align:center;padding:5rem 2rem;background:#fff;border-radius:24px;border:2px dashed #e9ecef}
@@ -115,6 +122,7 @@
         .btn-primary:hover{background:linear-gradient(135deg,#5568d3 0%,#63408b 100%);box-shadow:0 8px 16px rgba(102,126,234,.3)}
         .btn-outline-primary{border-color:#6b5cff;color:#6b5cff}
         .btn-outline-primary:hover{background:#6b5cff;border-color:#6b5cff;color:#fff}
+
         @media (max-width:768px){
             .hero-section{padding:2rem 0!important}
             .display-5{font-size:2rem}
@@ -124,7 +132,6 @@
         }
     </style>
 
-    <!-- Script: mostrar N tarjetas o todas, actualizar contador, recordar preferencia -->
     <script>
         (function () {
           const grid = document.getElementById('coleccionesGrid');

@@ -7,6 +7,7 @@ import lombok.Setter;
 import modulos.agregacion.entities.DbDinamica.HechoDinamica;
 import modulos.agregacion.entities.DbMain.usuario.Usuario;
 
+import java.time.LocalDateTime;
 import java.time.ZonedDateTime;
 
 @Getter
@@ -17,6 +18,7 @@ import java.time.ZonedDateTime;
 @DiscriminatorColumn(name = "tipo_solicitud", discriminatorType = DiscriminatorType.STRING, length = 20)
 public abstract class SolicitudHecho {
 
+    @Column(name = "usuario_id")
     protected Long usuario_id;
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "id_hecho", referencedColumnName = "id",
@@ -33,7 +35,7 @@ public abstract class SolicitudHecho {
     protected boolean rechazadaPorSpam;
 
     @Column (name = "fecha")
-    protected ZonedDateTime fecha;
+    protected LocalDateTime fecha;
 
     public SolicitudHecho(Long usuario_id, HechoDinamica hecho) {
         this.usuario_id = usuario_id;

@@ -1,5 +1,6 @@
 package modulos.agregacion.repositories.DbMain;
 
+import modulos.agregacion.entities.DbMain.Fuente;
 import modulos.agregacion.entities.DbMain.filtros.*;
 import modulos.agregacion.entities.atributosHecho.Origen;
 import modulos.agregacion.entities.atributosHecho.TipoContenido;
@@ -8,6 +9,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.ZonedDateTime;
 import java.util.Optional;
 
@@ -57,8 +59,8 @@ public interface IFiltroRepository extends JpaRepository<Filtro, Long> {
            where fa.fechaInicial = :ini and fa.fechaFinal = :fin
            """)
     Optional<FiltroFechaAcontecimiento> findFiltroFechaAcontecimientoByRango(
-            @Param("ini") ZonedDateTime ini,
-            @Param("fin") ZonedDateTime fin
+            @Param("ini") LocalDateTime ini,
+            @Param("fin") LocalDateTime fin
     );
 
     /* ========== FiltroFechaCarga ========== */
@@ -68,17 +70,17 @@ public interface IFiltroRepository extends JpaRepository<Filtro, Long> {
            where fcg.fechaInicial = :ini and fcg.fechaFinal = :fin
            """)
     Optional<FiltroFechaCarga> findFiltroFechaCargaByRango(
-            @Param("ini") ZonedDateTime ini,
-            @Param("fin") ZonedDateTime fin
+            @Param("ini") LocalDateTime ini,
+            @Param("fin") LocalDateTime fin
     );
 
     /* ========== FiltroOrigen ========== */
     @Query("""
-           select fo
-           from FiltroOrigen fo
-           where fo.origenDeseado = :origen
+           select ff
+           from FiltroFuente ff
+           where ff.fuenteDeseada = :fuente
            """)
-    Optional<FiltroOrigen> findFiltroOrigenByOrigen(@Param("origen") Origen origen);
+    Optional<FiltroFuente> findFiltroFuenteByFuente(@Param("fuente") Fuente fuente);
     // Si 'origenDeseado' es un enum, cambiá el tipo a tu enum.
 
     /* ========== FiltroPais ========== */

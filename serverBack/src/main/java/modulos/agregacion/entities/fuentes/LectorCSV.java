@@ -5,10 +5,12 @@ import java.beans.Introspector;
 import java.beans.PropertyDescriptor;
 import java.io.*;
 import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Path;
 import java.util.*;
 import java.util.stream.Collectors;
 
+import jakarta.transaction.Transactional;
 import modulos.agregacion.entities.DbEstatica.Dataset;
 import modulos.agregacion.entities.DbEstatica.HechoEstatica;
 import modulos.agregacion.entities.DbMain.*;
@@ -17,6 +19,7 @@ import modulos.agregacion.entities.atributosHecho.Origen;
 import modulos.buscadores.*;
 import modulos.shared.utils.FechaParser;
 import modulos.shared.utils.Geocodificador;
+import modulos.shared.utils.GestorArchivos;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVRecord;
@@ -30,12 +33,13 @@ public class LectorCSV {
     }
 
     // Entrega 3: los hechos no se pisan los atributos
+
     public List<HechoEstatica> leerCSV(Usuario usuario, BuscadoresRegistry buscadores) {
 
         List<HechoEstatica> hechosASubir = new ArrayList<>();
 
         try {
-            Reader reader = new InputStreamReader(new FileInputStream(this.dataSet.getFuente()), Charset.forName("ISO-8859-1"));
+            Reader reader = new InputStreamReader(new FileInputStream(this.dataSet.getStoragePath()), StandardCharsets.ISO_8859_1);
             //Reader reader = new InputStreamReader(new FileInputStream(this.dataSet), Charset.forName("ISO-8859-1"));
             CSVFormat formato = CSVFormat.DEFAULT
                     .withFirstRecordAsHeader()
@@ -50,7 +54,7 @@ public class LectorCSV {
             if(headers.size() == 1){
                 parser.close();
 
-                reader = new FileReader(this.dataSet.getFuente());
+                reader = new FileReader(this.dataSet.getStoragePath());
 
                 formato = CSVFormat.DEFAULT
                         .withFirstRecordAsHeader()
@@ -65,11 +69,13 @@ public class LectorCSV {
 
             System.out.println(headers);
             List<Integer> indicesColumnas = this.filtrarColumnas(headers);
-            System.out.println(indicesColumnas);
+            System.out.println("COLUMNAS: " + indicesColumnas);
             //indicesColumnas.forEach(i->i.);
 
             List<CSVRecord> registrosCSV = parser.getRecords();
+
             for (int f = 0; f < registrosCSV.size(); f++) {
+                System.out.println("ESTOY EN FILA " + f);
                 CSVRecord fila = registrosCSV.get(f);
 
                 List<String> registros = new ArrayList<>();
@@ -82,64 +88,105 @@ public class LectorCSV {
                 boolean tituloRepetido = false;
 
                 hecho.getAtributosHecho().setTitulo((indicesColumnas.get(0) != -1) ? registros.get(indicesColumnas.get(0)) : null);
+                System.out.println("TITULO: " + hecho.getAtributosHecho().getTitulo());
                 //Se leen los de fuente estatica
-                HechoEstatica hecho0 = buscadores.getBuscadorHecho().buscarEstatica(hecho.getAtributosHecho().getTitulo());
-
-                if (hecho0 != null){
-                    tituloRepetido = true;
+                if(hecho.getAtributosHecho().getTitulo() != null) {
+                    Integer cantidadTitulosIguales = buscadores.getBuscadorHecho().buscarCantTituloIgual(hecho.getAtributosHecho().getTitulo());
+                    for (HechoEstatica hecho1 : hechosASubir) {
+                        if (hecho1.getAtributosHecho().getTitulo() != null && hecho1.getAtributosHecho().getTitulo().equals(hecho.getAtributosHecho().getTitulo())) {
+                            cantidadTitulosIguales += 1;
+                            break;
+                        }
+                    }
+                    if (cantidadTitulosIguales != 0) {
+                        tituloRepetido = true;
+                    }
                 }
-                System.out.println("INDICE DE COLUMNA DE DESCRIPCION" + indicesColumnas.get(1));
                 hecho.getAtributosHecho().setDescripcion((indicesColumnas.get(1) != -1) ? registros.get(indicesColumnas.get(1)) : null);
+                System.out.println("DESCRIPCION: " + hecho.getAtributosHecho().getDescripcion());
 
                 String categoriaString = indicesColumnas.get(2) != -1 ? registros.get(indicesColumnas.get(2)) : null;
                 Categoria categoria = buscadores.getBuscadorCategoria().buscar(categoriaString);
                 hecho.getAtributosHecho().setCategoria_id(categoria != null ? categoria.getId() : null);
-                UbicacionString ubicacionString;
+                System.out.println("CATEGORIA: " + hecho.getAtributosHecho().getCategoria_id());
+
+                UbicacionString ubicacionString = null;
                 Pais pais = null;
                 Provincia provincia = null;
                 Ubicacion ubicacion = null;
+
                 if (indicesColumnas.get(3) != -1 && indicesColumnas.get(4) != -1 &&
                         (!registros.get(indicesColumnas.get(3)).isEmpty() && !registros.get(indicesColumnas.get(4)).isEmpty())) {
                     Double latitud = Double.parseDouble(registros.get(indicesColumnas.get(3)));
                     Double longitud = Double.parseDouble(registros.get(indicesColumnas.get(4)));
                     ubicacionString = Geocodificador.obtenerUbicacion(latitud, longitud);
+                    if(ubicacionString == null) {
+                        System.out.println("El geocodificador esta todo cogido");
+                    }
                     hecho.getAtributosHecho().setLatitud(latitud);
                     hecho.getAtributosHecho().setLongitud(longitud);
+                    System.out.println("LATITUD: " + hecho.getAtributosHecho().getLatitud());
+                    System.out.println("LONGITUD: " + hecho.getAtributosHecho().getLongitud());
+
+                    // TODO
                 }
                 else {
                     ubicacionString = new UbicacionString();
                     ubicacionString.setPais(indicesColumnas.get(6) != -1 ? registros.get(indicesColumnas.get(6)) : null);
                     ubicacionString.setProvincia(indicesColumnas.get(7) != -1 ? registros.get(indicesColumnas.get(7)) : null);
+
+                    System.out.println("PAIS: " + ubicacionString.getPais());
+                    System.out.println("PROVINCIA: " + ubicacionString.getProvincia());
                 }
 
                 if (ubicacionString != null){
                     pais = buscadores.getBuscadorPais().buscar(ubicacionString.getPais());
-                    provincia = buscadores.getBuscadorProvincia().buscar(ubicacionString.getProvincia());
+                    if (pais!=null){
+                        provincia = buscadores.getBuscadorProvincia().buscarConPais(ubicacionString.getProvincia(), pais.getId());
+                    }
+
                     ubicacion = buscadores.getBuscadorUbicacion().buscarOCrear(pais, provincia);
-                    hecho.getAtributosHecho().setUbicacion_id(ubicacion.getId());
+                    if (ubicacion != null)
+                        hecho.getAtributosHecho().setUbicacion_id(ubicacion.getId());
+
                 }else{
                     hecho.getAtributosHecho().setUbicacion_id(null);
                 }
 
-                System.out.println("Soy una fecha asquerosa: " + FechaParser.parsearFecha(registros.get(indicesColumnas.get(5))));
+                System.out.println("UBICACION: " + hecho.getAtributosHecho().getUbicacion_id());
+
+                //System.out.println("Soy una fecha asquerosa: " + FechaParser.parsearFecha(registros.get(indicesColumnas.get(5))));
 
                 hecho.getAtributosHecho().setFechaAcontecimiento((indicesColumnas.get(5) != -1) ? FechaParser.parsearFecha(registros.get(indicesColumnas.get(5))) : null);
+                System.out.println("FECHA ACONTECIMIENTO: " + hecho.getAtributosHecho().getFechaAcontecimiento());
+
                 hecho.getAtributosHecho().setModificado(true);
                 hecho.setUsuario_id(usuario.getId());
                 hecho.getAtributosHecho().setFuente(Fuente.ESTATICA);
                 hecho.getDatasets().add(this.dataSet);
                 if (tituloRepetido){
-                    HechoEstatica hechoIdentico = buscadores.getBuscadorHecho().existeHechoIdentico(hecho, categoria, pais, provincia);
-                    if (hechoIdentico!=null){
-                        hechoIdentico.getDatasets().add(this.dataSet);
-                        continue; // Evito agregar un hecho identico
+                    List<HechoEstatica> hechosIdenticos = buscadores.getBuscadorHecho().existenHechosIdenticos(hecho, hechosASubir);
+                    System.out.println("HOLAAAA SOY UN HECHO REPETIDO");
+                    if (!hechosIdenticos.isEmpty()) {
+                        for (HechoEstatica hechoIdentico : hechosIdenticos) {
+                            hechoIdentico.getAtributosHecho().setModificado(true);
+                            if (hechoIdentico.getDatasets().stream().filter(d -> d.getFuente().equals(this.dataSet.getFuente()))
+                                    .findFirst()
+                                    .isEmpty()) {
+                                System.out.println("MISMA FUENTE");
+                                hechoIdentico.getDatasets().add(this.dataSet);
+                                hechosASubir.add(hechoIdentico); // LO AÑADO PARA QUE SE UPDATEE EN importarHechos
+                            }
+                        }
+                        continue;
                     }
                 }
-
+                System.out.println("HOLA VOY A SUBIR UN HECHO DIVERTIDO!");
                 hechosASubir.add(hecho);
-
             }
+            System.out.println("SIZE DE LA LISTA: " + hechosASubir.size());
             parser.close();
+            GestorArchivos.eliminarArchivo(this.dataSet.getStoragePath());
         }
         catch(IOException e){
             throw new RuntimeException("Error al leer el archivo CSV: " + e.getMessage(), e);

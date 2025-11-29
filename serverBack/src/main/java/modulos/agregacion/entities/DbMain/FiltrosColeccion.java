@@ -14,7 +14,7 @@ public class FiltrosColeccion {
     private List<FiltroContenidoMultimedia> filtroContenidoMultimedia;
     private FiltroFechaAcontecimiento filtroFechaAcontecimiento;
     private FiltroFechaCarga filtroFechaCarga;
-    private List<FiltroOrigen> filtroOrigen;
+    private List<FiltroFuente> filtroFuentes;
     private FiltroTitulo filtroTitulo;
     private List<FiltroProvincia> filtroProvincia;
 }

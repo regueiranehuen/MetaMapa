@@ -10,8 +10,13 @@ import modulos.Front.dtos.input.EditarNombreDeUsuarioDtoInput;
 import modulos.Front.dtos.input.EditarUsuarioDtoInput;
 import modulos.Front.dtos.input.UsuarioInputDTO;
 import modulos.Front.dtos.output.MensajeOutputDTO;
+import modulos.Front.dtos.output.SolicitudHechoOutputDTO;
 import modulos.Front.dtos.output.UsuarioOutputDto;
+import modulos.Front.services.ColeccionService;
+import modulos.Front.services.HechosService;
+import modulos.Front.services.SolicitudHechoService;
 import modulos.Front.services.UsuarioService;
+import modulos.Front.usuario.Rol;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -28,6 +33,9 @@ import java.util.List;
 public class UsuarioController {
 
     private UsuarioService usuarioService;
+    private final HechosService hechosService;
+    private final ColeccionService coleccionService;
+    private final SolicitudHechoService solicitudHechoService;
 
 
     @GetMapping("/cargar-register")
@@ -54,33 +62,53 @@ public class UsuarioController {
     }
 
     @GetMapping("/perfil")
-    public String perfil(RedirectAttributes ra, Model model){
+    public String verPerfil(Model model) {
 
-        model.addAttribute("contraseña", new CambiarContraseniaDtoInput());
-        model.addAttribute("camposEscalares", new EditarUsuarioDtoInput());
-        model.addAttribute("username", new EditarUsuarioDtoInput());
+        ResponseEntity<?> rtaUsuario = usuarioService.getUsuario();
+        if (!rtaUsuario.getStatusCode().is2xxSuccessful() || !rtaUsuario.hasBody()) {
+            return "redirect:/404";
+        }
 
-        ResponseEntity<?> rta = this.usuarioService.getUsuario(); // el token tiene el username
-        ResponseEntity<?> rta2 = this.usuarioService.obtenerMensajes();
+        UsuarioOutputDto usuario = (UsuarioOutputDto) rtaUsuario.getBody();
+        model.addAttribute("usuario", usuario);
 
-        if(!rta.getStatusCode().is2xxSuccessful() && rta.getBody() != null){
-            ra.addFlashAttribute("mensaje", rta.getBody().toString());
-            return "redirect:/" + rta.getStatusCode().value();
+        if (usuario.getRol().equals(Rol.ADMINISTRADOR)) {
 
-        } else if(rta2.getStatusCode().is2xxSuccessful() && rta2.getBody() != null){
-            List<MensajeOutputDTO> mensajes = BodyToListConverter.bodyToList(rta2, MensajeOutputDTO.class);
+            ResponseEntity<Long> statsHechos = hechosService.getCantHechos();
+            ResponseEntity<Long> statsColecciones = coleccionService.getCantColecciones();
+            ResponseEntity<Integer> statsSolicitudes = solicitudHechoService.getPorcentajeSolicitudesProcesadas();
+            ResponseEntity<Integer> statsFuentes = hechosService.getCantFuentes();
+
+            model.addAttribute("statsHechos", statsHechos.getBody());
+            model.addAttribute("statsColecciones", statsColecciones.getBody());
+            model.addAttribute("statsSolicitudes", statsSolicitudes.getBody());
+            model.addAttribute("statsFuentes", statsFuentes.getBody());
+
+            Long cantPendientes = 0L;
+            ResponseEntity<?> rtaPendientes = solicitudHechoService.getSolicitudesPendientes();
+            if (rtaPendientes.getStatusCode().is2xxSuccessful() && rtaPendientes.getBody() != null) {
+                List<SolicitudHechoOutputDTO> solicitudes =
+                        BodyToListConverter.bodyToList(rtaPendientes, SolicitudHechoOutputDTO.class);
+                cantPendientes = (long) solicitudes.size();
+            }
+
+            model.addAttribute("solicitudesPendientes", cantPendientes);
+        }
+
+        ResponseEntity<?> mensajesDto = this.usuarioService.obtenerMensajes();
+
+
+        if(mensajesDto.getStatusCode().is2xxSuccessful() && mensajesDto.getBody() != null) {
+            List<MensajeOutputDTO> mensajes = BodyToListConverter.bodyToList(mensajesDto, MensajeOutputDTO.class);
+
+            mensajes.forEach(mensaje -> System.out.println("MENSAJE: " + mensaje.getMensaje()));
+
             model.addAttribute("mensajes", mensajes);
         }
 
-        UsuarioOutputDto usuarioDto = (UsuarioOutputDto) rta.getBody();
-
-        if(usuarioDto != null) {
-            System.out.println("NOMBRE: " + usuarioDto.getNombreDeUsuario());
-        }
-        model.addAttribute("usuario", usuarioDto);
-
         return "perfil";
     }
+
 
     @PreAuthorize("hasAnyRole('ADMINISTRADOR', 'CONTRIBUYENTE', 'VISUALIZADOR')")
     @PostMapping("/editar/contrasenia")

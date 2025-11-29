@@ -12,7 +12,9 @@
                         <i class="bi bi-clock-history"></i>
                         <span>Explora la historia</span>
                     </div>
-                    <h1 class="display-5 fw-bold mb-3">Hechos Históricos</h1>
+                    <h1 class="display-5 fw-bold mb-2 animated-gradient-text">
+                        Hechos Históricos
+                    </h1>
                     <p class="lead text-muted mb-0">
                         Descubrí y explorá acontecimientos históricos públicos de todo el mundo
                     </p>
@@ -51,14 +53,17 @@
         <!-- Estado vacío -->
         <div th:if="${listaHechos == null or #lists.isEmpty(listaHechos)}" class="empty-state-box">
             <div class="empty-illustration">
-                <i class="bi bi-file-earmark-text"></i>
+                <i class="bi bi-inbox"></i>
             </div>
-            <h3 class="mb-2">No se encontraron hechos</h3>
+            <h3 class="mb-2">¡Aún no hay hechos históricos!</h3>
             <p class="text-muted mb-4">
-                Intentá ajustar los filtros de búsqueda o explorá el listado completo de hechos históricos
+                Ayudanos a construir esta comunidad. Sé el primero en contribuir con un hecho histórico.
             </p>
-            <a th:href="@{/hechos/public/get-all}" class="btn btn-primary btn-lg">
-                <i class="bi bi-list-ul me-2"></i>Ver todos los hechos
+            <a th:href="@{/public/contribuir}" class="btn-contribute-first">
+                <div class="btn-contribute-icon">
+                    <i class="bi bi-plus-circle-fill"></i>
+                </div>
+                <span>Contribuir primer hecho</span>
             </a>
         </div>
 
@@ -79,7 +84,7 @@
                         <div class="fact-metadata">
                             <div class="metadata-item" th:if="${h.fechaAcontecimiento != null}">
                                 <div class="metadata-icon"><i class="bi bi-calendar-event"></i></div>
-                                <span th:text="${h.fechaAcontecimiento}">01/01/2000</span>
+                                <span th:text="${h.fechaAcontecimiento != null ? #strings.substringBefore(h.fechaAcontecimiento, 'T') : '—'}"></span>
                             </div>
 
                             <div class="metadata-item" th:if="${h.getPais() != null}" th:attr="data-pais-id=${h.getId_pais()}">
@@ -110,78 +115,74 @@
     </div>
 
     <style>
-        .hero-header{background:radial-gradient(ellipse 1400px 800px at 50% -100px,rgba(139,92,246,.12) 0%,rgba(255,255,255,0) 50%);position:relative;overflow:hidden}
-        .hero-header::before{content:'';position:absolute;top:0;left:0;right:0;bottom:0;background:url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%238b5cf6' fill-opacity='0.03'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");opacity:.4;pointer-events:none}
-        .feature-badge{background:linear-gradient(135deg,rgba(139,92,246,.1) 0%,rgba(167,139,250,.1) 100%);color:#8b5cf6;padding:.5rem 1rem;border-radius:50px;font-size:.875rem;font-weight:600;border:1px solid rgba(139,92,246,.2)}
-        .results-badge{background:#fff;padding:.75rem 1.25rem;border-radius:14px;border:1px solid #e9ecef;display:inline-flex;align-items:center;gap:.5rem;font-weight:600;color:#1a202c;box-shadow:0 4px 12px rgba(0,0,0,.05);font-size:.875rem}
-        .results-badge i{color:#10b981;font-size:1rem}
-        .empty-state-box{background:#fff;border-radius:24px;padding:5rem 2rem;text-align:center;border:2px dashed #e9ecef}
-        .empty-illustration{width:120px;height:120px;margin:0 auto 2rem;background:linear-gradient(135deg,rgba(139,92,246,.1) 0%,rgba(167,139,250,.1) 100%);border-radius:50%;display:flex;align-items:center;justify-content:center}
-        .empty-illustration i{font-size:3rem;color:#8b5cf6}
-        .fact-card{background:#fff;border-radius:20px;overflow:hidden;border:1px solid rgba(0,0,0,.06);transition:all .3s cubic-bezier(.4,0,.2,1);height:100%;display:flex;flex-direction:column;position:relative}
-        .fact-card::before{content:'';position:absolute;top:0;left:0;right:0;height:4px;background:linear-gradient(90deg,#8b5cf6 0%,#a78bfa 100%);transform:scaleX(0);transform-origin:left;transition:transform .3s ease}
-        .fact-card:hover{transform:translateY(-8px);box-shadow:0 20px 40px rgba(0,0,0,.12);border-color:rgba(139,92,246,.2)}
-        .fact-card:hover::before{transform:scaleX(1)}
-        .fact-header{padding:1.5rem 1.5rem 1rem;background:linear-gradient(180deg,#faf8ff 0%,#fff 100%)}
-        .fact-title{font-size:1.1rem;font-weight:700;color:#1a202c;margin:0;line-height:1.4}
-        .category-badge{background:linear-gradient(135deg,#8b5cf6 0%,#a78bfa 100%);color:#fff;padding:.35rem .75rem;border-radius:8px;font-size:.75rem;font-weight:600;white-space:nowrap;box-shadow:0 2px 8px rgba(139,92,246,.3)}
-        .fact-body{padding:0 1.5rem 1rem;flex-grow:1}
-        .fact-description{color:#475569;font-size:.9rem;line-height:1.6;margin-bottom:1.25rem;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
-        .fact-metadata{display:flex;flex-direction:column;gap:.75rem}
-        .metadata-item{display:flex;align-items:center;gap:.75rem;font-size:.875rem;color:#64748b}
-        .metadata-icon{width:32px;height:32px;background:linear-gradient(135deg,#f8f7ff 0%,#f0eeff 100%);border-radius:10px;display:flex;align-items:center;justify-content:center;flex-shrink:0;border:1px solid rgba(139,92,246,.1)}
-        .metadata-icon i{font-size:.9rem;color:#8b5cf6}
-        .fact-footer{padding:1rem 1.5rem 1.5rem;border-top:1px solid #f1f5f9}
-        .btn{border-radius:12px;font-weight:600;transition:all .2s ease;padding:.65rem 1.25rem}
+        .btn-contribute-first{background:linear-gradient(135deg,#7c3aed,#a855f7);border:none;color:#fff;padding:1rem 2rem;border-radius:16px;font-weight:600;font-size:1.05rem;display:inline-flex;align-items:center;gap:.75rem;text-decoration:none;box-shadow:0 8px 20px rgba(124,58,237,.3);transition:all .3s ease}
+        .btn-contribute-first:hover{transform:translateY(-3px);box-shadow:0 12px 28px rgba(124,58,237,.4);color:#fff}
+        .btn-contribute-icon{width:32px;height:32px;background:rgba(255,255,255,.2);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:1.1rem}
+        .hero-header{padding:3rem 0 2rem;background:radial-gradient(1200px 500px at 50% -220px,rgba(124,58,237,.03)0,#fff 55%);position:relative;overflow:hidden;border-bottom:1px solid #f3f4ff}
+        .hero-header::before{content:'';position:absolute;inset:0;background:url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%237c3aed' fill-opacity='0.02'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");opacity:.4;pointer-events:none}
+        .feature-badge{background:rgba(124,58,237,.04);color:#7c3aed;padding:.45rem 1.1rem;border-radius:999px;font-size:.82rem;font-weight:600;border:1px solid rgba(124,58,237,.16)}
+        .results-badge{background:#fff;padding:.7rem 1.3rem;border-radius:999px;border:1px solid #e5e7eb;display:inline-flex;align-items:center;gap:.45rem;font-weight:600;color:#111827;box-shadow:0 4px 14px rgba(15,23,42,.04);font-size:.82rem}
+        .results-badge i{color:#22c55e;font-size:.95rem}
+        .empty-state-box{background:#fff;border-radius:22px;padding:3.5rem 2rem;text-align:center;border:1px solid #e5e7eb;box-shadow:0 10px 26px rgba(15,23,42,.04)}
+        .empty-illustration{width:100px;height:100px;margin:0 auto 1.7rem;background:linear-gradient(135deg,#ede9fe,#f9fafb);border-radius:50%;display:flex;align-items:center;justify-content:center}
+        .empty-illustration i{font-size:2.4rem;color:#7c3aed}
+        .fact-card{background:#fff;border-radius:22px;border:1px solid rgba(124,58,237,.14);box-shadow:0 8px 22px rgba(15,23,42,.03);transition:all .24s cubic-bezier(.33,.02,.11,.99);height:100%;display:flex;flex-direction:column;position:relative}
+        .fact-card::before{content:'';position:absolute;left:18px;right:18px;top:0;height:3px;border-radius:999px;background:linear-gradient(90deg,#7c3aed,#a855f7);opacity:0;transform:scaleX(.4);transform-origin:center;transition:all .24s}
+        .fact-card:hover{transform:translateY(-4px);box-shadow:0 14px 32px rgba(15,23,42,.08);border-color:rgba(124,58,237,.28)}
+        .fact-card:hover::before{opacity:1;transform:scaleX(1)}
+        .fact-header{padding:1.3rem 1.4rem 1rem;background:transparent}
+        .fact-title{font-size:1.03rem;font-weight:700;color:#111827;margin:0;line-height:1.4}
+        .category-badge{background:#fff;color:#7c3aed;padding:.28rem .7rem;border-radius:999px;font-size:.7rem;font-weight:600;border:1px solid rgba(124,58,237,.35);box-shadow:0 2px 6px rgba(124,58,237,.12)}
+        .fact-body{padding:0 1.4rem 1rem;flex-grow:1}
+        .fact-description{color:#4b5563;font-size:.88rem;line-height:1.6;margin-bottom:1.1rem;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
+        .fact-metadata{display:flex;flex-direction:column;gap:.6rem}
+        .metadata-item{display:flex;align-items:center;gap:.65rem;font-size:.82rem;color:#6b7280}
+        .metadata-icon{width:28px;height:28px;background:#faf5ff;border-radius:10px;display:flex;align-items:center;justify-content:center;flex-shrink:0;border:1px solid rgba(124,58,237,.12)}
+        .metadata-icon i{font-size:.8rem;color:#7c3aed}
+        .fact-footer{padding:.85rem 1.4rem 1.3rem;border-top:1px solid #eef2ff}
+        .btn{border-radius:14px;font-weight:600;transition:all .18s ease;padding:.6rem 1.2rem}
         .btn:hover{transform:translateY(-2px)}
-        .btn-primary{background:linear-gradient(135deg,#8b5cf6 0%,#a78bfa 100%);border:none;box-shadow:0 4px 12px rgba(139,92,246,.3)}
-        .btn-primary:hover{background:linear-gradient(135deg,#7c3aed 0%,#9333ea 100%);box-shadow:0 8px 20px rgba(139,92,246,.4)}
-        @media (max-width:768px){
-            .hero-header{padding:2rem 0!important}
-            .display-5{font-size:2rem}
-            .results-badge{padding:.5rem 1rem;font-size:.8rem}
-            .empty-state-box{padding:3rem 1.5rem}
-            .empty-illustration{width:80px;height:80px}
-            .empty-illustration i{font-size:2rem}
-        }
+        .fact-card .btn-primary{background:#fff;color:#7c3aed;border:1.5px solid #7c3aed;box-shadow:none}
+        .fact-card .btn-primary:hover{background:linear-gradient(135deg,#7c3aed,#a855f7);color:#fff;border-color:transparent;box-shadow:0 8px 18px rgba(124,58,237,.35)}
+        @media(max-width:768px){.hero-header{padding:2.3rem 0 1.4rem!important}.display-5{font-size:2rem}.results-badge{padding:.5rem 1rem;font-size:.78rem}.empty-state-box{padding:3rem 1.5rem}.empty-illustration{width:80px;height:80px}.empty-illustration i{font-size:2rem}}
     </style>
 
     <!-- Script: muestra N tarjetas o todas, actualiza contador y recuerda preferencia -->
     <script>
         (function () {
-          const grid = document.getElementById('hechosGrid');
-          if (!grid) return;
+            const grid = document.getElementById('hechosGrid');
+            if (!grid) return;
 
-          const cards = Array.from(grid.querySelectorAll('.hecho-card'));
-          const total = cards.length;
+            const cards = Array.from(grid.querySelectorAll('.hecho-card'));
+            const total = cards.length;
 
-          const select = document.getElementById('pageSize');
-          const info   = document.getElementById('rangeInfo');
+            const select = document.getElementById('pageSize');
+            const info   = document.getElementById('rangeInfo');
 
-          // Preferencia previa (opcional)
-          const saved = localStorage.getItem('hechosPageSize');
-          if (saved !== null && select.querySelector(`option[value="${saved}"]`)) {
-            select.value = saved;
-          }
+            // Preferencia previa (opcional)
+            const saved = localStorage.getItem('hechosPageSize');
+            if (saved !== null && select.querySelector(`option[value="${saved}"]`)) {
+                select.value = saved;
+            }
 
-          function render() {
-            const n = parseInt(select.value, 10);
-            const showAll = (n === 0) || (n >= total);
+            function render() {
+                const n = parseInt(select.value, 10);
+                const showAll = (n === 0) || (n >= total);
 
-            cards.forEach((card, idx) => {
-              card.style.display = (showAll || idx < n) ? '' : 'none';
+                cards.forEach((card, idx) => {
+                    card.style.display = (showAll || idx < n) ? '' : 'none';
+                });
+
+                const shown = showAll ? total : Math.min(n, total);
+                if (info) info.textContent = `Viendo 1–${shown} de ${total} resultados`;
+            }
+
+            select.addEventListener('change', () => {
+                localStorage.setItem('hechosPageSize', select.value);
+                render();
             });
 
-            const shown = showAll ? total : Math.min(n, total);
-            if (info) info.textContent = `Viendo 1–${shown} de ${total} resultados`;
-          }
-
-          select.addEventListener('change', () => {
-            localStorage.setItem('hechosPageSize', select.value);
             render();
-          });
-
-          render();
         })();
     </script>
 

@@ -12,9 +12,10 @@ public class ColeccionUpdateInputDTO {
     private Long id_coleccion;
 
     private String titulo;
-
     private String descripcion;
 
     private CriteriosColeccionDTO criterios;
-    // No agrego algoritmo de consenso porque para eso está el otro méto do
+
+    // Algoritmo de consenso (opcional)
+    private String algoritmoConsenso;
 }

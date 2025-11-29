@@ -20,7 +20,7 @@ public class SolicitudModificarHecho extends SolicitudHecho{
     }
 
     @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    private AtributosHechoModificar atributosAshei;
+    private AtributosHechoModificar atributosModificar;
 
     public SolicitudModificarHecho() {
     }

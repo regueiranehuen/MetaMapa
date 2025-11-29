@@ -7,12 +7,16 @@ import modulos.Front.dtos.input.*;
 import modulos.Front.dtos.output.*;
 import modulos.Front.services.ColeccionService;
 import modulos.Front.services.HechosService;
+import modulos.Front.services.UsuarioService;
+import modulos.Front.usuario.Rol;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
+import java.sql.SQLOutput;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -24,6 +28,7 @@ public class ColeccionController {
 
     private final ColeccionService coleccionService;
     private final HechosService hechosService;
+    private final UsuarioService usuarioService;
 
     // Prueba de conexión entre el server front y el server back
     /*@GetMapping("/get-all")
@@ -36,36 +41,90 @@ public class ColeccionController {
 
     @GetMapping("/crear")
     @PreAuthorize("hasRole('ADMINISTRADOR')")
-    public String getFormularioColeccion(@ModelAttribute("coleccionForm") ColeccionInputDTO inputDTO, Model model){
+    public String getFormularioColeccion(
+            @ModelAttribute("coleccionForm") ColeccionInputDTO inputDTO,
+            @ModelAttribute("ColeccionUpdateInputDTO") ColeccionUpdateInputDTO updateInputDTO,
+            Model model) {
+
+        // Traigo cat y países como antes
         ResponseEntity<?> rtaCategorias = hechosService.getCategorias();
         ResponseEntity<?> rtaPaises = hechosService.getPaises();
-        if (rtaCategorias.getBody() != null){
+
+        if (rtaCategorias.getBody() != null) {
             List<CategoriaDto> categorias = BodyToListConverter.bodyToList(rtaCategorias, CategoriaDto.class);
             model.addAttribute("categorias", categorias);
         }
-        if (rtaPaises.getBody() != null){
+        if (rtaPaises.getBody() != null) {
             List<PaisDto> paises = BodyToListConverter.bodyToList(rtaPaises, PaisDto.class);
             model.addAttribute("paises", paises);
         }
 
-        if (inputDTO.getCriterios().getPaisId() == null){
-            model.addAttribute("coleccionForm", new ColeccionInputDTO());
+
+        if (updateInputDTO != null && updateInputDTO.getAlgoritmoConsenso() != null) {
+            switch (updateInputDTO.getAlgoritmoConsenso()) {
+                case "Mayoría absoluta":
+                    updateInputDTO.setAlgoritmoConsenso("MAYORIA_ABSOLUTA");
+                    break;
+                case "Mayoría simple":
+                    updateInputDTO.setAlgoritmoConsenso("MAYORIA_SIMPLE");
+                    break;
+                case "Múltiples menciones":
+                    updateInputDTO.setAlgoritmoConsenso("MULTIPLES_MENCIONES");
+                    break;
+                default:
+                    updateInputDTO.setAlgoritmoConsenso("");
+            }
         }
-        else{
+
+
+
+        // ---- Elegir de dónde saco los criterios (crear vs editar) ----
+        CriteriosColeccionDTO criterios = null;
+
+        // Si estoy editando, doy prioridad al updateInputDTO
+        if (updateInputDTO != null && updateInputDTO.getCriterios() != null
+                && updateInputDTO.getCriterios().getPaisId() != null
+                && !updateInputDTO.getCriterios().getPaisId().isEmpty()) {
+            System.out.println("UPDATE paisId: " +
+                    (updateInputDTO.getCriterios() != null ? updateInputDTO.getCriterios().getPaisId() : null));
+            System.out.println("UPDATE fechas: " +
+                    (updateInputDTO.getCriterios() != null ? updateInputDTO.getCriterios().getFechaAcontecimientoInicial() : null));
+
+            criterios = updateInputDTO.getCriterios();
+        } else if (inputDTO != null && inputDTO.getCriterios() != null
+                && inputDTO.getCriterios().getPaisId() != null
+                && !inputDTO.getCriterios().getPaisId().isEmpty()) {
+            criterios = inputDTO.getCriterios();
+        }
+
+        // ---- Si tengo países seleccionados, traigo las provincias ----
+        if (criterios != null && criterios.getPaisId() != null && !criterios.getPaisId().isEmpty()) {
             List<ProvinciaDto> provinciasTotales = new ArrayList<>();
-            for (Long idPais : inputDTO.getCriterios().getPaisId()) {
+            for (Long idPais : criterios.getPaisId()) {
                 ResponseEntity<?> rtaProvincia = hechosService.getProvinciasByIdPais(idPais);
                 if (rtaProvincia.getBody() != null) {
                     List<ProvinciaDto> provincias = BodyToListConverter.bodyToList(rtaProvincia, ProvinciaDto.class);
-                    if (provincias!=null)
+                    if (provincias != null) {
                         provinciasTotales.addAll(provincias);
+                    }
                 }
             }
-            model.addAttribute("coleccionForm", inputDTO);
             model.addAttribute("provincias", provinciasTotales);
         }
-        return "gestion";
 
+        // ---- Setear coleccionForm para que el HTML tenga algo ----
+        if (inputDTO == null || inputDTO.getCriterios() == null) {
+            model.addAttribute("coleccionForm", new ColeccionInputDTO());
+        } else {
+            model.addAttribute("coleccionForm", inputDTO);
+        }
+
+        // ---- Si estoy editando, vuelvo a meter el DTO de update en el model ----
+        if (updateInputDTO != null && updateInputDTO.getId_coleccion() != null) {
+            model.addAttribute("ColeccionUpdateInputDTO", updateInputDTO);
+        }
+
+        return "gestion";
     }
 
 
@@ -116,52 +175,81 @@ public class ColeccionController {
 
         System.out.println("HOLAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
 
+
         ResponseEntity<?> rta = coleccionService.getColeccion(id_coleccion);
+
+        if (!rta.getStatusCode().is2xxSuccessful()){
+            return "redirect:/" + rta.getStatusCode().value();
+        }
 
         if (rta.getStatusCode().is2xxSuccessful() && rta.getBody() != null) {
             System.out.println("HOLA CHICOS NO SOY NULL!!");
             ColeccionOutputDTO coleccion = (ColeccionOutputDTO) rta.getBody();
+            if(coleccion.getCriterios().getFuentes() != null) {
+                coleccion.getCriterios().getFuentes().forEach(f -> System.out.println("Fuente " + f));
+            }
+            System.out.println("Algoritmo de consenso: " + coleccion.getAlgoritmoDeConsenso());
             model.addAttribute("coleccion", coleccion);
             ResponseEntity<?> rtaCategorias = hechosService.getCategorias();
             ResponseEntity<?> rtaPaises = hechosService.getPaises();
-            if (rtaCategorias.getBody() != null){
+            if (rtaCategorias.getBody() != null) {
                 List<CategoriaDto> categorias = BodyToListConverter.bodyToList(rtaCategorias, CategoriaDto.class);
                 model.addAttribute("categorias", categorias);
             }
-            if (rtaPaises.getBody() != null){
+            if (rtaPaises.getBody() != null) {
                 List<PaisDto> paises = BodyToListConverter.bodyToList(rtaPaises, PaisDto.class);
                 model.addAttribute("paises", paises);
             }
+
+            ResponseEntity<?> rtaUser = usuarioService.getUsuario();
+
+            if (rtaUser.getStatusCode().is2xxSuccessful() && rtaUser.hasBody()){
+                UsuarioOutputDto usuario = (UsuarioOutputDto) rtaUser.getBody();
+
+                if (usuario.getRol().equals(Rol.ADMINISTRADOR)){
+                    ColeccionUpdateInputDTO coleccionUpdateInputDTO = ColeccionUpdateInputDTO.builder()
+                            .id_coleccion(coleccion.getId())
+                            .titulo(coleccion.getTitulo())
+                            .descripcion(coleccion.getDescripcion())
+                            .algoritmoConsenso(coleccion.getAlgoritmoDeConsenso())
+                            .criterios(coleccion.getCriterios())
+                            .build();
+                    model.addAttribute("ColeccionUpdateInputDTO", coleccionUpdateInputDTO);
+                }
+
+            }
+
         }
         if (inputDTO.getPaisId() == null) {
             model.addAttribute("getHechosColeccionInputDto", new GetHechosColeccionInputDTO());
-            return "detalleColeccion";
-        }
-        else{
-                List<ProvinciaDto> provinciasTotales = new ArrayList<>();
-                for (Long idPais : inputDTO.getPaisId()) {
-                    ResponseEntity<?> rtaProvincia = hechosService.getProvinciasByIdPais(idPais);
-                    if (rtaProvincia.getBody() != null) {
-                        List<ProvinciaDto> provincias = BodyToListConverter.bodyToList(rtaProvincia, ProvinciaDto.class);
-                        if (provincias!=null)
-                            provinciasTotales.addAll(provincias);
-                    }
+
+        } else {
+            List<ProvinciaDto> provinciasTotales = new ArrayList<>();
+            for (Long idPais : inputDTO.getPaisId()) {
+                ResponseEntity<?> rtaProvincia = hechosService.getProvinciasByIdPais(idPais);
+                if (rtaProvincia.getBody() != null) {
+                    List<ProvinciaDto> provincias = BodyToListConverter.bodyToList(rtaProvincia, ProvinciaDto.class);
+                    if (provincias != null)
+                        provinciasTotales.addAll(provincias);
                 }
-                model.addAttribute("getHechosColeccionInputDto", inputDTO);
-                model.addAttribute("provincias", provinciasTotales);
-                return "detalleColeccion";
+            }
+            model.addAttribute("getHechosColeccionInputDto", inputDTO);
+            model.addAttribute("provincias", provinciasTotales);
+
         }
+
+        return "detalleColeccion";
     }
 
-    @PostMapping("/delete")
+    @PostMapping("/delete/{id_coleccion}")
     @PreAuthorize("hasRole('ADMINISTRADOR')")
-    public String deleteColeccion(@Valid @RequestParam Long id_coleccion, RedirectAttributes ra){
+    public String deleteColeccion(@Valid @PathVariable Long id_coleccion, RedirectAttributes ra){
         ResponseEntity<?> rta = coleccionService.deleteColeccion(id_coleccion);
 
         if (rta.getStatusCode().is2xxSuccessful()){
             ra.addFlashAttribute("mensaje", "Se eliminó correctamente la colección");
             ra.addFlashAttribute("tipo", "success");
-            return "redirect:get-all";
+            return "redirect:/colecciones/public/get-all";
         }
         return "redirect:/" + rta.getStatusCode().value();
     }
@@ -169,11 +257,12 @@ public class ColeccionController {
     @PostMapping("/update")
     @PreAuthorize("hasRole('ADMINISTRADOR')")
     public String updateColeccion(@Valid @ModelAttribute ColeccionUpdateInputDTO inputDTO, RedirectAttributes ra){
+        System.out.println("ALGORITMO DE CONSENSO: " +inputDTO.getAlgoritmoConsenso());
         ResponseEntity<?> rta = coleccionService.updateColeccion(inputDTO);
 
         if (rta.getStatusCode().is2xxSuccessful()){
             ra.addFlashAttribute("mensaje", "Se actualizó correctamente la colección");
-            return "redirect:get/" + inputDTO.getId_coleccion();
+            return "redirect:public/get/" + inputDTO.getId_coleccion();
         }
         return "redirect:/" + rta.getStatusCode().value();
     }
@@ -223,7 +312,7 @@ public class ColeccionController {
         if (rta.getStatusCode().is2xxSuccessful()){
             ra.addFlashAttribute("mensaje", "Se refrescaron las colecciones correctamente ");
             ra.addFlashAttribute("tipo", "success");
-            return "redirect:get-all";
+            return "redirect:/colecciones/public/get-all";
         }
         return "redirect:/" + rta.getStatusCode().value();
     }

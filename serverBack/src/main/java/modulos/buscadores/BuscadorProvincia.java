@@ -15,9 +15,18 @@ public class BuscadorProvincia {
         this.repoProvincia = repoProvincia;
     }
 
-    public Provincia buscar(String elemento) {
-        return this.repoProvincia.findByNombreNormalizado(elemento).orElse(null);
+    public Provincia buscarConPais(String elemento, Long id_pais) {
+        if (elemento!=null)
+            return this.repoProvincia.findByNombreNormalizadoAndPaisId(elemento, id_pais).orElse(null);
+        return null;
     }
+
+    public Provincia buscar(String elemento) {
+        if (elemento!=null)
+            return this.repoProvincia.findByNombreNormalizado(elemento).orElse(null);
+        return null;
+    }
+
 
     public Provincia buscar(Long elemento) {
         return elemento != null ? repoProvincia.findById(elemento).orElse(null) : null;

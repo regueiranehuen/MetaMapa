@@ -61,6 +61,7 @@ public class ServicioDeEstadistica {
         this.estadisticasRepository.save(estadisticas);
     }
 
+
 //id 1 : spam id 2 : categoria con mayor cant de hechos id 3: hora de mayor cantidad de hechos id 4: provincia con mayor cantidad de hechos de una categoria
 //id 5 : provincia con mayor cantidad de hechos de una coleccion
     public Path exportarEstadisticaSpam() {

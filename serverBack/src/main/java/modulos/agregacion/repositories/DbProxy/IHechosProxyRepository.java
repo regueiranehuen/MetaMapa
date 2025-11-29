@@ -89,4 +89,11 @@ ORDER BY totalHechos DESC
     SELECT COUNT(h) FROM HechoProxy h WHERE h.activo = true
     """)
     Long getCantHechos();
+
+    @Query(value = """
+    SELECT h FROM HechoProxy h
+    WHERE h.activo = true order by h.cant_accesos DESC
+    LIMIT 3
+    """)
+    List<HechoProxy> findHechosDestacados();
 }

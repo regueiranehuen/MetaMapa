@@ -1,5 +1,6 @@
 package modulos.buscadores;
 
+import modulos.agregacion.entities.DbMain.Fuente;
 import modulos.agregacion.entities.atributosHecho.Origen;
 import modulos.agregacion.entities.atributosHecho.TipoContenido;
 import modulos.agregacion.repositories.DbMain.IFiltroRepository;
@@ -7,6 +8,7 @@ import org.springframework.stereotype.Component;
 import modulos.agregacion.entities.DbMain.filtros.*;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.ZonedDateTime;
 import java.util.Optional;
 
@@ -38,21 +40,21 @@ public class BuscadorFiltro {
     }
 
     /* ======= Fecha de Acontecimiento (ini / fin) ======= */
-    public Optional<FiltroFechaAcontecimiento> buscarFiltroFechaAcontecimientoPorRango(ZonedDateTime ini, ZonedDateTime fin) {
+    public Optional<FiltroFechaAcontecimiento> buscarFiltroFechaAcontecimientoPorRango(LocalDateTime ini, LocalDateTime fin) {
         if (ini == null && fin == null) return Optional.empty();
         return filtrosRepo.findFiltroFechaAcontecimientoByRango(ini, fin);
     }
 
     /* ======= Fecha de Carga (ini / fin) ======= */
-    public Optional<FiltroFechaCarga> buscarFiltroFechaCargaPorRango(ZonedDateTime ini, ZonedDateTime fin) {
+    public Optional<FiltroFechaCarga> buscarFiltroFechaCargaPorRango(LocalDateTime ini, LocalDateTime fin) {
         if (ini == null && fin == null) return Optional.empty();
         return filtrosRepo.findFiltroFechaCargaByRango(ini, fin);
     }
 
     /* ================== Origen (Integer/enum) ================= */
-    public Optional<FiltroOrigen> buscarFiltroOrigenPorValor(Integer origen) {
-        if (origen == null) return Optional.empty();
-        return filtrosRepo.findFiltroOrigenByOrigen(Origen.fromCodigo(origen));
+    public Optional<FiltroFuente> buscarFiltroFuentePorValor(Integer fuente) {
+        if (fuente == null) return Optional.empty();
+        return filtrosRepo.findFiltroFuenteByFuente(Fuente.fromCodigo(fuente));
     }
 
     /* ================== País (entidad) ================= */

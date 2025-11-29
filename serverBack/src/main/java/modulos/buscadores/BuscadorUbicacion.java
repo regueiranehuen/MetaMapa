@@ -60,16 +60,16 @@ public class BuscadorUbicacion {
 
         if (ubicacion == null){
             if (pais != null && provincia != null){
-                System.out.println("");
                 if (provincia.getPais().getId().equals(pais.getId())){
                     ubicacion = new Ubicacion(pais, provincia);
                     repoUbicacion.save(ubicacion);
                 }
             }
-
             else{
-                ubicacion = new Ubicacion(pais, provincia);
-                repoUbicacion.save(ubicacion);
+                if(pais != null || provincia != null) {
+                    ubicacion = new Ubicacion(pais, provincia);
+                    repoUbicacion.save(ubicacion);
+                }
             }
         }
 

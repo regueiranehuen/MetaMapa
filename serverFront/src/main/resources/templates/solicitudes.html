@@ -10,8 +10,8 @@
                     <div class="requests-badge mb-3">
                         <i class="bi bi-clipboard-check me-2"></i>Panel de Administración
                     </div>
-                    <h1 class="display-5 fw-bold mb-3">
-                        <i class="bi bi-file-earmark-text me-2"></i>Solicitudes Pendientes
+                    <h1 class="display-5 fw-bold mb-2 animated-gradient-text">
+                        Solicitudes Pendientes
                     </h1>
                     <p class="lead text-muted mb-0">
                         Revisá y gestioná las solicitudes de contribución de la comunidad
@@ -37,7 +37,7 @@
             <p class="text-muted mb-4">
                 No hay solicitudes pendientes de revisión. Excelente trabajo manteniendo la plataforma actualizada.
             </p>
-            <a th:href="@{/hechos/public/get-all}" class="btn btn-primary btn-lg">
+            <a th:href="@{/hechos/public/get-all}" class="btn btn-lg btn-explorar-hechos">
                 <i class="bi bi-compass me-2"></i>Explorar hechos
             </a>
         </div>
@@ -52,25 +52,45 @@
                      th:with="
             esSubir=${s.tipo} == 'SUBIR',
             esEliminar=${s.tipo} == 'ELIMINAR',
+            esModificar = ${s.tipo} == 'MODIFICAR',
             actionUrl=${esSubir} ? '/solicitudes-hecho/evaluar/subir'
                      : (${esEliminar} ? '/solicitudes-hecho/evaluar/eliminar'
                                       : '/solicitudes-hecho/evaluar/modificar')
          ">
 
-                <!-- Contenido principal (clickeable si hay hechoId) -->
                 <a class="request-content"
                    th:if="${s.hechoId != null}"
-                   th:href="@{/hechos/public/get(id_hecho=${s.hechoId}, fuente='DINAMICA')}">
+                   th:href="${esModificar} ?
+        @{/hechos/public/get(
+            id_hecho=${s.hechoId},
+            fuente='DINAMICA',
+            id_solicitud=${s.id},
+            es-de-modificar=true
+        )}
+        :
+        @{/hechos/public/get(
+            id_hecho=${s.hechoId},
+            fuente='DINAMICA',
+            id_solicitud=${s.id},
+            es-de-modificar=false
+        )}">
 
-                    <div class="request-header">
+
+
+
+
+                <div class="request-header">
                         <span class="request-type-badge"
                               th:classappend="${esSubir} ? 'badge-subir' : (${esEliminar} ? 'badge-eliminar' : 'badge-modificar')"
                               th:text="${s.tipo}">SUBIR</span>
-                        <span class="request-date">
-                            <i class="bi bi-calendar3 me-1"></i>
-                            <span th:text="${s.fecha}">2025-11-05</span>
+                    <span class="request-date">
+                        <i class="bi bi-calendar3 me-1"></i>
+                        <span th:text="${s.fecha != null ? #strings.substringBefore(s.fecha, 'T') : '—'}">
+                            2025-11-05
                         </span>
-                    </div>
+                    </span>
+
+                </div>
 
                     <h5 class="request-title">
                         Solicitud de <span th:text="${#strings.toLowerCase(s.tipo)}">subir</span>
@@ -85,11 +105,10 @@
                         <div class="justification-label">
                             <i class="bi bi-chat-left-text me-1"></i>Justificación
                         </div>
-                        <div class="justification-text" th:text="${#strings.abbreviate(s.justificacion, 200)}">—</div>
+                        <div class="justification-text" th:text="${s.justificacion}">—</div>
                     </div>
                 </a>
 
-                <!-- Contenido no clickeable si NO hay hechoId -->
                 <div class="request-content request-content-inactive"
                      th:if="${s.hechoId == null}">
 
@@ -99,8 +118,11 @@
                               th:text="${s.tipo}">SUBIR</span>
                         <span class="request-date">
                             <i class="bi bi-calendar3 me-1"></i>
-                            <span th:text="${s.fecha}">2025-11-05</span>
+                            <span th:text="${s.fecha != null ? #strings.substringBefore(s.fecha, 'T') : '—'}">
+                                2025-11-05
+                            </span>
                         </span>
+
                     </div>
 
                     <h5 class="request-title">
@@ -117,13 +139,12 @@
                         <div class="justification-label">
                             <i class="bi bi-chat-left-text me-1"></i>Justificación
                         </div>
-                        <div class="justification-text" th:text="${#strings.abbreviate(s.justificacion, 200)}">—</div>
+                        <div class="justification-text" th:text="${s.justificacion}">—</div>
+                        <div class="justification-text" th:text="${s.justificacion}">—</div>
                     </div>
                 </div>
 
-                <!-- Acciones -->
                 <div class="request-actions">
-                    <!-- ACEPTAR -->
                     <form method="post" th:action="${actionUrl}">
                         <input type="hidden" name="id_solicitud" th:value="${s.id}">
                         <input type="hidden" name="respuesta" value="true">
@@ -134,19 +155,35 @@
                         </button>
                     </form>
 
-                    <!-- RECHAZAR -->
                     <button class="btn btn-reject"
+                            th:if="${s.username != null}"
                             data-bs-toggle="modal" data-bs-target="#modalRechazo"
                             th:attr="data-id=${s.id}, data-tipo=${s.tipo}, data-action=${actionUrl}">
                         <i class="bi bi-x-circle me-1"></i>Rechazar
                     </button>
+
+                    <!-- RECHAZAR DIRECTO (usuario anónimo) -->
+                    <form th:if="${s.username == null}"
+                          method="post"
+                          th:action="${actionUrl}"
+                          class="w-100">
+                        <input type="hidden" name="id_solicitud" th:value="${s.id}">
+                        <input type="hidden" name="respuesta" value="false">
+                        <!-- mensaje fijo para cumplir con el DTO -->
+                        <input type="hidden" name="mensaje"
+                               value="Solicitud anónima rechazada automáticamente.">
+                        <input type="hidden" th:if="${_csrf != null}"
+                               th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
+                        <button class="btn btn-reject w-100" type="submit">
+                            <i class="bi bi-x-circle me-1"></i>Rechazar
+                        </button>
+                    </form>
                 </div>
             </article>
 
         </div>
     </div>
 
-    <!-- MODAL RECHAZO -->
     <div class="modal fade" id="modalRechazo" tabindex="-1" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
             <form class="modal-content border-0"
@@ -164,21 +201,23 @@
 
                 <div class="modal-body" style="padding:2rem">
                     <label class="form-label fw-semibold mb-2">Motivo del rechazo</label>
-                    <label for="rechazoMensaje"></label><textarea class="form-control"
-                                                                  th:field="*{mensaje}"
-                                                                  id="rechazoMensaje"
-                                                                  rows="4"
-                                                                  maxlength="300"
-                                                                  placeholder="Explicá brevemente por qué se rechaza esta solicitud..."
-                                                                  style="border-radius:12px;border:1px solid #e9ecef;background:#f8f9ff"
-                                                                  required></textarea>
+                    <label for="rechazoMensaje"></label>
+                    <textarea class="form-control"
+                              th:field="*{mensaje}"  id="rechazoMensaje"
+                              rows="4"
+                              maxlength="300"
+                              placeholder="Explicá brevemente por qué se rechaza esta solicitud..."
+                              style="border-radius:12px;border:1px solid #e9ecef;background:#f8f9ff"
+                              required></textarea>
                     <div class="form-text text-end mt-2">
                         <i class="bi bi-info-circle me-1"></i>Máximo 300 caracteres
                     </div>
                 </div>
 
-                <input type="hidden" name="id_solicitud" id="rechazoId"/>
+                <input type="hidden" th:field="*{id_solicitud}" id="rechazoId"/>
+
                 <input type="hidden" name="respuesta" value="false"/>
+
                 <input type="hidden" th:if="${_csrf != null}"
                        th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
 
@@ -228,6 +267,11 @@
         .btn-accept:hover{background:linear-gradient(135deg,#047857,#065f46);transform:translateY(-2px);box-shadow:0 6px 16px rgba(5,150,105,.4);color:#fff}
         .btn-reject{background:linear-gradient(135deg,#dc2626,#b91c1c);color:#fff;box-shadow:0 4px 12px rgba(220,38,38,.3)}
         .btn-reject:hover{background:linear-gradient(135deg,#b91c1c,#991b1b);transform:translateY(-2px);box-shadow:0 6px 16px rgba(220,38,38,.4);color:#fff}
+        .btn-explorar-hechos{background:linear-gradient(135deg,#667eea,#8b5cf6);color:#fff;border:none;border-radius:999px;padding:.9rem 2.5rem;font-weight:600;box-shadow:0 8px 22px rgba(107,92,246,.35);display:inline-flex;align-items:center;gap:.5rem;transition:all .25s ease}
+        .btn-explorar-hechos i{color:#fff}
+        .btn-explorar-hechos:hover{background:linear-gradient(135deg,#5a67d8,#7c3aed);transform:translateY(-2px);box-shadow:0 12px 28px rgba(88,80,236,.45);color:#fff}
+        .btn-explorar-hechos:focus{outline:none;box-shadow:0 0 0 .18rem rgba(139,92,246,.4)}
+
         @media (max-width:991px){
             .requests-hero{padding:60px 0 30px}
             .display-5{font-size:2rem}

@@ -15,31 +15,44 @@ import java.nio.charset.StandardCharsets;
 import java.text.Collator;
 import java.util.*;
 
+import org.json.JSONObject;
+import org.springframework.web.reactive.function.client.WebClient;
+import reactor.core.publisher.Mono;
+import java.util.Locale;
+
 public final class Geocodificador {
+
+    private static final WebClient webClient = WebClient.builder()
+            .baseUrl("https://nominatim.openstreetmap.org")
+            .defaultHeader("User-Agent", "metamapa/1.0 (contacto: contacto@tudominio.com)")
+            .build();
 
     private Geocodificador() {}
 
-    // ============================
-    // API PRINCIPAL QUE PEDISTE
-    // ============================
-
     public static UbicacionString obtenerUbicacion(Double lat, Double lon) {
         try {
-            // Nominatim reverse (pedimos addressdetails y sesgo de idioma)
             String url = String.format(Locale.US,
-                    "https://nominatim.openstreetmap.org/reverse?format=jsonv2&lat=%f&lon=%f&addressdetails=1&zoom=10&accept-language=es",
+                    "/reverse?format=jsonv2&lat=%f&lon=%f&addressdetails=1&zoom=10&accept-language=es",
                     lat, lon);
-            String UA = "metamapa/1.0 (contacto: tu-email@dominio)";
-            String OVERPASS = "https://overpass-api.de/api/interpreter";
 
-            JSONObject root = new JSONObject(httpGet(url, UA));
+            // Petición HTTP reactiva
+            String response = webClient.get()
+                    .uri(url)
+                    .retrieve()
+                    .bodyToMono(String.class)
+                    .onErrorResume(e -> {
+                        e.printStackTrace();
+                        return Mono.empty();
+                    })
+                    .block(); // Bloquea solo hasta recibir respuesta (puede quitarse en contexto reactivo)
+
+            if (response == null) return null;
+
+            JSONObject root = new JSONObject(response);
             JSONObject address = root.optJSONObject("address");
             if (address == null) return null;
 
             String country = address.optString("country", null);
-            String countryCode = address.optString("country_code", null); // iso2 en minúsculas
-
-            // Elegimos el mejor campo para "provincia" (varía según país)
             String province = firstNonBlank(
                     address.optString("state", null),
                     address.optString("region", null),
@@ -52,7 +65,7 @@ public final class Geocodificador {
 
             UbicacionString out = new UbicacionString();
             out.setPais(country);
-            out.setProvincia(province);
+            out.setProvincia(province != null ? province : "");
 
             return out;
 
@@ -61,7 +74,6 @@ public final class Geocodificador {
             return null;
         }
     }
-
 
     public static List<PaisProvincias> obtenerTodosLosPaises() {
         try {

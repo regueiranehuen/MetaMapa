@@ -1,6 +1,7 @@
 package modulos.shared.dtos.output;
 
 import lombok.Data;
+import modulos.agregacion.entities.DbMain.usuario.Rol;
 
 @Data
 public class UsuarioOutputDto {
@@ -10,4 +11,5 @@ public class UsuarioOutputDto {
     private String apellido;
     private Integer edad;
     private Integer cantHechosSubidos;
+    private Rol rol;
 }

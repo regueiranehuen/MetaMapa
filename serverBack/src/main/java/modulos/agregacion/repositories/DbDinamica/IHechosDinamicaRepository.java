@@ -112,4 +112,18 @@ LIMIT 1;
     SELECT COUNT(h) FROM HechoDinamica h WHERE h.activo = true
     """)
     Long getCantHechos();
+
+    @Query("""
+        SELECT h
+        FROM HechoDinamica h
+        WHERE h.usuario_id = :usuarioId AND h.activo = true
+    """)
+    List<HechoDinamica> findAllByUsuarioIdAndActivoTrue(@Param("usuarioId") Long usuarioId);
+
+    @Query(value = """
+    SELECT h FROM HechoDinamica h
+    WHERE h.activo = true order by h.cant_accesos DESC
+    LIMIT 3
+    """)
+    List<HechoDinamica> findHechosDestacados();
 }

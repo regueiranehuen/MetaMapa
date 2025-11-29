@@ -23,6 +23,7 @@ import modulos.agregacion.repositories.DbMain.IFiltroRepository;
 import modulos.agregacion.repositories.DbMain.IHechoRefRepository;
 import modulos.agregacion.repositories.DbMain.IUsuarioRepository;
 import modulos.agregacion.repositories.DbProxy.IHechosProxyRepository;
+import modulos.shared.dtos.output.VisualizarHechosOutputDTO;
 import modulos.shared.utils.FormateadorHecho;
 import modulos.agregacion.entities.DbEstatica.Dataset;
 import modulos.agregacion.entities.fuentes.FuenteEstatica;
@@ -38,11 +39,10 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Service;
 import modulos.shared.dtos.output.ColeccionOutputDTO;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
+
+import java.util.*;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import static modulos.JwtClaimExtractor.getUsernameFromToken;
 
@@ -100,6 +100,8 @@ incluir automáticamente todos los hechos de categoría “Incendio forestal” 
     public ResponseEntity<?> crearColeccion(ColeccionInputDTO dtoInput, String username) {
 
 
+        System.out.println("PAISES DEL ORTO IDS: " + dtoInput.getCriterios().getPaisId());
+
         ResponseEntity<?> rta = checkeoAdmin(username);
 
         if (!rta.getStatusCode().is2xxSuccessful()){
@@ -150,8 +152,8 @@ incluir automáticamente todos los hechos de categoría “Incendio forestal” 
                 } else if (filtro instanceof FiltroFechaCarga ffc) {
                     System.out.println("  [FiltroFechaCarga] desde=" + ffc.getFechaInicial() +
                             ", hasta=" + ffc.getFechaFinal());
-                } else if (filtro instanceof FiltroOrigen fo) {
-                    System.out.println("  [FiltroOrigen] origen=" + fo.getOrigenDeseado());
+                } else if (filtro instanceof FiltroFuente ff) {
+                    System.out.println("  [FiltroFuente] fuente=" + ff.getFuenteDeseada());
                 } else if (filtro instanceof FiltroPais fp) {
                     System.out.println("  [FiltroPais] id=" + fp.getPais().getId() +
                             ", nombre=" + fp.getPais().getPais());
@@ -172,6 +174,9 @@ incluir automáticamente todos los hechos de categoría “Incendio forestal” 
                 .collect(Collectors.toCollection(ArrayList::new)); // mutable ✅
         coleccion.setCriterios(filtrosJuntos);
 
+        for(Filtro filtro : filtrosJuntos){
+            System.out.println("SKIBIDI " + filtro.getClass());
+        }
 
         coleccionesRepo.saveAndFlush(coleccion);
         return ResponseEntity.status(HttpStatus.CREATED).body("La colección se creó correctamente");
@@ -202,20 +207,74 @@ incluir automáticamente todos los hechos de categoría “Incendio forestal” 
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("No se encontró la colección");
         }
 
+        for (int i = 0; i < coleccion.getCriterios().size(); i++) {
+            List<IFiltro> grupo = Collections.singletonList(coleccion.getCriterios().get(i));
+            System.out.println("🧩 Grupo #" + i + " (" + grupo.size() + " filtro/s):");
+
+            for (IFiltro filtro : grupo) {
+                if (filtro instanceof FiltroCategoria fc) {
+                    System.out.println("  [FiltroCategoria] id=" + fc.getCategoria().getId() +
+                            ", nombre=" + fc.getCategoria().getTitulo());
+                } else if (filtro instanceof FiltroContenidoMultimedia fcm) {
+                    System.out.println("  [FiltroContenidoMultimedia] tipo=" + fcm.getTipoContenido());
+                } else if (filtro instanceof FiltroDescripcion fd) {
+                    System.out.println("  [FiltroDescripcion] texto=" + fd.getDescripcion());
+                } else if (filtro instanceof FiltroFechaAcontecimiento ffa) {
+                    System.out.println("  [FiltroFechaAcontecimiento] desde=" + ffa.getFechaInicial() +
+                            ", hasta=" + ffa.getFechaFinal());
+                } else if (filtro instanceof FiltroFechaCarga ffc) {
+                    System.out.println("  [FiltroFechaCarga] desde=" + ffc.getFechaInicial() +
+                            ", hasta=" + ffc.getFechaFinal());
+                } else if (filtro instanceof FiltroFuente ff) {
+                    System.out.println("  [FiltroFuente] fuente=" + ff.getFuenteDeseada());
+                } else if (filtro instanceof FiltroPais fp) {
+                    System.out.println("  [FiltroPais] id=" + fp.getPais().getId() +
+                            ", nombre=" + fp.getPais().getPais());
+                } else if (filtro instanceof FiltroProvincia fprov) {
+                    System.out.println("  [FiltroProvincia] id=" + fprov.getProvincia().getId() +
+                            ", nombre=" + fprov.getProvincia().getProvincia());
+                } else if (filtro instanceof FiltroTitulo ft) {
+                    System.out.println("  [FiltroTitulo] titulo=" + ft.getTitulo());
+                } else {
+                    System.out.println("  [Otro tipo de filtro] " + filtro.getClass().getSimpleName());
+                }
+            }
+        }
+
+        coleccion.incrementarAccesos();
+        coleccionesRepo.save(coleccion);
+
         ColeccionOutputDTO dto = new ColeccionOutputDTO();
 
         dto.setId(coleccion.getId());
         dto.setTitulo(coleccion.getTitulo());
         dto.setDescripcion(coleccion.getDescripcion());
 
+        List<Long> idsFiltradosEstaticos = coleccion.getHechos().stream().filter(h->h.getKey().getFuente().equals(Fuente.ESTATICA))
+                        .map(h->h.getKey().getId()).toList();
+
+        dto.setDatasets(datasetsRepo.findDistinctDatasetsByHechoIds(idsFiltradosEstaticos));
+
+        if(coleccion.getAlgoritmoConsenso() instanceof AlgoritmoConsensoMayoriaAbsoluta){
+            dto.setAlgoritmoDeConsenso("Mayoría absoluta");
+        } else if (coleccion.getAlgoritmoConsenso() instanceof AlgoritmoConsensoMayoriaSimple){
+            dto.setAlgoritmoDeConsenso("Mayoría simple");
+        } else if (coleccion.getAlgoritmoConsenso() instanceof AlgoritmoConsensoMultiplesMenciones){
+            dto.setAlgoritmoDeConsenso("Múltiples menciones");
+        }
+
+        System.out.println("ALGORITMO DE CONSENSO: " + dto.getAlgoritmoDeConsenso());
+
         dto.setCriterios(FormateadorHecho.filtrosColeccionToString(coleccion.getCriterios()));
+
+
 
         return ResponseEntity.status(HttpStatus.OK).body(dto);
     }
 
-    public ResponseEntity<?> deleteColeccion(Long id_coleccion, Jwt principal) {
+    public ResponseEntity<?> deleteColeccion(Long id_coleccion, String username) {
 
-        ResponseEntity<?> rta = checkeoAdmin(JwtClaimExtractor.getUsernameFromToken(principal));
+        ResponseEntity<?> rta = checkeoAdmin(username);
 
         if (!rta.getStatusCode().is2xxSuccessful()){
             return rta;
@@ -324,9 +383,10 @@ Esto asegura que la colección refleje solo los hechos de las fuentes actualment
         return ResponseEntity.status(HttpStatus.OK).build();
     }
 
-    public ResponseEntity<?> updateColeccion(ColeccionUpdateInputDTO dto, Jwt principal) {
+    @Transactional
+    public ResponseEntity<?> updateColeccion(ColeccionUpdateInputDTO dto, String username) {
 
-        ResponseEntity<?> respuesta = checkeoAdmin(JwtClaimExtractor.getUsernameFromToken(principal));
+        ResponseEntity<?> respuesta = checkeoAdmin(username);
 
         if(!respuesta.getStatusCode().equals(HttpStatus.OK)){
             return respuesta;
@@ -346,19 +406,46 @@ Esto asegura que la colección refleje solo los hechos de las fuentes actualment
             coleccion.setDescripcion(dto.getDescripcion());
         }
 
-        List<List<IFiltro>> filtros = FormateadorHecho.obtenerListaDeFiltros(FormateadorHecho.formatearFiltrosColeccion(buscadores, dto.getCriterios()));
-        List<Filtro> filtrosJuntos = new ArrayList<>();
-        filtros.forEach(f -> filtrosJuntos.add((Filtro) f));
+        List<List<IFiltro>> filtros = FormateadorHecho.obtenerListaDeFiltros(FormateadorHecho.formatearFiltrosColeccionDinamica(buscadores, dto.getCriterios()));
+
+
+        List<Filtro> filtrosJuntos = filtros.stream()
+                .flatMap(List::stream)     // aplana las sublistas
+                .map(f -> (Filtro) f)      // castea cada elemento individual
+                .collect(Collectors.toCollection(ArrayList::new)); // mutable ✅
         coleccion.setCriterios(filtrosJuntos);
+
+        coleccion.setCriterios(filtrosJuntos);
+
+        if (dto.getAlgoritmoConsenso() != null){
+            switch (dto.getAlgoritmoConsenso()) {
+                case "MAYORIA_ABSOLUTA":
+                    coleccion.setAlgoritmoConsenso(new AlgoritmoConsensoMayoriaAbsoluta());
+                    break;
+                case "MAYORIA_SIMPLE":
+                    coleccion.setAlgoritmoConsenso(new AlgoritmoConsensoMayoriaSimple());
+                    break;
+                case "MULTIPLES_MENCIONES":
+                    coleccion.setAlgoritmoConsenso(new AlgoritmoConsensoMultiplesMenciones());
+                    break;
+                default:
+                    break;
+            }
+        }
+
+        coleccionesRepo.save(coleccion);
 
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
-    @Scheduled(cron = "0 0 3 * * *")
+    @Async
+    @Transactional
+    @Scheduled(cron = "0 * * * * *")
     public void ejecutarAlgoritmoConsenso(){
+        System.out.println("ENTRO a algoritmo de consenso");
         List<Coleccion> colecciones = coleccionesRepo.findAllByActivoTrue();
         List<Dataset> datasets = datasetsRepo.findAll();
-        colecciones.forEach(coleccion->coleccion.getAlgoritmoConsenso().ejecutarAlgoritmoConsenso(buscadores.getBuscadorHecho(), datasets, coleccion));
+        colecciones.forEach(coleccion-> {if(coleccion.getAlgoritmoConsenso() != null) coleccion.getAlgoritmoConsenso().ejecutarAlgoritmoConsenso(buscadores.getBuscadorHecho(), datasets, coleccion);});
     }
 
     public ResponseEntity<?> modificarAlgoritmoConsenso(ModificarConsensoInputDTO input, Jwt principal) {
@@ -397,40 +484,83 @@ Esto asegura que la colección refleje solo los hechos de las fuentes actualment
         return ResponseEntity.status(HttpStatus.OK).build();
     }
 
-    @Async
-    @Scheduled(cron = "0 0 * * * *") // cada hora
+
+    @Scheduled(cron = "0 * * * * *") // cada hora
+    @Transactional
     public void refrescarColeccionesCronjob() {
+
+        System.out.println("Iniciando refrescar colecciones");
+
         Specification<HechoEstatica> specs1 = (root, query, cb) -> {
             if (query != null) query.distinct(true); // útil si después hay JOINs
             // activo = true AND atributosHecho.modificado = true (null => false)
             var activo = root.<Boolean>get("activo");
-            var modif  = root.get("atributosHecho").<Boolean>get("modificado");
-            return cb.and(cb.isTrue(activo), cb.isTrue(cb.coalesce(modif, cb.literal(false))));
+            return cb.and(cb.isTrue(activo));
         };
 
         Specification<HechoDinamica> specs2 = (root, query, cb) -> {
             if (query != null) query.distinct(true); // útil si después hay JOINs
             // activo = true AND atributosHecho.modificado = true (null => false)
             var activo = root.<Boolean>get("activo");
-            var modif  = root.get("atributosHecho").<Boolean>get("modificado");
-            return cb.and(cb.isTrue(activo), cb.isTrue(cb.coalesce(modif, cb.literal(false))));
+            return cb.and(cb.isTrue(activo));
         };
 
         Specification<HechoProxy> specs3 = (root, query, cb) -> {
             if (query != null) query.distinct(true); // útil si después hay JOINs
             // activo = true AND atributosHecho.modificado = true (null => false)
             var activo = root.<Boolean>get("activo");
-            var modif  = root.get("atributosHecho").<Boolean>get("modificado");
-            return cb.and(cb.isTrue(activo), cb.isTrue(cb.coalesce(modif, cb.literal(false))));
+            return cb.and(cb.isTrue(activo));
         };
 
 
-        List<Coleccion> colecciones = coleccionesRepo.findByActivoTrue();
+        List<Coleccion> colecciones = coleccionesRepo.findAllByActivoTrue();
 
         for(Coleccion coleccion : colecciones){
-            Specification<HechoEstatica> specsEstatica = crearSpecs(coleccion.getCriterios(), HechoEstatica.class);
-            Specification<HechoDinamica> specsDinamica = crearSpecs(coleccion.getCriterios(), HechoDinamica.class);
-            Specification<HechoProxy> specsProxy = crearSpecs(coleccion.getCriterios(), HechoProxy.class);
+
+
+            List<List<IFiltro>> filtrosXCategoria = FormateadorHecho.agruparFiltrosPorClase(coleccion.getCriterios());
+
+            for (int i = 0; i < filtrosXCategoria.size(); i++) {
+                List<IFiltro> grupo = filtrosXCategoria.get(i);
+                System.out.println("🧩 Grupo #" + i + " (" + grupo.size() + " filtro/s):");
+
+                for (IFiltro filtro : grupo) {
+                    if (filtro instanceof FiltroCategoria fc) {
+                        System.out.println("  [FiltroCategoria] id=" + fc.getCategoria().getId() +
+                                ", nombre=" + fc.getCategoria().getTitulo());
+                    } else if (filtro instanceof FiltroContenidoMultimedia fcm) {
+                        System.out.println("  [FiltroContenidoMultimedia] tipo=" + fcm.getTipoContenido());
+                    } else if (filtro instanceof FiltroDescripcion fd) {
+                        System.out.println("  [FiltroDescripcion] texto=" + fd.getDescripcion());
+                    } else if (filtro instanceof FiltroFechaAcontecimiento ffa) {
+                        System.out.println("  [FiltroFechaAcontecimiento] desde=" + ffa.getFechaInicial() +
+                                ", hasta=" + ffa.getFechaFinal());
+                    } else if (filtro instanceof FiltroFechaCarga ffc) {
+                        System.out.println("  [FiltroFechaCarga] desde=" + ffc.getFechaInicial() +
+                                ", hasta=" + ffc.getFechaFinal());
+                    } else if (filtro instanceof FiltroFuente ff) {
+                        System.out.println("  [FiltroFuente] fuente=" + ff.getFuenteDeseada());
+                    } else if (filtro instanceof FiltroPais fp) {
+                        fp.refrescarUbicaciones_ids(this.buscadores.getBuscadorUbicacion().buscarUbicacionesConPais(fp.getPais().getId())); //TODO OJO CON BORRAR ESTO CUANDO BORREMOS LOS PRINTS
+                        System.out.println("  [FiltroPais] id=" + fp.getPais().getId() +
+                                ", nombre=" + fp.getPais().getPais());
+                        System.out.println("    ubicaciones_ids = " + fp.getUbicaciones_ids());
+                    } else if (filtro instanceof FiltroProvincia fprov) {
+                        fprov.refrescarUbicaciones_ids(this.buscadores.getBuscadorUbicacion().buscarUbicacionesConProvincia(fprov.getProvincia().getId()));//TODO LO MISMO QUE ARRIBA
+                        System.out.println("  [FiltroProvincia] id=" + fprov.getProvincia().getId() +
+                                ", nombre=" + fprov.getProvincia().getProvincia());
+                    } else if (filtro instanceof FiltroTitulo ft) {
+                        System.out.println("  [FiltroTitulo] titulo=" + ft.getTitulo());
+                    } else {
+                        System.out.println("  [Otro tipo de filtro] " + filtro.getClass().getSimpleName());
+                    }
+                }
+            }
+
+
+            Specification<HechoEstatica> specsEstatica = crearSpecs(filtrosXCategoria, HechoEstatica.class);
+            Specification<HechoDinamica> specsDinamica = crearSpecs(filtrosXCategoria, HechoDinamica.class);
+            Specification<HechoProxy> specsProxy = crearSpecs(filtrosXCategoria, HechoProxy.class);
 
             Specification<HechoEstatica> specFinalEstatica = Specification
                     .where(this.distinct(HechoEstatica.class))
@@ -451,6 +581,17 @@ Esto asegura que la colección refleje solo los hechos de las fuentes actualment
             List<HechoDinamica> hechosDinamica = hechosDinamicaRepository.findAll(specFinalDinamica);
             List<HechoProxy> hechosProxy = hechosProxyRepository.findAll(specFinalProxy);
 
+            hechosEstatica.forEach(h-> System.out.println("Hecho estatica filtrado: " + h.getAtributosHecho().getTitulo()));
+
+            hechosDinamica.forEach(h-> System.out.println("Hecho dinamica filtrado: " + h.getAtributosHecho().getTitulo()));
+
+
+            System.out.println("== RESULTADOS PARA COLECCION: " + coleccion.getTitulo() + " ==");
+            System.out.println("HechosEstatica: " + hechosEstatica.size());
+            System.out.println("HechosDinamica: " + hechosDinamica.size());
+            System.out.println("HechosProxy: " + hechosProxy.size());
+
+
             List<Hecho> hechosFiltrados = new ArrayList<>();
             hechosFiltrados.addAll(hechosEstatica);
             hechosFiltrados.addAll(hechosDinamica);
@@ -458,11 +599,17 @@ Esto asegura que la colección refleje solo los hechos de las fuentes actualment
 
             hechosFiltrados.forEach(hecho -> hecho.getAtributosHecho().setModificado(false));
 
+            hechosFiltrados.forEach(hecho -> System.out.println("Titulo hecho filtrado: " + hecho.getAtributosHecho().getTitulo()));
+
             if(!hechosFiltrados.isEmpty()) {
                 coleccion.setModificado(false);
-                coleccion.setHechos(hechosFiltrados.stream().map(h->new HechoRef(h.getId(), h.getAtributosHecho().getFuente())).toList());
-                coleccionesRepo.save(coleccion);
+                coleccion.setHechos(hechosFiltrados.stream()
+                        .map(h -> new HechoRef(h.getId(), h.getAtributosHecho().getFuente()))
+                        .collect(Collectors.toList()));
+            } else{
+                coleccion.setHechos(new ArrayList<>());
             }
+            coleccionesRepo.save(coleccion);
         }
     }
 
@@ -478,7 +625,7 @@ Esto asegura que la colección refleje solo los hechos de las fuentes actualment
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("No se encontró el usuario");
         }
         else if (!usuario.getRol().equals(Rol.ADMINISTRADOR)){
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
         }
 
         return ResponseEntity.ok(usuario);
@@ -488,18 +635,56 @@ Esto asegura que la colección refleje solo los hechos de las fuentes actualment
 
         ResponseEntity<?> respuesta = this.checkeoAdmin(JwtClaimExtractor.getUsernameFromToken(principal));
 
-        if (respuesta.getStatusCode().equals(HttpStatus.UNAUTHORIZED)){
+        if (respuesta.getStatusCode().equals(HttpStatus.FORBIDDEN)){
             return respuesta;
         }
         this.refrescarColeccionesCronjob();
         return ResponseEntity.status(HttpStatus.OK).build();
     }
 
-    private <T> Specification<T> crearSpecs(List<Filtro> filtros, Class<T> clazz) {
-        return filtros.stream()
-                .map(filtro->filtro.toSpecification(clazz))  // o IFiltro::toSpecification
-                .filter(Objects::nonNull)
-                .reduce(Specification.where(null), Specification::and); // NO meter distinct acá
+    private <T> Specification<T> crearSpecs(List<List<IFiltro>> filtrosXCategoria, Class<T> clazz) {
+
+        System.out.println("ENTRO A crearSpecs");
+        System.out.println("Total categorías: " + (filtrosXCategoria != null ? filtrosXCategoria.size() : "null"));
+
+        Specification<T> specFinal = null;
+
+        if (filtrosXCategoria == null || filtrosXCategoria.isEmpty()) {
+            System.out.println("La lista de filtros por categoría está vacía o es null.");
+            return null;
+        }
+
+        for (int i = 0; i < filtrosXCategoria.size(); i++) {
+            List<IFiltro> categoria = filtrosXCategoria.get(i);
+
+            if (categoria == null || categoria.isEmpty()) {
+                System.out.println("Categoría " + i + " vacía o null, se saltea.");
+                continue;
+            }
+
+            System.out.println("Procesando categoría " + i + " con " + categoria.size() + " filtros.");
+
+            Specification<T> specCategoria = categoria.stream()
+                    .map(f -> {
+                        Specification<T> spec = f.toSpecification(clazz);
+                        System.out.println("  Filtro: " + f + " -> Spec: " + (spec != null ? "OK" : "null"));
+                        return spec;
+                    })
+                    .filter(Objects::nonNull)
+                    .reduce(Specification::or)
+                    .orElse(null);
+
+            if (specCategoria == null) {
+                System.out.println("No se generó spec para categoría " + i + ".");
+                continue;
+            }
+
+            specFinal = (specFinal == null) ? specCategoria : specFinal.and(specCategoria);
+        }
+
+        System.out.println("Spec final generada: " + (specFinal != null ? "OK" : "null"));
+
+        return specFinal;
     }
 
     private <T> Specification<T> distinct(Class <T> clazz) {
@@ -512,5 +697,21 @@ Esto asegura que la colección refleje solo los hechos de las fuentes actualment
     public ResponseEntity<?> getCantColecciones() {
     return ResponseEntity.ok(coleccionesRepo.cantColecciones());
     }
-}
 
+    public ResponseEntity<?> getColeccionDestacados() {
+        List<Coleccion> coleccionesEstatica = coleccionesRepo.findColeccionesDestacadas();
+
+        List<ColeccionOutputDTO> coleccionesDto = new ArrayList<>();
+
+        for(Coleccion coleccion : coleccionesEstatica){
+            ColeccionOutputDTO coleccionDto = new  ColeccionOutputDTO();
+            coleccionDto.setId(coleccion.getId());
+            coleccionDto.setTitulo(coleccion.getTitulo());
+            coleccionDto.setDescripcion(coleccion.getDescripcion());
+            coleccionesDto.add(coleccionDto);
+        }
+
+        return ResponseEntity.status(HttpStatus.OK).body(coleccionesDto);
+    }
+
+}

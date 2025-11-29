@@ -20,7 +20,7 @@ public class CriteriosColeccionDTO {
     private String fechaAcontecimientoFinal;
     private String fechaCargaInicial;
     private String fechaCargaFinal;
-    private List<Integer> origen;
+    private List<Integer> fuentes;
     private List<Long> paisId;
     private String titulo;
     private List<Long> provinciaId;

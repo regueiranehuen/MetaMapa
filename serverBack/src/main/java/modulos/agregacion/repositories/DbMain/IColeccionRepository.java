@@ -12,9 +12,6 @@ import java.util.Optional;
 
 public interface IColeccionRepository extends JpaRepository<Coleccion, Long> {
 
-    List<Coleccion> findByActivoTrueAndModificadoTrue();
-    List<Coleccion> findByActivoTrue();
-
     @Query("""
     SELECT c FROM Coleccion c where c.activo = true
     """)
@@ -26,7 +23,7 @@ public interface IColeccionRepository extends JpaRepository<Coleccion, Long> {
     List<Coleccion> findAllByActivoTrueAndModificadoTrue();
 
     @Query("""
-    SELECT c FROM Coleccion c where c.id = :id_coleccion
+    SELECT c FROM Coleccion c where c.id = :id_coleccion AND c.activo = true
     """)
     Optional<Coleccion> findByIdAndActivoTrue(@Param("id_coleccion") Long idColeccion);
 
@@ -34,4 +31,11 @@ public interface IColeccionRepository extends JpaRepository<Coleccion, Long> {
     SELECT COUNT(c) FROM Coleccion c WHERE c.activo = true
     """)
     Long cantColecciones();
+
+    @Query(value = """
+    SELECT c FROM Coleccion c
+    WHERE c.activo = true order by c.cant_accesos DESC
+    LIMIT 3
+    """)
+    List<Coleccion> findColeccionesDestacadas();
 }

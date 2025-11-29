@@ -24,7 +24,6 @@ public class HechoMemoria {
 
     private AtributosHechoMemoria atributosHecho;
 
-    private List<AtributosHechoModificar> atributosHechoAModificar;
 
     private List<Dataset> datasets;
 
@@ -33,12 +32,10 @@ public class HechoMemoria {
         this.activo = activo;
         this.usuario_id = usuario_id;
         this.atributosHecho = new AtributosHechoMemoria();
-        this.atributosHechoAModificar = new ArrayList<>();
     }
 
     public HechoMemoria(){
         this.atributosHecho = new AtributosHechoMemoria();
-        this.atributosHechoAModificar = new ArrayList<>();
         this.datasets = new ArrayList<>();
     }
 }

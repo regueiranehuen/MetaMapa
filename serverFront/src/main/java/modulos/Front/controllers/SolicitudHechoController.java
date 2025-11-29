@@ -4,6 +4,7 @@ import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import modulos.Front.BodyToListConverter;
+import modulos.Front.GestorArchivos;
 import modulos.Front.dtos.input.*;
 import modulos.Front.dtos.output.SolicitudHechoOutputDTO;
 import modulos.Front.services.SolicitudHechoService;
@@ -12,7 +13,11 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 @Controller
@@ -40,7 +45,7 @@ public class SolicitudHechoController {
         ResponseEntity<?> rta = solicitudHechoService.evaluarSolicitudEliminacion(dto);
 
         if(rta.getStatusCode().is2xxSuccessful()){
-            return "solicitudes";
+            return "redirect:/solicitudes";
         }
         else if(rta.getBody() != null){
             ra.addAttribute(rta.getBody().toString());
@@ -54,7 +59,7 @@ public class SolicitudHechoController {
         ResponseEntity<?> rta = solicitudHechoService.evaluarSolicitudModificacion(dto);
 
         if(rta.getStatusCode().is2xxSuccessful()){
-            return "solicitudes";
+            return "redirect:/solicitudes";
         }
         else if(rta.getBody() != null){
             ra.addFlashAttribute(rta.getBody().toString());
@@ -99,13 +104,13 @@ public class SolicitudHechoController {
     }
 
 
-    @PreAuthorize("hasAnyRole('ADMINISTRADOR', 'CONTRIBUYENTE', 'VISUALIZADOR')")
+    @PreAuthorize("hasRole('CONTRIBUYENTE')")
     @PostMapping("/eliminar-hecho")
     public String enviarSolicitudEliminarHecho(@Valid @ModelAttribute SolicitudHechoEliminarInputDTO dto, RedirectAttributes ra){
         ResponseEntity<?> rta = this.solicitudHechoService.enviarSolicitudEliminarHecho(dto);
 
         if(rta.getStatusCode().is2xxSuccessful()){
-            return "redirect:get/all";
+            return "redirect:/hechos/public/get-all";
         }
         else if(rta.getBody() != null){
             ra.addFlashAttribute(rta.getBody().toString());
@@ -113,13 +118,34 @@ public class SolicitudHechoController {
         return "redirect:/" + rta.getStatusCode().value();
     }
 
-    @PreAuthorize("hasAnyRole('ADMINISTRADOR', 'CONTRIBUYENTE', 'VISUALIZADOR')")
+    @PreAuthorize("hasRole('CONTRIBUYENTE')")
     @PostMapping("/modificar-hecho")
-    public String enviarSolicitudModificarHecho(@Valid @ModelAttribute SolicitudHechoModificarInputDTO dto, RedirectAttributes ra){
+    public String enviarSolicitudModificarHecho(@Valid @ModelAttribute SolicitudHechoModificarInputDTO dto, RedirectAttributes ra,
+                                                @RequestParam(name = "contenidosMultimediaParaAgregar", required = false)
+                                                    List<MultipartFile> archivos){
+        if (archivos != null) {
+            List<ContenidoMultimediaDTO> dtos = new ArrayList<>();
+            for (MultipartFile file : archivos) {
+
+                if (!file.isEmpty()) {
+                    try {
+                        String ruta = GestorArchivos.guardarArchivo(file); // tu clase de antes
+                        String contentType = file.getContentType();
+                        dtos.add(new ContenidoMultimediaDTO(ruta, contentType));
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                        ra.addFlashAttribute("error",
+                                "Error guardando archivo: " + file.getOriginalFilename());
+                    }
+                }
+            }
+            dto.setNuevasRutasMultimedia(!dtos.isEmpty() ? dtos : null);
+        }
+
         ResponseEntity<?> rta = this.solicitudHechoService.enviarSolicitudModificarHecho(dto);
 
         if(rta.getStatusCode().is2xxSuccessful()){
-            return "redirect:get/all";
+            return "redirect:/hechos/public/get-all";
         }
         else if(rta.getBody() != null){
             ra.addFlashAttribute(rta.getBody().toString());

@@ -21,10 +21,7 @@ import modulos.buscadores.BuscadorPais;
 import modulos.buscadores.BuscadorProvincia;
 import modulos.buscadores.BuscadorUbicacion;
 import modulos.shared.dtos.input.*;
-import modulos.shared.dtos.output.MensajeOutputDTO;
-import modulos.shared.dtos.output.ReporteHechoOutputDTO;
-import modulos.shared.dtos.output.RolCambiadoDTO;
-import modulos.shared.dtos.output.SolicitudHechoOutputDTO;
+import modulos.shared.dtos.output.*;
 import modulos.shared.utils.DetectorDeSpam;
 import modulos.shared.utils.FechaParser;
 import modulos.agregacion.entities.fuentes.FuenteDinamica;
@@ -36,9 +33,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
+import modulos.agregacion.entities.atributosHecho.AtributosHecho;
 
 import java.io.IOException;
-import java.time.ZonedDateTime;
+import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
@@ -89,7 +87,7 @@ public class SolicitudHechoService {
         Usuario usuario = username != null ? usuariosRepository.findByNombreDeUsuario(username).orElse(null) : null;
 
         if (usuario == null || !usuario.getRol().equals(Rol.ADMINISTRADOR)){
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("No tenés permisos para ejecutar esta acción");
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body("No tenés permisos para ejecutar esta acción");
         }
         return ResponseEntity.ok(usuario);
     }
@@ -98,7 +96,7 @@ public class SolicitudHechoService {
         Usuario usuario = username != null ? usuariosRepository.findByNombreDeUsuario(username).orElse(null) : null;
 
         if (usuario == null || !usuario.getRol().equals(Rol.CONTRIBUYENTE)){
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("No tenés permisos para ejecutar esta acción");
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body("No tenés permisos para ejecutar esta acción");
         }
         return ResponseEntity.ok(usuario);
     }
@@ -110,18 +108,18 @@ public class SolicitudHechoService {
         if (usuario == null || !usuario.getRol().equals(Rol.ADMINISTRADOR)){
             return ResponseEntity.ok(usuario);
         }
-        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("No tenés permisos para ejecutar esta acción");
+        return ResponseEntity.status(HttpStatus.FORBIDDEN).body("No tenés permisos para ejecutar esta acción");
     }
 
     @Transactional
-    public ResponseEntity<?> solicitarSubirHecho(SolicitudHechoInputDTO dto, String username){
+    public ResponseEntity<?> solicitarSubirHecho(SolicitudHechoInputDTO dto, List<MultipartFile> files, String username){
         // Los visualizadores o contribuyentes llaman al metodo, no los admins
         Usuario usuario = null;
         usuario = usuariosRepository.findByNombreDeUsuario(username).orElse(null);
         if (username!=null && !username.isEmpty()){
             ResponseEntity<?> rta = this.checkeoNoAdmin(username);
 
-            if (rta.getStatusCode().equals(HttpStatus.UNAUTHORIZED)){
+            if (rta.getStatusCode().equals(HttpStatus.FORBIDDEN)){
                 return rta;
             }
 
@@ -138,8 +136,10 @@ public class SolicitudHechoService {
 
         List<ContenidoMultimedia> contenidosMultimedia = new ArrayList<>();
 
-        if (dto.getContenidosMultimedia() != null){
-            for(MultipartFile file : dto.getContenidosMultimedia()) {
+        System.out.println("VOY A ENTRAR A CONTENIDO MULTIMEDIA");
+        if (files != null){
+            System.out.println("ENTRE!! QUE EMOCION");
+            for(MultipartFile file : files) {
                 try {
                     String url = GestorArchivos.guardarArchivo(file);
 
@@ -148,8 +148,10 @@ public class SolicitudHechoService {
                     contenidoMultimedia.setUrl(url);
                     contenidoMultimedia.almacenarTipoDeArchivo(file.getContentType());
                     contenidosMultimedia.add(contenidoMultimedia);
-                } catch (IOException ignore) {
+                } catch (IOException e) {
+                    System.err.println("❌ Error al procesar archivos multimedia:");
                 }
+
             }
         }
 
@@ -159,7 +161,7 @@ public class SolicitudHechoService {
         HechoDinamica hecho = fuenteDinamica.crearHecho(dto, contenidosMultimedia, categoria_id, ubicacion_id);
 
         SolicitudSubirHecho solicitudHecho = new SolicitudSubirHecho();
-        solicitudHecho.setFecha(ZonedDateTime.now());
+        solicitudHecho.setFecha(LocalDateTime.now());
         if(usuario!=null) {
             solicitudHecho.setUsuario_id(usuario.getId());
             hecho.setUsuario_id(usuario.getId());
@@ -192,12 +194,13 @@ public class SolicitudHechoService {
     }
 
     //El usuario manda una solicitud para eliminar un hecho -> guardar la solicitud en la base de datos
-    public ResponseEntity<?> solicitarEliminacionHecho(SolicitudHechoEliminarInputDTO dto, Jwt principal){
+    @Transactional
+    public ResponseEntity<?> solicitarEliminacionHecho(SolicitudHechoEliminarInputDTO dto, String username){
         // Un admin no debería solicitar eliminar, los elimina directamente
 
-            ResponseEntity<?> rta = this.checkeoNoAdmin(JwtClaimExtractor.getUsernameFromToken(principal));
+            ResponseEntity<?> rta = this.checkeoNoAdmin(username);
             Usuario usuario = (Usuario) rta.getBody();
-            if (rta.getStatusCode().equals(HttpStatus.UNAUTHORIZED)){
+            if (rta.getStatusCode().equals(HttpStatus.FORBIDDEN)){
                 return rta;
             }
 
@@ -205,11 +208,11 @@ public class SolicitudHechoService {
         HechoDinamica hecho = hechosDinamicaRepository.findByIdAndUsuario(dto.getId_hecho(), usuario.getId()).orElse(null);
         if (hecho == null){
             // Puede ser que se haya encontrado el hecho pero que el usuario no esté asociado al hecho
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("No tenés permisos para ejecutar esta acción");
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body("No tenés permisos para ejecutar esta acción");
         }
 
         SolicitudEliminarHecho solicitud = new SolicitudEliminarHecho(usuario.getId(), hecho, dto.getJustificacion());
-        solicitud.setFecha(ZonedDateTime.now());
+        solicitud.setFecha(LocalDateTime.now());
         if (DetectorDeSpam.esSpam(dto.getJustificacion())) {
             // Marcar como rechazada por spam y guardar
             solicitud.setProcesada(true);
@@ -217,16 +220,18 @@ public class SolicitudHechoService {
             solicitudEliminarHechoRepo.save(solicitud);
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Se detectó spam"); // 400 - solicitud rechazada por spam
         }
+        System.out.println("LA JUSTIFICACION TIENE LENGTH: " + solicitud.getJustificacion().length());
         solicitudEliminarHechoRepo.save(solicitud);
         return ResponseEntity.status(HttpStatus.OK).build();
     }
 
-    public ResponseEntity<?> solicitarModificacionHecho(SolicitudHechoModificarInputDTO dto, Jwt principal){
+    @Transactional
+    public ResponseEntity<?> solicitarModificacionHecho(SolicitudHechoModificarInputDTO dto, String username){
 
         
-        ResponseEntity<?> rta = checkeoContribuyente(JwtClaimExtractor.getUsernameFromToken(principal));
+        ResponseEntity<?> rta = checkeoContribuyente(username);
 
-        if (rta.getStatusCode().equals(HttpStatus.UNAUTHORIZED)){
+        if (rta.getStatusCode().equals(HttpStatus.FORBIDDEN)){
             return rta;
         }
 
@@ -240,11 +245,13 @@ public class SolicitudHechoService {
 
         if (hecho == null){
             // El hecho no existe o el usuario no tiene permiso
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("No tenés permisos para ejecutar esta acción");
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body("No tenés permisos para ejecutar esta acción");
         }
 
         SolicitudModificarHecho solicitud = new SolicitudModificarHecho(usuario.getId(), hecho);
-        solicitud.setFecha(ZonedDateTime.now());
+        solicitud.setFecha(LocalDateTime.now());
+
+        /*
         if (DetectorDeSpam.esSpam(dto.getTitulo()) || DetectorDeSpam.esSpam(dto.getDescripcion()))
         {
             solicitud.setProcesada(true);
@@ -252,8 +259,10 @@ public class SolicitudHechoService {
             solicitudModificarHechoRepo.save(solicitud);
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Se detectó spam"); // 400 - solicitud rechazada por spam
         }
+        */
 
-        if (ChronoUnit.DAYS.between(hecho.getAtributosHecho().getFechaCarga(), ZonedDateTime.now()) >= 7){
+
+        if (ChronoUnit.DAYS.between(hecho.getAtributosHecho().getFechaCarga(), LocalDateTime.now()) >= 7){
             return ResponseEntity.status(HttpStatus.CONFLICT).body("Terminó la fecha límite para solicitar modificar el hecho"); // Error 409: cuando la solicitud es válida, pero no puede procesarse por estado actual del recurso
         }
 
@@ -282,35 +291,37 @@ public class SolicitudHechoService {
 
         List<ContenidoMultimedia> contenidosMultimediaParaAgregar = new ArrayList<>();
 
-        if(dto.getContenidosMultimediaParaAgregar() != null) {
-            for (MultipartFile file : dto.getContenidosMultimediaParaAgregar()) {
-                try {
-                    String url = GestorArchivos.guardarArchivo(file);
 
-                    ContenidoMultimedia contenidoMultimedia = new ContenidoMultimedia();
-
-                    contenidoMultimedia.setUrl(url);
-                    contenidoMultimedia.almacenarTipoDeArchivo(file.getContentType());
-                    contenidosMultimediaParaAgregar.add(contenidoMultimedia);
-                } catch(IOException ignore){
-                }
+        if(dto.getNuevasRutasMultimedia() != null) {
+            for (ContenidoMultimediaDTO contenidoMultimediaDTO : dto.getNuevasRutasMultimedia()) {
+                ContenidoMultimedia contenidoMultimedia = new ContenidoMultimedia();
+                contenidoMultimedia.setUrl(contenidoMultimediaDTO.getUrl());
+                contenidoMultimedia.almacenarTipoDeArchivo(contenidoMultimediaDTO.getContentType());
+                contenidosMultimediaParaAgregar.add(contenidoMultimedia);
             }
 
             atributos.setContenidoMultimediaAgregar(contenidosMultimediaParaAgregar);
 
         }
+
+
         Optional.ofNullable(dto.getContenidosMultimediaAEliminar()).ifPresent(atributos::setContenidoMultimediaEliminar);
         Optional.ofNullable(dto.getDescripcion()).ifPresent(atributos::setDescripcion);
-        hecho.getAtributosHechoAModificar().add(atributos);
-        solicitud.setAtributosAshei(atributos);
+        // hecho.getAtributosHechoAModificar().add(atributos);
+
+        hechosDinamicaRepository.save(hecho);
+        solicitud.setAtributosModificar(atributos);
         solicitudModificarHechoRepo.save(solicitud);
         return ResponseEntity.status(HttpStatus.OK).build();
     }
+
     // @Transacional:
     // Así, la SolicitudHecho que traés con findById queda managed durante el method y all lo que le modifiques
     //  (y a sus asociaciones cargadas) se hace UPDATE al hacer commit, sin llamar a save(...).
     @Transactional
     public ResponseEntity<?> evaluarSolicitudSubirHecho(SolicitudHechoEvaluarInputDTO dtoInput, String username) {
+
+        System.out.println("JUSTIFICACION: " + dtoInput.getMensaje());
 
         RolCambiadoDTO dto = new RolCambiadoDTO();
         dto.setRolModificado(false);
@@ -323,7 +334,7 @@ public class SolicitudHechoService {
 
         ResponseEntity<?> rta = checkeoAdmin(username);
 
-        if (rta.getStatusCode().equals(HttpStatus.UNAUTHORIZED)){
+        if (rta.getStatusCode().equals(HttpStatus.FORBIDDEN)){
             return rta;
         }
         Usuario usuario = null;
@@ -334,16 +345,15 @@ public class SolicitudHechoService {
         if (dtoInput.getRespuesta()) {
             solicitud.getHecho().setActivo(true);
             solicitud.getHecho().getAtributosHecho().setModificado(true);
-            solicitud.getHecho().getAtributosHecho().setFechaCarga(ZonedDateTime.now());
+            solicitud.getHecho().getAtributosHecho().setFechaCarga(LocalDateTime.now());
             solicitud.getHecho().getAtributosHecho().setFechaUltimaActualizacion(solicitud.getHecho().getAtributosHecho().getFechaCarga()); // Nueva fecha de modificación
-
+            hechosDinamicaRepository.saveAndFlush(solicitud.getHecho());
             if (usuario != null){
                 usuario.incrementarHechosSubidos();
                 Mensaje mensaje = new Mensaje();
                 mensaje.setSolicitud_hecho_id(solicitud.getId());
                 mensaje.setReceptor(usuario);
                 mensaje.setTextoMensaje("Se aceptó su hecho de título " + solicitud.getHecho().getAtributosHecho().getTitulo());
-                hechosDinamicaRepository.saveAndFlush(solicitud.getHecho());
                 mensajesRepository.save(mensaje);
                 if (usuario.getRol().equals(Rol.VISUALIZADOR)){
                     dto.setRol(Rol.CONTRIBUYENTE);
@@ -358,7 +368,7 @@ public class SolicitudHechoService {
                 mensaje.setSolicitud_hecho_id(solicitud.getId());
                 mensaje.setReceptor(usuario);
                 mensaje.setTextoMensaje("Se rechazó su solicitud de subida del hecho de título " + solicitud.getHecho().getAtributosHecho().getTitulo()
-                        + ".\nJustificacion: " + solicitud.getJustificacion());
+                        + ".\nJustificacion: " + dtoInput.getMensaje());
                 mensajesRepository.save(mensaje);
             }
         }
@@ -378,7 +388,7 @@ public class SolicitudHechoService {
 
         ResponseEntity<?> rta = checkeoAdmin(username);
 
-        if (rta.getStatusCode().equals(HttpStatus.UNAUTHORIZED)){
+        if (rta.getStatusCode().equals(HttpStatus.FORBIDDEN)){
             return rta;
         }
 
@@ -389,14 +399,20 @@ public class SolicitudHechoService {
         }
 
         solicitud.setProcesada(true);
+        Usuario usuario = usuariosRepository.findById(solicitud.getUsuario_id()).orElse(null);
         if (dtoInput.getRespuesta()) {
             // No va a haber null pointer exception porque sí o sí hay un usuario asociado al hecho que se solicita eliminar
             solicitud.getHecho().getAtributosHecho().setModificado(true);
             solicitud.getHecho().setActivo(false);
-            Usuario usuario = usuariosRepository.findById(solicitud.getUsuario_id()).orElse(null);
+            hechosDinamicaRepository.save(solicitud.getHecho());
             // El usuario va a existir si o si porque ya se verificó cuando solicitó eliminar un hecho, pero x si pide borrar la cuenta hago el chequeo antes
             if (usuario != null){
                 usuario.disminuirHechosSubidos();
+                Mensaje mensaje = new Mensaje();
+                mensaje.setSolicitud_hecho_id(solicitud.getId());
+                mensaje.setReceptor(usuario);
+                mensaje.setTextoMensaje("Se aceptó su solicitud de eliminar el hecho de título " + solicitud.getHecho().getAtributosHecho().getTitulo());
+                mensajesRepository.save(mensaje);
                 if (usuario.getCantHechosSubidos() == 0){
                     dto.setRolModificado(true);
                     dto.setRol(Rol.VISUALIZADOR);
@@ -405,6 +421,18 @@ public class SolicitudHechoService {
                 }
             }
         }
+        else{
+            if (usuario!=null){
+                Mensaje mensaje = new Mensaje();
+                mensaje.setSolicitud_hecho_id(solicitud.getId());
+                mensaje.setReceptor(usuario);
+                mensaje.setTextoMensaje("Se rechazó su solicitud de eliminar el hecho de título " + solicitud.getHecho().getAtributosHecho().getTitulo()
+                        + ".\nJustificacion: " + dtoInput.getMensaje());
+                mensajesRepository.save(mensaje);
+            }
+        }
+
+        solicitudRepository.save(solicitud);
 
         return ResponseEntity.ok().body(dto);
     }
@@ -414,7 +442,7 @@ public class SolicitudHechoService {
 
         ResponseEntity<?> rta = checkeoAdmin(username);
 
-        if (rta.getStatusCode().equals(HttpStatus.UNAUTHORIZED)){
+        if (rta.getStatusCode().equals(HttpStatus.FORBIDDEN)){
             return rta;
         }
 
@@ -427,33 +455,48 @@ public class SolicitudHechoService {
 
         solicitud.setProcesada(true);
 
+        Usuario usuario = usuariosRepository.findById(solicitud.getUsuario_id()).orElse(null);
+
         if (dtoInput.getRespuesta()) {
             // El hecho debe modificarse
-            this.setearModificadoAOficial(solicitud.getHecho(), solicitud.getAtributosAshei());
-            solicitud.getHecho().getAtributosHecho().setFechaUltimaActualizacion(ZonedDateTime.now());
+            this.setearModificadoAOficial(solicitud.getHecho(), solicitud.getAtributosModificar());
+            solicitud.getHecho().getAtributosHecho().setFechaUltimaActualizacion(LocalDateTime.now());
             solicitud.getHecho().getAtributosHecho().setModificado(true);
+            if (usuario!=null){
+                this.enviarMensaje(usuario, solicitud, "Se aceptó su solicitud de modificar el hecho de título " + solicitud.getHecho().getAtributosHecho().getTitulo());
+            }
+            hechosDinamicaRepository.save(solicitud.getHecho());
         }
         else{
-            Usuario usuario = usuariosRepository.findById(solicitud.getUsuario_id()).orElse(null);
+
             // X si se borró la cuenta del usuario chequeo si es null o no
             if (dtoInput.getMensaje() != null && usuario != null){
-                return this.enviarMensaje(usuario,solicitud, dtoInput.getMensaje());
+                this.enviarMensaje(usuario,solicitud, dtoInput.getMensaje());
             }
         }
+        solicitudModificarHechoRepo.save(solicitud);
         return ResponseEntity.ok().build();
     }
 
     private void setearModificadoAOficial(Hecho hecho, AtributosHechoModificar atributos){
 
-        Optional.ofNullable(atributos.getCategoria_id()).ifPresent(hecho.getAtributosHecho()::setCategoria_id);
-        Optional.ofNullable(atributos.getDescripcion()).ifPresent(hecho.getAtributosHecho()::setDescripcion);
-        Optional.ofNullable(atributos.getFechaAcontecimiento()).ifPresent(hecho.getAtributosHecho()::setFechaAcontecimiento);
-        Optional.ofNullable(atributos.getTitulo()).ifPresent(hecho.getAtributosHecho()::setTitulo);
-        Optional.ofNullable(atributos.getUbicacion_id()).ifPresent(hecho.getAtributosHecho()::setUbicacion_id);
+        // Campos “simples”: siempre se pisan, aunque vengan en null
+        hecho.getAtributosHecho().setCategoria_id(atributos.getCategoria_id());
+        hecho.getAtributosHecho().setDescripcion(atributos.getDescripcion());
+        hecho.getAtributosHecho().setFechaAcontecimiento(atributos.getFechaAcontecimiento());
+        hecho.getAtributosHecho().setTitulo(atributos.getTitulo());
+        hecho.getAtributosHecho().setUbicacion_id(atributos.getUbicacion_id());
+        hecho.getAtributosHecho().setLatitud(atributos.getLatitud());
+        hecho.getAtributosHecho().setLongitud(atributos.getLongitud());
 
-        if(atributos.getContenidoMultimediaAgregar() != null){
-            hecho.getAtributosHecho().getContenidosMultimedia().addAll(atributos.getContenidoMultimediaAgregar());
+        // Contenido multimedia a agregar: solo si hay lista
+        if (atributos.getContenidoMultimediaAgregar() != null){
+            hecho.getAtributosHecho()
+                    .getContenidosMultimedia()
+                    .addAll(atributos.getContenidoMultimediaAgregar());
         }
+
+        // Contenido multimedia a eliminar: solo si hay ids a eliminar
         if (atributos.getContenidoMultimediaEliminar() != null){
             hecho.getAtributosHecho().getContenidosMultimedia()
                     .removeIf(contenidoMultimedia ->
@@ -461,27 +504,23 @@ public class SolicitudHechoService {
                                     .contains(contenidoMultimedia.getId())
                     );
         }
-
-
-        Optional.ofNullable(atributos.getLatitud()).ifPresent(hecho.getAtributosHecho()::setLatitud);
-        Optional.ofNullable(atributos.getLongitud()).ifPresent(hecho.getAtributosHecho()::setLongitud);
     }
 
-    private ResponseEntity<?> enviarMensaje(Usuario usuario, SolicitudHecho solicitudHecho, String texto){
+
+    private void enviarMensaje(Usuario usuario, SolicitudHecho solicitudHecho, String texto){
 
         Mensaje mensaje = new Mensaje();
         mensaje.setSolicitud_hecho_id(solicitudHecho.getId());
         mensaje.setTextoMensaje(texto);
         mensaje.setReceptor(usuario);
         mensajesRepository.save(mensaje);
-        return ResponseEntity.ok().build();
     }
 
     public ResponseEntity<?> getAllSolicitudes(String username) {
 
         ResponseEntity<?> rta = checkeoAdmin(username);
 
-        if (rta.getStatusCode().equals(HttpStatus.UNAUTHORIZED)){
+        if (rta.getStatusCode().equals(HttpStatus.FORBIDDEN)){
             return rta;
         }
 
@@ -506,7 +545,7 @@ public class SolicitudHechoService {
     public ResponseEntity<?> obtenerSolicitudesPendientes(String username) {
         ResponseEntity<?> rta = checkeoAdmin(username);
 
-        if (rta.getStatusCode().equals(HttpStatus.UNAUTHORIZED)){
+        if (rta.getStatusCode().equals(HttpStatus.FORBIDDEN)){
             return rta;
         }
 
@@ -670,6 +709,109 @@ public class SolicitudHechoService {
         }
         return tipo;
     }
+
+
+    public ResponseEntity<?> getAtributosSolicitudHecho(Long id_solicitud, String username) {
+
+        // --- 1. Solo admin ---
+        ResponseEntity<?> rta = checkeoAdmin(username);
+        if (rta.getStatusCode().equals(HttpStatus.FORBIDDEN)) return rta;
+
+        if (id_solicitud == null) return ResponseEntity.notFound().build();
+
+        // --- 2. Buscar la solicitud ---
+        SolicitudModificarHecho solicitud = (SolicitudModificarHecho) solicitudModificarHechoRepo.findById(id_solicitud).orElse(null);
+        if (solicitud == null) return ResponseEntity.notFound().build();
+
+        AtributosHechoModificar attrs = solicitud.getAtributosModificar();
+        Hecho hecho = solicitud.getHecho();                 // hecho original
+        AtributosHecho attrOriginal = hecho.getAtributosHecho(); // atributos originales del hecho
+
+        // --- 3. Resolver ubicación (pais + provincia) ---
+        String paisNombre = null;
+        String provinciaNombre = null;
+
+        Long ubicacionId = attrs.getUbicacion_id();
+
+        if (ubicacionId != null) {
+            Ubicacion u = buscadorUbicacion.buscarUbicacion(ubicacionId);
+
+            if (u != null) {
+                if (u.getPais() != null) {
+                    paisNombre = u.getPais().getPais();
+                }
+                if (u.getProvincia() != null) {
+                    provinciaNombre = u.getProvincia().getProvincia();
+                }
+            }
+        }
+
+        // --- 4. Resolver categoría ---
+        Long categoriaId = attrs.getCategoria_id() != null
+                ? attrs.getCategoria_id()
+                : attrOriginal.getCategoria_id();
+
+        String categoriaNombre = null;
+
+        if (categoriaId != null) {
+            categoriaNombre = categoriaRepository.findById(categoriaId)
+                    .map(Categoria::getTitulo)
+                    .orElse(null);
+        }
+
+        List<ContenidoMultimedia> contenidoMultimediaFinal = new ArrayList<>();
+
+        contenidoMultimediaFinal.addAll(attrs.getContenidoMultimediaAgregar());
+
+        List<ContenidoMultimedia> contenidoMultimediaAMantener = new ArrayList<>();
+        System.out.println("CONTENIDO A ELIMINAR: " + attrs.getContenidoMultimediaEliminar());
+
+        if (attrs.getContenidoMultimediaEliminar() == null || attrs.getContenidoMultimediaEliminar().isEmpty()){
+            contenidoMultimediaAMantener.addAll(attrOriginal.getContenidosMultimedia());
+        }
+        else{
+            List<Long> idsContenidosAEliminar = attrs.getContenidoMultimediaEliminar();
+            contenidoMultimediaAMantener.addAll(attrOriginal.getContenidosMultimedia().stream().filter(
+                    contenidoMultimediaOriginal -> !idsContenidosAEliminar.contains(contenidoMultimediaOriginal.getId())
+            ).toList());
+        }
+
+        contenidoMultimediaFinal.addAll(contenidoMultimediaAMantener);
+
+        // --- 5. Armar DTO final ---
+        AtributosModificarDTO dto = AtributosModificarDTO.builder()
+                .titulo(attrs.getTitulo())
+                .descripcion(attrs.getDescripcion())
+                .categoria(categoriaNombre)
+                .pais(paisNombre)
+                .provincia(provinciaNombre)
+
+                // fecha acontecimiento
+                .fechaAcontecimiento(
+                        attrs.getFechaAcontecimiento() != null
+                                ? attrOriginal.getFechaAcontecimiento().toString()
+                                : null
+                )
+
+                // fecha carga original
+                .fechaCarga(
+                        attrOriginal.getFechaCarga() != null
+                                ? attrOriginal.getFechaCarga().toString()
+                                : null
+                )
+
+                // coordenadas
+                .latitud(attrs.getLatitud())
+
+                .longitud(attrs.getLongitud())
+
+                .contenido(contenidoMultimediaFinal)
+
+                .build();
+
+        return ResponseEntity.ok(dto);
+    }
+
 
 }
 

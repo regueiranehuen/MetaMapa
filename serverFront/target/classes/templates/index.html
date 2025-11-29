@@ -76,6 +76,272 @@
         </div>
     </section>
 
+    <style>
+
+        .section-title {
+
+            font-weight: 700;
+
+            font-size: 1.8rem;
+
+            margin-bottom: 1.5rem;
+
+            color: #1a202c;
+
+            padding-left: 0.5rem; /* Ajuste para que el título no esté pegado al borde */
+
+        }
+
+
+
+        .card-custom {
+
+            border-radius: 1.5rem;
+
+            /* CAMBIO CLAVE: Borde sutil y violeta en lugar del degradado */
+
+            border: 1px solid #764ba2; /* Por ejemplo, el color final de tu degradado */
+
+
+
+            box-shadow: 0 6px 16px rgba(0, 0, 0, 0.05);
+
+            padding: 1.25rem;
+
+            background-color: #fff;
+
+            transition: all 0.3s ease;
+
+            position: relative;
+
+            overflow: hidden;
+
+        }
+
+
+
+        .card-custom:hover {
+
+            transform: translateY(-4px);
+
+            box-shadow: 0 12px 24px rgba(0, 0, 0, 0.1);
+
+        }
+
+
+
+        .card-title {
+
+            font-weight: 700;
+
+            font-size: 1.15rem;
+
+            color: #667eea;
+
+            line-height: 1.3;
+
+        }
+
+
+
+        .card-description-hecho {
+
+            font-size: 0.95rem;
+
+            font-weight: 500;
+
+            color: #2c3e50;
+
+            margin-bottom: 0.5rem;
+
+        }
+
+
+
+        .card-detail-label {
+
+            font-weight: 700;
+
+            color: #4a5568;
+
+            font-size: 0.85rem;
+
+            display: inline-block;
+
+        }
+
+
+
+        .card-detail-value {
+
+            font-weight: 400;
+
+            color: #718096;
+
+            font-size: 0.85rem;
+
+        }
+
+
+
+        .btn-meta {
+
+            display: inline-flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            gap: 0.35rem;
+
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+
+            color: #fff;
+
+            border: none;
+
+            border-radius: 999px;
+
+            padding: 0.5rem 1.2rem;
+
+            font-size: 0.9rem;
+
+            font-weight: 600;
+
+            transition: all 0.2s ease;
+
+            box-shadow: 0 4px 10px rgba(102, 126, 234, 0.3);
+
+        }
+
+
+
+        .btn-meta:hover {
+
+            transform: translateY(-2px);
+
+            filter: brightness(1.1);
+
+            box-shadow: 0 8px 16px rgba(102, 126, 234, 0.4);
+
+        }
+
+
+
+        .btn-meta:active {
+
+            transform: translateY(0);
+
+        }
+
+
+
+        .section-container {
+
+            margin-top: 4rem;
+
+        }
+
+    </style>
+
+    <section class="section-container" th:if="${hechosDestacados != null and !#lists.isEmpty(hechosDestacados)}">
+
+        <div class="container">
+
+            <h2 class="section-title">Hechos Destacados 🌟</h2>
+
+            <div class="row g-4 justify-content-center" th:if="${hechosDestacados != null}">
+
+                <div class="col-md-6 col-lg-3" th:each="hecho : ${hechosDestacados}">
+
+                    <div class="card-custom h-100 d-flex flex-column">
+
+                        <h5 class="card-title mb-2" th:text="${hecho.titulo}">Conquista</h5>
+
+                        <p class="card-description-hecho mb-2" th:text="${hecho.descripcion}">Descubrimiento arqueológico</p>
+
+
+
+                        <div class="d-flex flex-column gap-1 mb-3">
+
+                            <p class="mb-0">
+
+                                <span class="card-detail-label me-1"><i class="bi bi-calendar-event me-1"></i>Fecha:</span>
+
+                                <span class="card-detail-value" th:text="${hecho.fechaAcontecimiento}">1980-08-31T00:00</span>
+
+                            </p>
+
+                            <p class="mb-0">
+
+                                <span class="card-detail-label me-1"><i class="bi bi-link-45deg me-1"></i>Fuente:</span>
+
+                                <span class="card-detail-value" th:text="${hecho.fuente}">ESTATICA</span>
+
+                            </p>
+
+                        </div>
+
+
+
+                        <div class="mt-auto">
+
+                            <a th:href="@{'/hechos/public/get'(id_hecho=${hecho.id}, fuente=${hecho.fuente})}" class="btn btn-meta w-100">
+
+                                Ver Detalles completos
+
+                            </a>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+
+    <section class="section-container" th:if="${coleccionesDestacadas != null and !#lists.isEmpty(coleccionesDestacadas)}">
+
+        <div class="container">
+
+            <h2 class="section-title">Colecciones Destacadas 📚</h2>
+
+            <div class="row g-4 justify-content-center" th:if="${coleccionesDestacadas != null}">
+
+                <div class="col-md-6 col-lg-3" th:each="coleccion : ${coleccionesDestacadas}">
+
+                    <div class="card-custom h-100 d-flex flex-column">
+
+                        <h5 class="card-title mb-2" th:text="${coleccion.titulo}">Título Colección</h5>
+
+                        <p class="card-description-hecho mb-3" th:text="${coleccion.descripcion}">Descripción de la colección.</p>
+
+                        <div class="mt-auto">
+
+                            <a th:href="@{'/colecciones/public/get/' + ${coleccion.id}}" class="btn btn-meta w-100">
+
+                                Ver Detalles completos
+
+                            </a>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
     <section class="py-4 my-4">
         <div class="container">
             <div class="text-center mb-4">
@@ -180,7 +446,7 @@
                 <div class="col-lg-3 col-md-6">
                     <div class="team-card-modern">
                         <div class="team-avatar-modern">LV</div>
-                        <h6 class="fw-bold mb-1 mt-3">Kukitas</h6>
+                        <h6 class="fw-bold mb-1 mt-3">Lucas Varela</h6>
                         <div class="text-muted small mb-3">Ingeniero Naval</div>
                         <div class="team-social">
                             <a href="https://github.com/LucasVarelaa?tab=overview&from=2024-08-01&to=2024-08-21" class="social-icon" aria-label="GitHub">
@@ -195,7 +461,7 @@
                 <div class="col-lg-3 col-md-6">
                     <div class="team-card-modern">
                         <div class="team-avatar-modern bg-gradient-purple">NR</div>
-                        <h6 class="fw-bold mb-1 mt-3">Newi Uwu</h6>
+                        <h6 class="fw-bold mb-1 mt-3">Nehuen Regueira</h6>
                         <div class="text-muted small mb-3">Ingeniero Mecánico</div>
                         <div class="team-social">
                             <a href="https://github.com/regueiranehuen" class="social-icon" aria-label="GitHub">
@@ -210,28 +476,13 @@
                 <div class="col-lg-3 col-md-6">
                     <div class="team-card-modern">
                         <div class="team-avatar-modern bg-gradient-amber">LB</div>
-                        <h6 class="fw-bold mb-1 mt-3">Kukita</h6>
+                        <h6 class="fw-bold mb-1 mt-3">Lucca Bertani</h6>
                         <div class="text-muted small mb-3">Ingeniero Aeroespacial</div>
                         <div class="team-social">
                             <a href="https://github.com/LuccaBertani" class="social-icon" aria-label="GitHub">
                                 <i class="bi bi-github"></i>
                             </a>
                             <a href="https://www.linkedin.com/in/lucca-bertani-25168135a/" class="social-icon" aria-label="LinkedIn">
-                                <i class="bi bi-linkedin"></i>
-                            </a>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-3 col-md-6">
-                    <div class="team-card-modern">
-                        <div class="team-avatar-modern bg-gradient-green">MI</div>
-                        <h6 class="fw-bold mb-1 mt-3">M</h6>
-                        <div class="text-muted small mb-3">Ingeniero Electrónico</div>
-                        <div class="team-social">
-                            <a href="#" class="social-icon" aria-label="GitHub">
-                                <i class="bi bi-github"></i>
-                            </a>
-                            <a href="#" class="social-icon" aria-label="LinkedIn">
                                 <i class="bi bi-linkedin"></i>
                             </a>
                         </div>

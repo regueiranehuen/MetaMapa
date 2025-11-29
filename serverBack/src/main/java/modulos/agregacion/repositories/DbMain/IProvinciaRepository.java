@@ -21,10 +21,13 @@ public interface IProvinciaRepository extends JpaRepository<Provincia, Long> {
         limit 1""",nativeQuery = true)
     List<CategoriaProvinciaProjection> obtenerCategoriaMayorHechosProvincia();
 
+    // TODO: SINONIMOS DE PROVINCIAS QUE SE CORRESPONDAN CON EL PAIS ASOCIADO
     @Query("""
 SELECT p
 FROM Provincia p
 WHERE
+    p.pais.id = :pais_id AND
+    (
   REPLACE(LOWER(p.provincia), ' ', '') =
   REPLACE(LOWER(:nombre), ' ', '')
   OR EXISTS (
@@ -34,6 +37,18 @@ WHERE
       AND REPLACE(LOWER(s.sinonimoStr), ' ', '') =
           REPLACE(LOWER(:nombre), ' ', '')
   )
+  )
+""")
+    Optional<Provincia> findByNombreNormalizadoAndPaisId(@Param("nombre") String nombre, @Param("pais_id") Long pais_id);
+
+
+    @Query("""
+SELECT p
+FROM Provincia p
+WHERE
+  REPLACE(LOWER(p.provincia), ' ', '') =
+  REPLACE(LOWER(:nombre), ' ', '')
+  
 """)
     Optional<Provincia> findByNombreNormalizado(@Param("nombre") String nombre);
 
@@ -43,6 +58,11 @@ WHERE
     select p from Provincia p where p.pais.id = :id
 """)
     List<Provincia> findAllByPaisId(@Param("id") Long id);
+
+    @Query("""
+    SELECT p from Provincia p where p.id = :entidad AND p.pais.id = :pais
+    """)
+    Optional<Provincia> findByIdAndPaisId(@Param("pais") Long id_pais, @Param("entidad") Long id_entidad);
 }
 
 

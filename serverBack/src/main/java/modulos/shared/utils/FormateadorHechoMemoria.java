@@ -35,14 +35,14 @@ public class FormateadorHechoMemoria {
                 .ubicacion(buscadores.getBuscadorUbicacion().buscarUbicacion(hecho.getAtributosHecho().getUbicacion_id()))
                 .build();
 
-        List<AtributosHechoModificar> listaAtributosHechoModificar = hecho.getAtributosHechoAModificar();
+        //List<AtributosHechoModificar> listaAtributosHechoModificar = hecho.getAtributosHechoAModificar();
 
         HechoMemoria hecho123 = HechoMemoria.builder().
                 id(hecho.getId()).
                 activo(hecho.getActivo()).
                 usuario_id(hecho.getUsuario_id()).
                 atributosHecho(atributos).
-                atributosHechoAModificar(listaAtributosHechoModificar).
+                //atributosHechoAModificar(listaAtributosHechoModificar).
                 build();
 
         if(hecho instanceof HechoEstatica hechoEstatica){

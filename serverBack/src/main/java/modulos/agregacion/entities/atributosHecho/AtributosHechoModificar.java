@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 
+import java.time.LocalDateTime;
 import java.time.ZonedDateTime;
 import java.util.List;
 
@@ -30,11 +31,11 @@ public class AtributosHechoModificar {
     @JoinColumn(name = "id_hechoModificar")
     private List<ContenidoMultimedia> contenidoMultimediaAgregar;
 
-    @ElementCollection
+    @ElementCollection(fetch = FetchType.EAGER)
     private List<Long> contenidoMultimediaEliminar;
 
     @Column(name = "fechaAcontecimiento")
-    private ZonedDateTime fechaAcontecimiento;
+    private LocalDateTime fechaAcontecimiento;
 
     @Column(name = "ubicacion_id")
     private Long ubicacion_id;

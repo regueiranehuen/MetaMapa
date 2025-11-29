@@ -39,18 +39,13 @@ public class SecurityConfig {
         http
                 // Autorizaciones básicas
                 .authorizeHttpRequests(auth -> auth
-                        // Estos recursos son públicos
-                        //.requestMatchers("/login", "/css/**", "/js/**", "/images/**", "/favicon.ico").permitAll()
-                        .requestMatchers("/","/login","usuarios/cargar-register","usuarios/registrar-usuario").permitAll()
-
-                        // Matchea con Ant (para usar ** en medio del path)
-                        .requestMatchers(
-                                antMatcher("/**/public/**")
+                        .requestMatchers("/",
+                                "/login",
+                                "/usuarios/cargar-register",
+                                "/usuarios/registrar-usuario",
+                                "/uploads/**"
                         ).permitAll()
-
-                        //.requestMatchers("/alumnos/**").hasAnyRole("ADMIN", "DOCENTE")
-                        // Los chequeos en server front que se quieran agregar se agregan con requestMatchers
-                        // igualmente los chequeos los estamos haciendo en los controllers
+                        .requestMatchers(antMatcher("/**/public/**")).permitAll()
                         .anyRequest().authenticated()
                 )
                 .formLogin(form -> form

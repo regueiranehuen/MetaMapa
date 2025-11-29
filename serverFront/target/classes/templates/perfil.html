@@ -1,18 +1,19 @@
 <!DOCTYPE html>
 <html lang="es" xmlns:th="http://www.thymeleaf.org" th:replace="~{layout/base :: html}"
       xmlns:sec="http://www.w3.org/1999/xhtml">
+
 <main th:fragment="contenido">
 
     <!-- Hero Header del Perfil -->
     <section class="profile-hero">
         <div class="container">
-            <div class="row align-items-center">
+            <div class="row align-items-center justify-content-between g-4">
                 <div class="col-auto">
                     <div class="profile-avatar-large"
                          th:text="${usuario != null and usuario.nombreDeUsuario != null ? #strings.toUpperCase(usuario.nombreDeUsuario.substring(0,1)) : 'U'}">U</div>
                 </div>
                 <div class="col">
-                    <div class="profile-badge mb-2">
+                    <div class="profile-badge mb-2" sec:authorize="hasRole('ADMINISTRADOR')">
                         <i class="bi bi-shield-check me-2"></i>Cuenta verificada
                     </div>
                     <h1 class="display-6 fw-bold mb-2">
@@ -21,6 +22,11 @@
                     <p class="lead text-muted mb-0">
                         Gestioná tu información personal y configuración de seguridad
                     </p>
+                </div>
+                <div class="col-auto" sec:authorize="hasAnyRole('ADMINISTRADOR', 'CONTRIBUYENTE')">
+                    <a th:href="@{/hechos/mis-hechos}" class="btn btn-primary-hero">
+                        <i class="bi bi-journal-text me-2"></i>Mis Hechos
+                    </a>
                 </div>
             </div>
         </div>
@@ -85,8 +91,7 @@
                                     <div class="input-group-modern">
                                         <span class="input-icon"><i class="bi bi-at"></i></span>
                                         <input id="nombreDeUsuarioNuevo" type="text" class="form-control"
-                                               name="nombreDeUsuarioNuevo"
-                                               placeholder="nuevo_usuario" minlength="3" maxlength="30" required>
+                                               name="nombreDeUsuarioNuevo">
                                     </div>
                                     <small class="form-text-modern">
                                         <i class="bi bi-info-circle me-1"></i>Debe ser único y sin espacios
@@ -97,8 +102,7 @@
                                     <div class="input-group-modern">
                                         <span class="input-icon"><i class="bi bi-lock"></i></span>
                                         <input id="contrasenia" type="password" class="form-control"
-                                               name="contrasenia" required autocomplete="current-password"
-                                               placeholder="••••••••">
+                                               name="contrasenia" required autocomplete="current-password">
                                     </div>
                                     <small class="form-text-modern">
                                         <i class="bi bi-shield-lock me-1"></i>Requerida para confirmar cambios
@@ -131,8 +135,7 @@
                                     <div class="input-group-modern">
                                         <span class="input-icon"><i class="bi bi-lock"></i></span>
                                         <input type="password" class="form-control" id="contrasenia_actual"
-                                               name="contrasenia_actual" required autocomplete="current-password"
-                                               placeholder="••••••••">
+                                               name="contrasenia_actual" required autocomplete="current-password">
                                     </div>
                                 </div>
 
@@ -141,8 +144,7 @@
                                     <div class="input-group-modern">
                                         <span class="input-icon"><i class="bi bi-key"></i></span>
                                         <input type="password" class="form-control" id="contrasenia_nueva"
-                                               name="contrasenia_nueva" autocomplete="new-password"
-                                               placeholder="••••••••">
+                                               name="contrasenia_nueva" autocomplete="new-password">
                                     </div>
                                 </div>
 
@@ -151,7 +153,7 @@
                                     <div class="input-group-modern">
                                         <span class="input-icon"><i class="bi bi-key-fill"></i></span>
                                         <input type="password" class="form-control" id="repetir_contrasenia"
-                                               autocomplete="new-password" placeholder="••••••••">
+                                               autocomplete="new-password">
                                     </div>
                                     <div class="invalid-feedback">Las contraseñas no coinciden</div>
                                 </div>
@@ -211,8 +213,83 @@
                     </div>
                 </div>
 
+                <section class="profile-card-modern mb-4"
+                         sec:authorize="hasRole('ADMINISTRADOR')">
+                    <div class="card-header-profile">
+                        <h6 class="mb-0">
+                            <i class="bi bi-speedometer2 me-2"></i>Panel de administrador
+                        </h6>
+                    </div>
+                    <div class="card-body-profile">
+                        <div class="admin-panel-grid mb-3">
+                            <div class="admin-panel-item">
+                                <div class="admin-panel-label">Hechos totales</div>
+                                <div class="admin-panel-value"
+                                     th:text="${statsHechos} ?: 0">0</div>
+                            </div>
+                            <div class="admin-panel-item">
+                                <div class="admin-panel-label">Colecciones totales</div>
+                                <div class="admin-panel-value"
+                                     th:text="${statsColecciones} ?: 0">0</div>
+                            </div>
+                            <div class="admin-panel-item">
+                                <div class="admin-panel-label">Solicitudes procesadas</div>
+                                <div class="admin-panel-value">
+                                    <span th:text="${statsSolicitudes} ?: 0">0</span>%
+                                </div>
+                            </div>
+                            <div class="admin-panel-item">
+                                <div class="admin-panel-label">Cantidad de fuentes</div>
+                                <div class="admin-panel-value">
+                                    <span th:text="${statsFuentes} ?: 0">0</span>
+                                </div>
+                            </div>
+                            <div class="admin-panel-item">
+                                <div class="admin-panel-label">Solicitudes pendientes</div>
+                                <div class="admin-panel-value admin-panel-badge-pend">
+                                    <span th:text="${solicitudesPendientes} ?: 0">0</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="admin-panel-subtitle mb-2">
+                            <i class="bi bi-person-badge me-1"></i>Tu actividad
+                        </div>
+                        <p class="admin-panel-text mb-3">
+                            Has contribuido con
+                            <strong th:text="${usuario?.cantHechosSubidos} ?: 0">0</strong>
+                            hechos históricos.
+                        </p>
+
+                        <hr class="my-3"/>
+
+                        <div class="admin-actions d-flex flex-column gap-2">
+                            <a th:href="@{/solicitudes}" class="btn btn-admin-secondary w-100">
+                                <i class="bi bi-clipboard-check me-1"></i>
+                                Revisar solicitudes
+                            </a>
+                            <a th:href="@{/colecciones/crear}" class="btn btn-admin-secondary w-100">
+                                <i class="bi bi-collection me-1"></i>
+                                Gestionar colecciones
+                            </a>
+                            <a th:href="@{/hechos/importar}" class="btn btn-admin-secondary w-100">
+                                <i class="bi bi-filetype-csv me-1"></i>
+                                Importar CSV de hechos
+                            </a>
+                            <a th:href="@{/gestion/categorias/crear}" class="btn btn-admin-secondary w-100">
+                                <i class="bi bi-tags me-1"></i>
+                                Crear categoría
+                            </a>
+                            <a th:href="@{/gestion/sinonimos/crear}" class="btn btn-admin-secondary w-100">
+                                <i class="bi bi-link-45deg me-1"></i>
+                                Crear sinónimo
+                            </a>
+                        </div>
+                    </div>
+                </section>
+
                 <!-- Tips -->
-                <div class="profile-card-modern mb-4">
+                <div class="profile-card-modern mb-4" sec:authorize="!hasRole('ADMINISTRADOR')">
                     <div class="card-header-profile">
                         <h6 class="mb-0">
                             <i class="bi bi-lightbulb me-2"></i>Consejos de Seguridad
@@ -239,6 +316,8 @@
                         </div>
                     </div>
                 </div>
+
+
 
                 <!-- Mensajes del sistema -->
                 <div class="profile-card-modern" id="mensajes">
@@ -268,53 +347,62 @@
     </div>
 
     <style>
-        .profile-hero{padding:80px 0 40px;background:radial-gradient(ellipse 1400px 800px at 50% -100px,rgba(102,126,234,.12) 0%,transparent 50%);position:relative;overflow:hidden}
-        .profile-hero::before{content:'';position:absolute;inset:0;background:url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%236b5cff' fill-opacity='0.03'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");pointer-events:none}
-        .profile-badge{background:linear-gradient(135deg,rgba(16,185,129,.15),rgba(5,150,105,.15));color:#059669;padding:.5rem 1rem;border-radius:50px;font-size:.875rem;font-weight:600;display:inline-flex;align-items:center;border:1px solid rgba(5,150,105,.2)}
-        .profile-avatar-large{width:96px;height:96px;border-radius:50%;background:linear-gradient(135deg,#667eea,#764ba2);color:#fff;display:flex;align-items:center;justify-content:center;font-size:2.5rem;font-weight:700;box-shadow:0 12px 32px rgba(102,126,234,.4);border:4px solid #fff}
-        .profile-card-modern{background:#fff;border-radius:20px;border:1px solid rgba(0,0,0,.06);box-shadow:0 4px 12px rgba(0,0,0,.05);overflow:hidden}
-        .card-header-profile{padding:1.5rem;background:linear-gradient(180deg,#fafbff 0%,#fff 100%);border-bottom:1px solid rgba(0,0,0,.05)}
-        .card-header-profile h5,.card-header-profile h6{color:#1a202c;margin:0}
-        .card-body-profile{padding:1.5rem}
-        .form-label-modern{font-size:.875rem;font-weight:600;color:#475569;margin-bottom:.5rem;display:block}
-        .form-control-modern{background:#f8f9ff;border:1px solid #e9ecef;border-radius:12px;padding:.75rem 1rem;color:#1a202c;font-size:.9rem}
-        .input-group-modern{position:relative;display:flex;align-items:center}
-        .input-icon{position:absolute;left:1rem;color:#667eea;font-size:1rem;z-index:10}
-        .input-group-modern .form-control,.input-group-modern .form-control-modern{padding-left:3rem}
-        .form-control{background:#f8f9ff;border:1px solid #e9ecef;border-radius:12px;padding:.75rem 1rem;transition:all .2s ease}
-        .form-control:focus{border-color:#667eea;background:#fff;box-shadow:0 0 0 .2rem rgba(102,126,234,.1)}
-        .form-text-modern{display:block;margin-top:.5rem;font-size:.8rem;color:#64748b}
-        .info-badge{background:linear-gradient(135deg,rgba(102,126,234,.1),rgba(118,75,162,.1));border:1px solid rgba(102,126,234,.2);border-radius:12px;padding:1rem;color:#475569;font-size:.9rem}
-        .stat-card-gradient{background:linear-gradient(135deg,#667eea,#764ba2);border-radius:20px;padding:2rem;text-align:center;color:#fff;box-shadow:0 12px 32px rgba(102,126,234,.3)}
-        .stat-icon{width:56px;height:56px;background:rgba(255,255,255,.2);border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 1rem;font-size:1.75rem}
-        .stat-number{font-size:3rem;font-weight:700;margin-bottom:.5rem}
-        .stat-label{font-size:1rem;opacity:.9;margin-bottom:1rem}
-        .stat-footer{background:rgba(255,255,255,.15);padding:.75rem;border-radius:12px;font-size:.875rem;font-weight:600}
-        .tips-list{display:flex;flex-direction:column;gap:1rem}
-        .tip-item{display:flex;align-items:start;gap:.75rem;font-size:.9rem;color:#475569}
-        .tip-item i{color:#059669;font-size:1rem;flex-shrink:0;margin-top:.125rem}
-        .empty-messages{text-align:center;padding:2rem 1rem;color:#94a3b8}
-        .empty-messages i{font-size:2.5rem;margin-bottom:.75rem;display:block}
-        .messages-list{display:flex;flex-direction:column;gap:.75rem}
-        .message-item{display:flex;gap:.75rem;padding:1rem;background:#f8f9ff;border-radius:12px;border:1px solid #e9ecef}
-        .message-icon{width:36px;height:36px;background:linear-gradient(135deg,#667eea,#764ba2);border-radius:10px;display:flex;align-items:center;justify-content:center;color:#fff;flex-shrink:0}
-        .message-content{font-size:.875rem;color:#475569;line-height:1.5}
-        .danger-zone-modern{background:#fff;border:2px solid #fee2e2;border-radius:20px;padding:2rem;box-shadow:0 4px 12px rgba(220,38,38,.1)}
-        .danger-icon{width:48px;height:48px;background:linear-gradient(135deg,#fee2e2,#fecaca);border-radius:12px;display:flex;align-items:center;justify-content:center;color:#dc2626;font-size:1.5rem;flex-shrink:0}
-        .btn{border-radius:12px;font-weight:600;padding:.75rem 1.5rem;transition:all .2s ease}
-        .btn:hover{transform:translateY(-2px)}
-        .btn-primary{background:linear-gradient(135deg,#667eea,#764ba2);border:none;box-shadow:0 4px 12px rgba(102,126,234,.3)}
-        .btn-primary:hover{box-shadow:0 6px 16px rgba(102,126,234,.4)}
-        .btn-outline-danger{border-color:#dc2626;color:#dc2626}
-        .btn-outline-danger:hover{background:#dc2626;border-color:#dc2626;color:#fff}
-        .btn-danger{background:#dc2626;border-color:#dc2626}
-        .btn-danger:hover{background:#b91c1c}
-        @media (max-width:991px){
-            .profile-hero{padding:60px 0 30px}
-            .display-6{font-size:1.75rem}
-            .profile-avatar-large{width:72px;height:72px;font-size:2rem}
-        }
+        .admin-panel-grid{display:flex;flex-wrap:wrap;gap:.75rem 1rem;}
+        .admin-panel-item{flex:1 1 45%;min-width:130px;}
+        .admin-panel-label{font-size:.75rem;font-weight:600;color:#64748b;text-transform:uppercase;letter-spacing:.03em;margin-bottom:.15rem;}
+        .admin-panel-value{font-size:1.2rem;font-weight:700;color:#1f2937;}
+        .admin-panel-badge-pend{padding:.25rem .85rem;border-radius:999px;background:rgba(239,68,68,.08);color:#b91c1c;display:inline-flex;align-items:center;justify-content:center;}
+        .admin-panel-subtitle{font-size:.85rem;font-weight:600;color:#4b5563;}
+        .admin-panel-text{font-size:.875rem;color:#6b7280;}
+        .admin-actions .btn{font-size:.9rem;}
+        .btn-admin-secondary{background:rgba(15,23,42,.02);border:1px dashed rgba(148,163,184,.9);color:#111827;font-weight:500;}
+        .btn-admin-secondary:hover{background:rgba(15,23,42,.05);color:#020617;}
+        .profile-hero{padding:80px 0 40px;background:radial-gradient(ellipse 1400px 800px at 50% -100px,rgba(102,126,234,.12) 0%,transparent 50%);position:relative;overflow:hidden;}
+        .profile-hero::before{content:'';position:absolute;inset:0;background:url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%236b5cff' fill-opacity='0.03'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");pointer-events:none;}
+        .profile-badge{background:linear-gradient(135deg,rgba(16,185,129,.15),rgba(5,150,105,.15));color:#059669;padding:.5rem 1rem;border-radius:50px;font-size:.875rem;font-weight:600;display:inline-flex;align-items:center;border:1px solid rgba(5,150,105,.2);}
+        .profile-avatar-large{width:96px;height:96px;border-radius:50%;background:linear-gradient(135deg,#667eea,#764ba2);color:#fff;display:flex;align-items:center;justify-content:center;font-size:2.5rem;font-weight:700;box-shadow:0 12px 32px rgba(102,126,234,.4);border:4px solid #fff;}
+        .profile-card-modern{background:#fff;border-radius:20px;border:1px solid rgba(0,0,0,.06);box-shadow:0 4px 12px rgba(0,0,0,.05);overflow:hidden;}
+        .card-header-profile{padding:1.5rem;background:linear-gradient(180deg,#fafbff 0%,#fff 100%);border-bottom:1px solid rgba(0,0,0,.05);}
+        .card-header-profile h5,.card-header-profile h6{color:#1a202c;margin:0;}
+        .card-body-profile{padding:1.5rem;}
+        .form-label-modern{font-size:.875rem;font-weight:600;color:#475569;margin-bottom:.5rem;display:block;}
+        .form-control-modern{background:#f8f9ff;border:1px solid #e9ecef;border-radius:12px;padding:.75rem 1rem;color:#1a202c;font-size:.9rem;}
+        .input-group-modern{position:relative;display:flex;align-items:center;}
+        .input-icon{position:absolute;left:1rem;color:#667eea;font-size:1rem;z-index:10;}
+        .input-group-modern .form-control,.input-group-modern .form-control-modern{padding-left:3rem;}
+        .form-control{background:#f8f9ff;border:1px solid #e9ecef;border-radius:12px;padding:.75rem 1rem;transition:all .2s ease;}
+        .form-control:focus{border-color:#667eea;background:#fff;box-shadow:0 0 0 .2rem rgba(102,126,234,.1);}
+        .form-text-modern{display:block;margin-top:.5rem;font-size:.8rem;color:#64748b;}
+        .info-badge{background:linear-gradient(135deg,rgba(102,126,234,.1),rgba(118,75,162,.1));border:1px solid rgba(102,126,234,.2);border-radius:12px;padding:1rem;color:#475569;font-size:.9rem;}
+        .stat-card-gradient{background:linear-gradient(135deg,#667eea,#764ba2);border-radius:20px;padding:2rem;text-align:center;color:#fff;box-shadow:0 12px 32px rgba(102,126,234,.3);}
+        .stat-icon{width:56px;height:56px;background:rgba(255,255,255,.2);border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 1rem;font-size:1.75rem;}
+        .stat-number{font-size:3rem;font-weight:700;margin-bottom:.5rem;}
+        .stat-label{font-size:1rem;opacity:.9;margin-bottom:1rem;}
+        .stat-footer{background:rgba(255,255,255,.15);padding:.75rem;border-radius:12px;font-size:.875rem;font-weight:600;}
+        .tips-list{display:flex;flex-direction:column;gap:1rem;}
+        .tip-item{display:flex;align-items:start;gap:.75rem;font-size:.9rem;color:#475569;}
+        .tip-item i{color:#059669;font-size:1rem;flex-shrink:0;margin-top:.125rem;}
+        .empty-messages{text-align:center;padding:2rem 1rem;color:#94a3b8;}
+        .empty-messages i{font-size:2.5rem;margin-bottom:.75rem;display:block;}
+        .messages-list{display:flex;flex-direction:column;gap:.75rem;}
+        .message-item{display:flex;gap:.75rem;padding:1rem;background:#f8f9ff;border-radius:12px;border:1px solid #e9ecef;}
+        .message-icon{width:36px;height:36px;background:linear-gradient(135deg,#667eea,#764ba2);border-radius:10px;display:flex;align-items:center;justify-content:center;color:#fff;flex-shrink:0;}
+        .message-content{font-size:.875rem;color:#475569;line-height:1.5;}
+        .danger-zone-modern{background:#fff;border:2px solid #fee2e2;border-radius:20px;padding:2rem;box-shadow:0 4px 12px rgba(220,38,38,.1);}
+        .danger-icon{width:48px;height:48px;background:linear-gradient(135deg,#fee2e2,#fecaca);border-radius:12px;display:flex;align-items:center;justify-content:center;color:#dc2626;font-size:1.5rem;flex-shrink:0;}
+        .btn{border-radius:12px;font-weight:600;padding:.75rem 1.5rem;transition:all .2s ease;}
+        .btn:hover{transform:translateY(-2px);}
+        .btn-primary{background:linear-gradient(135deg,#667eea,#764ba2);border:none;box-shadow:0 4px 12px rgba(102,126,234,.3);}
+        .btn-primary:hover{box-shadow:0 6px 16px rgba(102,126,234,.4);}
+        .btn-primary-hero{background:#fff;border:2px solid #667eea;color:#667eea;padding:.875rem 1.75rem;border-radius:14px;font-weight:600;box-shadow:0 4px 12px rgba(102,126,234,.15);transition:all .2s ease;text-decoration:none;display:inline-flex;align-items:center;white-space:nowrap;}
+        .btn-primary-hero:hover{background:#667eea;border-color:#667eea;color:#fff;transform:translateY(-2px);box-shadow:0 6px 16px rgba(102,126,234,.3);}
+        .btn-outline-danger{border-color:#dc2626;color:#dc2626;}
+        .btn-outline-danger:hover{background:#dc2626;border-color:#dc2626;color:#fff;}
+        .btn-danger{background:#dc2626;border-color:#dc2626;}
+        .btn-danger:hover{background:#b91c1c;}
+        @media (max-width:991px){.profile-hero{padding:60px 0 30px}.profile-hero .row{text-align:center}.profile-hero .col-auto{width:100%;display:flex;justify-content:center}.display-6{font-size:1.75rem}.profile-avatar-large{width:72px;height:72px;font-size:2rem}.btn-primary-hero{width:100%;justify-content:center;margin-top:1rem}}
     </style>
+
 
     <script>
         function validarPasswordsIguales() {

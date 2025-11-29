@@ -11,6 +11,7 @@ import modulos.agregacion.entities.DbMain.Hecho;
 import modulos.buscadores.Normalizador;
 import org.springframework.data.jpa.domain.Specification;
 
+import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.util.ArrayList;
@@ -23,12 +24,12 @@ import java.util.List;
 public class FiltroFechaAcontecimiento extends Filtro {
 
     @Column(name = "fechaInicial", length = 50)
-    private ZonedDateTime fechaInicial;
+    private LocalDateTime fechaInicial;
 
     @Column(name = "fechaFinal", length = 50)
-    private ZonedDateTime fechaFinal;
+    private LocalDateTime fechaFinal;
 
-    public FiltroFechaAcontecimiento(ZonedDateTime fechaInicial, ZonedDateTime fechaFinal){
+    public FiltroFechaAcontecimiento(LocalDateTime fechaInicial, LocalDateTime fechaFinal){
         this.fechaInicial = fechaInicial;
         this.fechaFinal = fechaFinal;
     }
@@ -41,10 +42,7 @@ public class FiltroFechaAcontecimiento extends Filtro {
     @Override
     public Boolean aprobarHecho(Hecho hecho){
 
-        ZonedDateTime fechaHecho = hecho.getAtributosHecho().getFechaAcontecimiento();
-
-        fechaHecho = fechaHecho.withZoneSameInstant(ZoneId.systemDefault());
-
+        LocalDateTime fechaHecho = hecho.getAtributosHecho().getFechaAcontecimiento();
 
         return !fechaHecho.isAfter(fechaInicial) && !fechaHecho.isBefore(fechaFinal);
     }
@@ -52,7 +50,7 @@ public class FiltroFechaAcontecimiento extends Filtro {
     @Override
     public <T> Specification<T> toSpecification(Class<T> clazz) {
         return ((root, query, criteriaBuilder) -> {
-            Path<ZonedDateTime> pathFecha = root.get("atributosHecho").get("fechaAcontecimiento");
+            Path<LocalDateTime> pathFecha = root.get("atributosHecho").get("fechaAcontecimiento");
             Predicate predicado1 = criteriaBuilder.greaterThan(pathFecha, this.fechaInicial);
             Predicate predicado2 = criteriaBuilder.lessThan(pathFecha, this.fechaFinal);
             return criteriaBuilder.and(predicado1,predicado2);

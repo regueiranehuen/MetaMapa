@@ -170,6 +170,7 @@ public class UsuarioService {
             usuarioDto.setApellido(usuario.getDatosPersonales().getApellido());
             usuarioDto.setEdad(usuario.getDatosPersonales().getEdad());
             usuarioDto.setCantHechosSubidos(usuario.getCantHechosSubidos());
+            usuarioDto.setRol(usuario.getRol());
             return ResponseEntity.ok(usuarioDto);
         }
 

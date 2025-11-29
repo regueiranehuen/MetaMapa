@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Getter
@@ -24,4 +25,8 @@ public class Provincia {
     @OneToMany(fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE})
     @JoinColumn(name = "provincia_id")
     private List<Sinonimo> sinonimos;
+
+    public Provincia() {
+        sinonimos = new ArrayList<>();
+    }
 }

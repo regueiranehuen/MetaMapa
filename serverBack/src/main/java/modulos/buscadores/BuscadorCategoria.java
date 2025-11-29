@@ -14,7 +14,9 @@ public class BuscadorCategoria {
     }
 
     public Categoria buscar(String elemento) {
-        return this.categoriaRepository.findByNombreNormalizado(elemento).orElse(null);
+        if (elemento != null)
+            return this.categoriaRepository.findByNombreNormalizado(elemento).orElse(null);
+        return null;
     }
 
     public Categoria buscar(Long id){

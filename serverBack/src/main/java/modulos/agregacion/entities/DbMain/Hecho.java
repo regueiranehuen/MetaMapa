@@ -32,16 +32,24 @@ public abstract class Hecho {
     @Embedded
     private AtributosHecho atributosHecho;
 
-    @OneToMany(fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE})
-    @JoinColumn(name = "id_hecho")
-    private List<AtributosHechoModificar> atributosHechoAModificar;
+    @Column(name = "cant_accesos")
+    private Long cant_accesos;
+
+    @PrePersist
+    protected void onCreate() {
+        if (cant_accesos == null) {
+            cant_accesos = 0L;
+        }
+    }
 
     public Hecho() {
         this.atributosHecho = new AtributosHecho();
-        this.atributosHechoAModificar = new ArrayList<>();
         this.activo = false;
     }
 
+    public void incrementarAccesos(){
+        this.cant_accesos++;
+    }
 }
 
 

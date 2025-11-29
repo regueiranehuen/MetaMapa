@@ -1,5 +1,8 @@
 package modulos.Front;
 
+import lombok.Data;
+
+@Data
 public class ContenidoMultimedia {
 
 

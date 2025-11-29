@@ -26,7 +26,7 @@ public class ColeccionService {
     // el tercero el tipo de dato que retorna server back
 
     public ResponseEntity<?> obtenerTodasLasColecciones() {
-        return webApiCallerService.getListSinToken(coleccionServiceUrl + "/public/get-all", ColeccionOutputDTO.class);
+        return webApiCallerService.getListTokenOpcional(coleccionServiceUrl + "/public/get-all", ColeccionOutputDTO.class);
     }
 
     public ResponseEntity<?> crearColeccion(ColeccionInputDTO inputDTO) {
@@ -34,7 +34,7 @@ public class ColeccionService {
     }
 
     public ResponseEntity<?> getColeccion(Long id_coleccion) {
-        return webApiCallerService.getEntity(coleccionServiceUrl + "/public/get/" + id_coleccion, ColeccionOutputDTO.class);
+        return webApiCallerService.getEntityTokenOpcional(coleccionServiceUrl + "/public/get/" + id_coleccion, ColeccionOutputDTO.class);
     }
 
     public ResponseEntity<?> deleteColeccion(Long id_coleccion) {
@@ -62,6 +62,10 @@ public class ColeccionService {
     }
 
     public ResponseEntity<Long> getCantColecciones() {
-        return webApiCallerService.getEntitySinToken(this.coleccionServiceUrl + "/public/cantColecciones", Long.class);
+        return webApiCallerService.getEntityTokenOpcional(this.coleccionServiceUrl + "/public/cantColecciones", Long.class);
+    }
+
+    public ResponseEntity<List<ColeccionOutputDTO>> getColeccionesDestacadas() {
+        return  webApiCallerService.getListTokenOpcional(this.coleccionServiceUrl + "/public/destacadas", ColeccionOutputDTO.class);
     }
 }

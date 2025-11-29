@@ -9,8 +9,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.List;
 import java.util.Optional;
 
 
@@ -52,21 +54,22 @@ public class SolicitudHechoController {
 
     // Anda
     @PostMapping("/public/subir-hecho")
-    public ResponseEntity<?> enviarSolicitudSubirHecho(@Valid @RequestBody SolicitudHechoInputDTO dtoInput, @AuthenticationPrincipal String username){
-        System.out.println("HOLAAA");
-        return solicitudHechoService.solicitarSubirHecho(dtoInput, username); // 200 o 401
+    public ResponseEntity<?> enviarSolicitudSubirHecho(@RequestPart("meta") SolicitudHechoInputDTO dto,
+                                                       @RequestPart(value = "contenidosMultimedia", required = false) List<MultipartFile> files,
+                                                       @AuthenticationPrincipal String username){
+        return solicitudHechoService.solicitarSubirHecho(dto, files, username); // 200 o 401
     }
 
     // Anda
     @PostMapping("/eliminar-hecho")
-    public ResponseEntity<?> enviarSolicitudEliminarHecho(@Valid @RequestBody SolicitudHechoEliminarInputDTO dtoInput, @AuthenticationPrincipal Jwt principal){
-        return solicitudHechoService.solicitarEliminacionHecho(dtoInput, principal); // 200 o 401
+    public ResponseEntity<?> enviarSolicitudEliminarHecho(@Valid @RequestBody SolicitudHechoEliminarInputDTO dtoInput, @AuthenticationPrincipal String username){
+        return solicitudHechoService.solicitarEliminacionHecho(dtoInput, username); // 200 o 401
     }
 
     // Anda
     @PostMapping("/modificar-hecho")
-    public ResponseEntity<?> enviarSolicitudModificarHecho(@Valid @RequestBody SolicitudHechoModificarInputDTO dtoInput, @AuthenticationPrincipal Jwt principal){
-        return solicitudHechoService.solicitarModificacionHecho(dtoInput, principal); // 200, 401 o 409 (recurso ya modificado)
+    public ResponseEntity<?> enviarSolicitudModificarHecho(@Valid @RequestBody SolicitudHechoModificarInputDTO dtoInput, @AuthenticationPrincipal String username){
+        return solicitudHechoService.solicitarModificacionHecho(dtoInput, username); // 200, 401 o 409 (recurso ya modificado)
     }
 
     // Anda
@@ -85,16 +88,20 @@ public class SolicitudHechoController {
         return solicitudHechoService.evaluarReporte(dtoInput, principal);
     }
 
-    // Anda
     @GetMapping("/get/all")
     public ResponseEntity<?> getAllSolicitudes(@AuthenticationPrincipal String username){
         return solicitudHechoService.getAllSolicitudes(username);
     }
 
-    // Anda
     @GetMapping("/get/pendientes")
     public ResponseEntity<?> getSolicitudesPendientes(@AuthenticationPrincipal String username){
         return solicitudHechoService.obtenerSolicitudesPendientes(username);
+    }
+
+    @GetMapping("/atributos-hecho")
+    public ResponseEntity<?> getAtributosSolicitudHecho(@Valid @RequestParam Long id_solicitud, @AuthenticationPrincipal String username){
+        System.out.println("WAZAAA ME ENCANTA OBTENER ATRIBUTOS DEL HECHO A MODIFICAR");
+        return solicitudHechoService.getAtributosSolicitudHecho(id_solicitud, username);
     }
 
 }

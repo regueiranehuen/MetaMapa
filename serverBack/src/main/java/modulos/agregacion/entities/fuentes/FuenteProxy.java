@@ -189,7 +189,7 @@ public class FuenteProxy {
         GetHechosColeccionInputDTO request = GetHechosColeccionInputDTO.builder()
                 .id_coleccion(id_coleccion)
                 .navegacionCurada(navegacionCurada)
-                .origen(atributos.getOrigen())
+                .fuentes(atributos.getFuentes())
                 .descripcion(atributos.getDescripcion())
                 .titulo(atributos.getTitulo())
                 .fechaAcontecimientoInicial(atributos.getFechaAcontecimientoInicial())

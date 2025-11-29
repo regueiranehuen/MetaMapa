@@ -40,8 +40,8 @@ public class DbHechosDinamicaConfig {
         Map<String, Object> jpaProps = new HashMap<>();
         jpaProps.put("hibernate.hbm2ddl.auto", "update"); // "create" si querés forzar creación
         jpaProps.put("hibernate.dialect", "org.hibernate.dialect.MySQL8Dialect");
-        jpaProps.put("hibernate.show_sql", true);
-        jpaProps.put("hibernate.format_sql", true);
+        jpaProps.put("hibernate.show_sql", false);
+        jpaProps.put("hibernate.format_sql", false);
 
         return builder
                 .dataSource(ds)

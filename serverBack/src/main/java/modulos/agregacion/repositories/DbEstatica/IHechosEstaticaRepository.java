@@ -1,16 +1,20 @@
 package modulos.agregacion.repositories.DbEstatica;
 
 import modulos.agregacion.entities.DbEstatica.HechoEstatica;
+import modulos.agregacion.entities.DbMain.Fuente;
 import modulos.agregacion.entities.DbMain.Hecho;
 import modulos.agregacion.entities.DbMain.projections.CategoriaCantidadProjection;
 import modulos.agregacion.entities.DbMain.projections.CategoriaProvinciaProjection;
 import modulos.agregacion.entities.DbMain.projections.HoraCategoriaProjection;
+import modulos.agregacion.entities.atributosHecho.Origen;
 import modulos.servicioEstadistica.entities.ProvinciaCantidad;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
@@ -31,6 +35,14 @@ WHERE REPLACE(LOWER(h.atributosHecho.titulo), ' ', '') =
       REPLACE(LOWER(:nombre), ' ', '')
 """)
     Optional<HechoEstatica> findByNombreNormalizado(@Param("nombre") String nombre);
+
+    @Query("""
+SELECT COUNT(h)
+FROM HechoEstatica h 
+WHERE REPLACE(LOWER(h.atributosHecho.titulo), ' ', '') =
+      REPLACE(LOWER(:nombre), ' ', '')
+""")
+    Integer findCantByNombreNormalizado(@Param("nombre") String nombre);
 
     @Query("""
         select hecho
@@ -74,9 +86,8 @@ LIMIT 1;
     Optional<List<HoraCategoriaProjection>> horaMayorCantHechos();
 
     @Query(value = """
-        select count(d.id) from hecho_estatica h
+        select count(*) from hecho_estatica h
         join hecho_dataset hd on h.id = hd.hecho_id
-        join dataset d on hd.dataset_id = d.id
         where h.id = :hecho_id
 """, nativeQuery = true)
     Long findCantDatasetsHecho(@Param("hecho_id") Long hecho_id);
@@ -94,22 +105,42 @@ LIMIT 1;
       and COALESCE(h1.titulo, '') = COALESCE(h2.titulo, '')
       and (
             COALESCE(h1.categoria_id, -1) <> COALESCE(h2.categoria_id, -1)
-         or COALESCE(h1.tipoContenidoMultimedia, '') <> COALESCE(h2.tipoContenidoMultimedia, '')
          or COALESCE(h1.descripcion, '') <> COALESCE(h2.descripcion, '')
          or COALESCE(h1.ubicacion_id, -1) <> COALESCE(h2.ubicacion_id, -1)
-         or COALESCE(h1.origen, '') <> COALESCE(h2.origen, '')
-         or COALESCE(h1.fuente, '') <> COALESCE(h2.fuente, '')
          or COALESCE(h1.fechaAcontecimiento, '1900-01-01') <> COALESCE(h2.fechaAcontecimiento, '1900-01-01')
-         or COALESCE(h1.fechaCarga, '1900-01-01') <> COALESCE(h2.fechaCarga, '1900-01-01')
-         or COALESCE(h1.fechaUltimaActualizacion, '1900-01-01') <> COALESCE(h2.fechaUltimaActualizacion, '1900-01-01')
          or COALESCE(h1.latitud, -9999) <> COALESCE(h2.latitud, -9999)
          or COALESCE(h1.longitud, -9999) <> COALESCE(h2.longitud, -9999)
-         or COALESCE(h1.modificado, 0) <> COALESCE(h2.modificado, 0)
       )
     """, nativeQuery = true)
     Long findCantHechosIgualTituloDiferentesAtributos(@Param("hecho_id") Long hechoId);
 
-
+    //TODO ESTA QUERY MUGROSA NO ANDA, ME PUDRI
+    @Query(value = """
+        SELECT h1.*
+        FROM hecho_estatica h1
+        WHERE h1.activo = true
+          AND h1.titulo <=> :titulo
+          AND h1.categoria_id <=> :categoriaId
+          AND h1.descripcion <=> :descripcion
+          AND h1.fechaAcontecimiento <=> :fechaAcontecimiento
+          AND h1.fuente <=> :fuente
+          AND h1.latitud <=> :latitud
+          AND h1.longitud <=> :longitud
+          AND h1.origen <=> :origen
+          AND h1.ubicacion_id <=> :ubicacionId
+        """,
+            nativeQuery = true)
+    List<HechoEstatica> findHechosIdenticos(
+            @Param("titulo") String titulo,
+            @Param("categoriaId") Long categoriaId,
+            @Param("descripcion") String descripcion,
+            @Param("ubicacionId") Long ubicacionId,
+            @Param("origen") String origen,
+            @Param("fuente") String fuente,
+            @Param("fechaAcontecimiento") LocalDateTime fechaAcontecimiento,
+            @Param("latitud") Double latitud,
+            @Param("longitud") Double longitud
+    );
 
     @Query(value = """
         select h.atributosHecho.ubicacion_id from HechoEstatica h where h.id = :hecho_id
@@ -137,4 +168,11 @@ LIMIT 1;
     SELECT COUNT(h) FROM HechoEstatica h WHERE h.activo = true
     """)
     Long getCantHechos();
+
+    @Query(value = """
+    SELECT h FROM HechoEstatica h
+    WHERE h.activo = true order by h.cant_accesos DESC
+    LIMIT 3
+    """)
+    List<HechoEstatica> findHechosDestacados();
 }

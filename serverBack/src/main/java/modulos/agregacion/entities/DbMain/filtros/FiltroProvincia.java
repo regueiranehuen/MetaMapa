@@ -29,6 +29,10 @@ public class FiltroProvincia extends Filtro{
         this.ubicaciones_ids = ubicaciones_ids;
     }
 
+    public void refrescarUbicaciones_ids(List<Long> ubicaciones_ids){
+        this.ubicaciones_ids = ubicaciones_ids;
+    }
+
     public FiltroProvincia() {
 
     }
@@ -48,6 +52,9 @@ public class FiltroProvincia extends Filtro{
             return (root, query, cb) -> cb.disjunction(); // Nunca se cumple
         }
 
+        for (Long id : ubicaciones_ids) {
+            System.out.println("SOY UNA UBICACION EN PROVINCIA: " + id);
+        }
 
         return (root, query, cb) -> {
             Path<Long> pathUbicacionId = root

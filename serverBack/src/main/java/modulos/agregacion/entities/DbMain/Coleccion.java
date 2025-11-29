@@ -94,7 +94,8 @@ public class Coleccion {
     )
     private List<HechoRef> hechosConsensuados = new ArrayList<>();
 
-
+    @Column(name = "cant_accesos")
+    private Long cant_accesos;
 
     public void setCriterios(List<Filtro> filtros) {
         this.criterios.clear();
@@ -103,6 +104,16 @@ public class Coleccion {
         }
     }
 
+    public void incrementarAccesos(){
+        this.cant_accesos++;
+    }
+
+    @PrePersist
+    protected void onCreate() {
+        if (cant_accesos == null) {
+            cant_accesos = 0L;
+        }
+    }
 
     public void addHechos(HechoRef ... hechos){
         this.hechos.addAll(List.of(hechos));
@@ -111,7 +122,6 @@ public class Coleccion {
     public void addHechos(List<HechoRef> hechos){
         this.hechos.addAll(hechos);
     }
-
 
 
 

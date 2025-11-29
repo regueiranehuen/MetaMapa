@@ -1,9 +1,11 @@
 package modulos.Front.dtos.input;
 
 import jakarta.validation.constraints.NotNull;
+import lombok.Builder;
 import lombok.Data;
 
 @Data
+@Builder
 public class ColeccionUpdateInputDTO {
     @NotNull(message = "el id_coleccion es obligatorio")
     private Long id_coleccion;
@@ -12,5 +14,7 @@ public class ColeccionUpdateInputDTO {
     private String descripcion;
 
     private CriteriosColeccionDTO criterios;
-    // No agrego algoritmo de consenso porque para eso está el otro méto do
+
+    // Algoritmo de consenso (opcional)
+    private String algoritmoConsenso;
 }
