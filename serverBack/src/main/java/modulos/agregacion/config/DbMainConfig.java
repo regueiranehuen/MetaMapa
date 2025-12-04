@@ -40,7 +40,7 @@ public class DbMainConfig {
             @Qualifier("mainDataSource") DataSource ds) {
 
         Map<String, Object> jpaProps = new HashMap<>();
-        jpaProps.put("hibernate.hbm2ddl.auto", "update");          // <- CLAVE
+        jpaProps.put("hibernate.hbm2ddl.auto", "update");
         jpaProps.put("hibernate.dialect", "org.hibernate.dialect.MySQL8Dialect");
         jpaProps.put("hibernate.format_sql", false);
         jpaProps.put("hibernate.show_sql", false);
@@ -49,7 +49,7 @@ public class DbMainConfig {
                 .dataSource(ds)
                 .packages("modulos.agregacion.entities.DbMain", "modulos.agregacion.entities.atributosHecho")
                 .persistenceUnit("db4")
-                .properties(jpaProps)                                   // <- aplica al EMF
+                .properties(jpaProps)
                 .build();
     }
 

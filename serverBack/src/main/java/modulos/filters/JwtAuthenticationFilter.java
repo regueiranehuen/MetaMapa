@@ -57,7 +57,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                 return;
             }
         } else {
-            System.out.println("No hay token de autorización");
+            
         }
 
         filterChain.doFilter(request, response);

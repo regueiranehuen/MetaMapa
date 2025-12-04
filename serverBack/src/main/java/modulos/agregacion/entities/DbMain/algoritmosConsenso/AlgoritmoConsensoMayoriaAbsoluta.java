@@ -23,8 +23,8 @@ public class AlgoritmoConsensoMayoriaAbsoluta implements IAlgoritmoConsenso {
 
         List<HechoRef> nuevosHechosConsensuados = new ArrayList<>();
         for (HechoRef hechoRef: hechosRefEstaticos){
-            System.out.println("DATASET SIZE: " + datasets.size());
-            System.out.println("CANT DATASETS HECHO: " + buscadorHecho.findCantDatasetsHecho(hechoRef.getKey().getId()));
+            
+            
             if (datasets.size() == buscadorHecho.findCantDatasetsHecho(hechoRef.getKey().getId())){
                 nuevosHechosConsensuados.add(hechoRef);
             }

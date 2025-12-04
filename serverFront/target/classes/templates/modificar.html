@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html lang="es"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      th:replace="~{layout/base :: html}">
+
+<main th:fragment="contenido">
+
+  <!-- HERO HEADER -->
+  <section class="contribute-hero">
+    <div class="container position-relative">
+      <div class="row align-items-center justify-content-center">
+        <div class="col-lg-8 text-center">
+          <div class="contribute-badge mb-3">
+            <i class="bi bi-pencil-square me-2"></i>Solicitud de Modificación
+          </div>
+          <h1 class="display-5 fw-bold mb-2 animated-gradient-text">
+            Modificación de Hecho Histórico
+          </h1>
+          <p class="lead text-muted mb-0">
+            Actualizá los datos del acontecimiento seleccionado
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FORMULARIO -->
+  <div class="container pb-5">
+    <!-- Mini-form GET para recargar provincias sin perder datos -->
+    <!-- Versión contribuyente -->
+    <form id="filtroPaisFormModificar"
+          th:action="@{/modificar-hecho-cont}"
+          method="get"
+          style="display:none;"
+          sec:authorize="hasRole('CONTRIBUYENTE')">
+      <input type="hidden" name="id_hecho">
+      <input type="hidden" name="titulo">
+      <input type="hidden" name="descripcion">
+      <input type="hidden" name="fechaAcontecimiento">
+      <input type="hidden" name="latitud">
+      <input type="hidden" name="longitud">
+      <input type="hidden" name="id_categoria">
+      <input type="hidden" name="id_provincia">
+      <input type="hidden" name="id_pais" id="filtroPaisInputModificar">
+      <input type="hidden" name="fuente">
+    </form>
+
+    <!-- Versión admin -->
+    <form id="filtroPaisFormModificar"
+          th:action="@{/modificar-hecho-adm}"
+          method="get"
+          style="display:none;"
+          sec:authorize="hasRole('ADMINISTRADOR')">
+      <input type="hidden" name="id_hecho">
+      <input type="hidden" name="titulo">
+      <input type="hidden" name="descripcion">
+      <input type="hidden" name="fechaAcontecimiento">
+      <input type="hidden" name="latitud">
+      <input type="hidden" name="longitud">
+      <input type="hidden" name="id_categoria">
+      <input type="hidden" name="id_provincia">
+      <input type="hidden" name="id_pais" id="filtroPaisInputModificar">
+      <input type="hidden" name="fuente">
+    </form>
+
+    <!-- Ambos forms tienen el mismo id, pero solo uno existe en el DOM porque están controlados por sec:authorize, así que no hay conflicto real. -->
+
+    <form id="formModificar"
+          class="mt-4"
+          th:object="${camposViejos}"
+          th:action="@{/solicitudes-hecho/modificar-hecho}"
+          method="post"
+          enctype="multipart/form-data">
+
+      <!-- CSRF -->
+      <input type="hidden" th:if="${_csrf != null}"
+             th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+
+      <!-- ID oculto del hecho -->
+      <input type="hidden" th:field="*{id_hecho}"/>
+
+      <!-- INFORMACIÓN BÁSICA -->
+      <div class="form-card-collection mb-4">
+        <div class="form-card-header-collection">
+          <div class="form-card-icon-collection">
+            <i class="bi bi-info-circle-fill"></i>
+          </div>
+          <h5 class="mb-0">Información Básica</h5>
+        </div>
+
+        <div class="form-card-body-collection">
+          <div class="row g-3">
+
+            <div class="col-md-6">
+              <label class="form-label-collection">
+                <i class="bi bi-text-left me-2"></i>Título del hecho
+                <span class="text-danger">*</span>
+              </label>
+              <input class="form-control-collection"
+                     th:field="*{titulo}"
+                     placeholder="Ej: Revolución de Mayo"
+                     required>
+            </div>
+
+            <div class="col-md-6">
+              <label class="form-label-collection">
+                <i class="bi bi-tag me-2"></i>Categoría
+                <span class="text-danger">*</span>
+              </label>
+              <select class="form-select-collection"
+                      th:field="*{id_categoria}"
+                      required>
+                <option value="">Seleccionar categoría</option>
+                <option th:each="cat : ${categorias}"
+                        th:value="${cat.id}"
+                        th:text="${cat.categoria}"></option>
+              </select>
+            </div>
+
+            <div class="col-12">
+              <label class="form-label-collection">
+                <i class="bi bi-card-text me-2"></i>Descripción del evento
+                <span class="text-danger">*</span>
+              </label>
+              <textarea class="form-control-collection"
+                        th:field="*{descripcion}"
+                        rows="3"
+                        placeholder="Describí el acontecimiento con el mayor detalle posible..."
+                        required></textarea>
+              <small class="form-text-collection">
+                Incluí contexto histórico, personajes relevantes y consecuencias.
+              </small>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- UBICACIÓN Y FECHA -->
+      <div class="form-card-collection mb-4">
+        <div class="form-card-header-collection">
+          <div class="form-card-icon-collection bg-gradient-green">
+            <i class="bi bi-geo-alt-fill"></i>
+          </div>
+          <h5 class="mb-0">Ubicación y Fecha</h5>
+        </div>
+
+        <div class="form-card-body-collection">
+          <div class="row g-3">
+
+            <div class="col-md-6">
+              <label class="form-label-collection">
+                <i class="bi bi-globe-americas me-2"></i>País
+              </label>
+              <select id="selectPais"
+                      class="form-select-collection"
+                      th:field="*{id_pais}"
+                      th:attr="data-pais-id=${pais != null} ? ${pais.id} : null"
+                      onchange="
+          const post = document.getElementById('formModificar');
+          const getF = document.getElementById('filtroPaisFormModificar');
+
+          ['id_hecho','titulo','descripcion','fechaAcontecimiento','latitud','longitud','id_categoria','id_provincia','fuente']
+            .forEach(n => {
+              const src = post.querySelector(`[name='${n}']`);
+              const dst = getF.querySelector(`[name='${n}']`);
+              if (src && dst) dst.value = src.value ?? '';
+            });
+
+          getF.querySelector('[name=id_pais]').value = this.value;
+          getF.querySelector('[name=id_provincia]').value = '';
+
+          getF.submit();
+        ">
+                <option value="">Seleccionar país</option>
+                <option th:each="paisItem : ${paises}"
+                        th:value="${paisItem.id}"
+                        th:text="${paisItem.pais}"></option>
+              </select>
+
+            </div>
+
+            <div class="col-md-6">
+              <label class="form-label-collection">
+                <i class="bi bi-signpost me-2"></i>Provincia / Estado
+              </label>
+              <select id="selectProvincia"
+                      class="form-select-collection"
+                      th:field="*{id_provincia}"
+                      th:attr="disabled=${camposViejos.id_pais == null}"
+                      th:attrappend=" data-prov-id=${provincia != null} ? ${provincia.id} : null">
+                <option value="">Seleccionar provincia/estado</option>
+                <option th:each="prov : ${provincias}"
+                        th:value="${prov.id}"
+                        th:text="${prov.provincia}"></option>
+              </select>
+              <small class="form-text-collection"
+                     th:if="${camposViejos.id_pais == null}">
+                Primero seleccioná un país.
+              </small>
+            </div>
+
+            <div class="col-md-6">
+              <label class="form-label-collection">
+                <i class="bi bi-calendar-event me-2"></i>Fecha del acontecimiento
+                <span class="text-danger">*</span>
+              </label>
+              <input type="date"
+                     class="form-control-collection"
+                     th:field="*{fechaAcontecimiento}"
+                     required>
+            </div>
+
+            <div class="col-md-6">
+              <label class="form-label-collection">
+                <i class="bi bi-pin-map me-2"></i>Coordenadas (opcional)
+              </label>
+              <div class="coordinates-group">
+                <input type="number" step="any"
+                       class="form-control-collection"
+                       th:field="*{latitud}"
+                       placeholder="Latitud">
+                <span class="coordinates-separator">,</span>
+                <input type="number" step="any"
+                       class="form-control-collection"
+                       th:field="*{longitud}"
+                       placeholder="Longitud">
+              </div>
+            </div>
+            <div class="action-buttons-collection">
+              <a th:href="@{/hechos/public/get-all}" class="btn btn-secondary-collection">
+                <i class="bi bi-arrow-left me-2"></i>Cancelar
+              </a>
+
+              <!-- botón para enviar la solicitud de modificación -->
+              <button type="submit"
+                      class="btn btn-primary-collection"
+                sec:authorize="hasRole('CONTRIBUYENTE')">
+                <i class="bi bi-send-fill me-2"></i>Enviar solicitud de modificación
+              </button>
+
+
+              <!-- opcional: si querés que el admin pueda modificar directo -->
+              <button type="submit"
+                      class="btn btn-primary-collection"
+                      sec:authorize="hasRole('ADMINISTRADOR')"
+                      th:formaction="@{/hechos/modificar-hecho}">
+                <input type="hidden" th:field="*{fuente}" />
+                <i class="bi bi-pencil-square me-2"></i>Modificar hecho
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- CONTENIDO MULTIMEDIA -->
+      <!-- CONTENIDO MULTIMEDIA -->
+      <div class="form-card-collection mb-4">
+        <div class="form-card-header-collection">
+          <div class="form-card-icon-collection bg-gradient-blue">
+            <i class="bi bi-images"></i>
+          </div>
+          <h5 class="mb-0">Contenido multimedia</h5>
+        </div>
+
+        <div class="form-card-body-collection">
+          <div class="row g-3">
+
+            <!-- EXISTENTES: marcar para eliminar -->
+            <div class="col-12"
+                 th:if="${camposViejos != null
+                and camposViejos.id_hecho != null
+                and camposViejos.contenidosMultimedia != null}">
+              <label class="form-label-collection">
+                Contenidos actuales
+              </label>
+
+              <div class="row g-2">
+                <div class="col-md-4"
+                     th:each="cont : ${camposViejos.contenidosMultimedia}">
+                  <div class="card h-100 p-2">
+                    <div class="mb-2 text-center">
+
+                      <!-- Imagen -->
+                      <img th:if="${cont.tipo != null and cont.tipo.name() == 'IMAGEN'}"
+                           th:src="${cont.url}"
+                           alt="Multimedia"
+                           class="img-fluid rounded">
+
+                      <!-- Video -->
+                      <video th:if="${cont.tipo != null and cont.tipo.name() == 'VIDEO'}"
+                             class="w-100"
+                             controls>
+                        <source th:src="${cont.url}" type="video/mp4"/>
+                      </video>
+
+                      <!-- Otro tipo o tipo nulo -->
+                      <div th:if="${cont.tipo == null
+                          or (cont.tipo.name() != 'IMAGEN'
+                           and cont.tipo.name() != 'VIDEO')}"
+                           class="text-muted small">
+                        <i class="bi bi-file-earmark-text"></i>
+                        <span th:text="${cont.tipo != null ? cont.tipo : 'ARCHIVO'}"></span>
+                      </div>
+                    </div>
+
+                    <div class="form-check">
+                      <input class="form-check-input"
+                             type="checkbox"
+                             name="contenidosMultimediaAEliminar"
+                             th:value="${cont.id}"
+                             id="eliminar-cont-[[${cont.id}]]">
+                      <label class="form-check-label"
+                             th:for="${'eliminar-cont-' + cont.id}">
+                        Marcar para eliminar
+                      </label>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <small class="form-text-collection text-muted">
+                Los elementos marcados se eliminarán al confirmar la modificación.
+              </small>
+            </div>
+
+            <!-- NUEVOS: subir archivos -->
+            <div class="col-12">
+              <label class="form-label-collection">
+                Agregar nuevos archivos
+              </label>
+              <input type="file"
+                     class="form-control-collection"
+                     name="contenidosMultimediaParaAgregar"
+                     multiple>
+              <small class="form-text-collection text-muted">
+                Podés subir imágenes, videos, audio o texto. Se detecta el tipo automáticamente.
+              </small>
+            </div>
+
+          </div>
+        </div>
+      </div>
+
+
+    </form>
+  </div>
+
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      const selPais = document.getElementById('selectPais');
+      const selProv = document.getElementById('selectProvincia');
+
+      const detectedPaisId = selPais?.dataset?.paisId || '';
+      const detectedProvId = selProv?.dataset?.provId || '';
+
+      if (detectedPaisId && !selPais.value) {
+        const post = document.getElementById('formModificar');
+        const getF  = document.getElementById('filtroPaisFormModificar');
+
+        ['id_hecho','titulo','descripcion','fechaAcontecimiento','latitud','longitud','id_categoria','id_provincia','fuente']
+                .forEach(n => {
+                  const src = post.querySelector(`[name='${n}']`);
+                  const dst = getF.querySelector(`[name='${n}']`);
+                  if (src && dst) dst.value = src.value ?? '';
+                });
+
+        getF.querySelector('[name=id_pais]').value = detectedPaisId;
+        getF.submit();
+        return;
+      }
+
+      if (detectedPaisId && selPais && !selPais.value) {
+        selPais.value = detectedPaisId;
+      }
+      if (detectedProvId && selProv) {
+        selProv.value = detectedProvId;
+      }
+    });
+  </script>
+
+  <!-- Misma hoja de estilo de contribuir -->
+  <style th:insert="~{contribuir :: style}"></style>
+
+</main>
+</html>

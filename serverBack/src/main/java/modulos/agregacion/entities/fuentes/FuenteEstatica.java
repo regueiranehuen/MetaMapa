@@ -24,12 +24,6 @@ public class FuenteEstatica {
             var lectorCSV = new LectorCSV(this.dataSet);
             return lectorCSV.leerCSV(usuario, buscadores);
         }
-        else if (formato.equals("json")){
-            //TODO el lector del formato JSON
-            List<HechoEstatica> lista = new ArrayList<>();
-            return lista;
-        }
-
         List<HechoEstatica> lista = new ArrayList<>();
         return lista;
     }

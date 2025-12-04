@@ -85,10 +85,6 @@ public class ColeccionController {
         if (updateInputDTO != null && updateInputDTO.getCriterios() != null
                 && updateInputDTO.getCriterios().getPaisId() != null
                 && !updateInputDTO.getCriterios().getPaisId().isEmpty()) {
-            System.out.println("UPDATE paisId: " +
-                    (updateInputDTO.getCriterios() != null ? updateInputDTO.getCriterios().getPaisId() : null));
-            System.out.println("UPDATE fechas: " +
-                    (updateInputDTO.getCriterios() != null ? updateInputDTO.getCriterios().getFechaAcontecimientoInicial() : null));
 
             criterios = updateInputDTO.getCriterios();
         } else if (inputDTO != null && inputDTO.getCriterios() != null
@@ -132,8 +128,8 @@ public class ColeccionController {
     @PreAuthorize("hasRole('ADMINISTRADOR')")
     public String crearColeccion(@Valid @ModelAttribute ColeccionInputDTO inputDTO,
                                  RedirectAttributes ra) {
-        System.out.println("PAISES CARGADOS IDS: " + inputDTO.getCriterios().getPaisId());
-        System.out.println("PAISES CARGADOS STRINGS: " + inputDTO.getCriterios().getPais());
+        
+        
         ResponseEntity<?> rta = coleccionService.crearColeccion(inputDTO);
 
         if (rta.getStatusCode().is2xxSuccessful()) {
@@ -145,19 +141,19 @@ public class ColeccionController {
 
     @GetMapping("/public/get-all")
     public String obtenerTodasLasColecciones(Model model){
-        System.out.println("ENTRÉ A OBTENER TODAS LAS COLECCIONES");
+        
         ResponseEntity<?> rta = coleccionService.obtenerTodasLasColecciones();
 
         if (rta.getStatusCode().is2xxSuccessful() && rta.getBody() != null) {
-            System.out.println("SOY UN CAPO");
+            
             List<ColeccionOutputDTO> colecciones = BodyToListConverter.bodyToList(rta, ColeccionOutputDTO.class);
             if (colecciones!=null){
                 for (ColeccionOutputDTO coleccionOutputDTO : colecciones){
-                    System.out.println("Coleccion de id: " + coleccionOutputDTO.getId());
+                    
                 }
             }
             else{
-                System.out.println("NO ENCONTRÉ COLECCIONES");
+                
             }
 
 
@@ -173,7 +169,7 @@ public class ColeccionController {
     @GetMapping("/public/get/{id_coleccion}")
     public String getColeccion(@PathVariable Long id_coleccion, @ModelAttribute("getHechosColeccionInputDto") GetHechosColeccionInputDTO inputDTO, Model model) {
 
-        System.out.println("HOLAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
+        
 
 
         ResponseEntity<?> rta = coleccionService.getColeccion(id_coleccion);
@@ -183,12 +179,9 @@ public class ColeccionController {
         }
 
         if (rta.getStatusCode().is2xxSuccessful() && rta.getBody() != null) {
-            System.out.println("HOLA CHICOS NO SOY NULL!!");
+            
             ColeccionOutputDTO coleccion = (ColeccionOutputDTO) rta.getBody();
-            if(coleccion.getCriterios().getFuentes() != null) {
-                coleccion.getCriterios().getFuentes().forEach(f -> System.out.println("Fuente " + f));
-            }
-            System.out.println("Algoritmo de consenso: " + coleccion.getAlgoritmoDeConsenso());
+
             model.addAttribute("coleccion", coleccion);
             ResponseEntity<?> rtaCategorias = hechosService.getCategorias();
             ResponseEntity<?> rtaPaises = hechosService.getPaises();
@@ -257,7 +250,7 @@ public class ColeccionController {
     @PostMapping("/update")
     @PreAuthorize("hasRole('ADMINISTRADOR')")
     public String updateColeccion(@Valid @ModelAttribute ColeccionUpdateInputDTO inputDTO, RedirectAttributes ra){
-        System.out.println("ALGORITMO DE CONSENSO: " +inputDTO.getAlgoritmoConsenso());
+        
         ResponseEntity<?> rta = coleccionService.updateColeccion(inputDTO);
 
         if (rta.getStatusCode().is2xxSuccessful()){

@@ -122,7 +122,7 @@ public class SolicitudHechoService {
     }
 
     public ResponseEntity<Integer> getPorcentajeSolicitudesProcesadas() {
-        System.out.println("VOY A ENTRAR A SOLICITUD!!");
+        
         return webApiCallerService.getEntityTokenOpcional(this.solicitudHechoServiceUrl + "/public/porcentajeSolicitudes", Integer.class);
     }
 

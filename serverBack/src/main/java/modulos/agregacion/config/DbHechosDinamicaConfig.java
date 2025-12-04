@@ -1,4 +1,3 @@
-// DbHechosDinamicaConfig.java
 package modulos.agregacion.config;
 
 import jakarta.persistence.EntityManagerFactory;
@@ -38,7 +37,7 @@ public class DbHechosDinamicaConfig {
             @Qualifier("dinamicaDataSource") DataSource ds) {
 
         Map<String, Object> jpaProps = new HashMap<>();
-        jpaProps.put("hibernate.hbm2ddl.auto", "update"); // "create" si querés forzar creación
+        jpaProps.put("hibernate.hbm2ddl.auto", "update");
         jpaProps.put("hibernate.dialect", "org.hibernate.dialect.MySQL8Dialect");
         jpaProps.put("hibernate.show_sql", false);
         jpaProps.put("hibernate.format_sql", false);

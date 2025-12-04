@@ -32,30 +32,22 @@ public class ServicioDeEstadistica {
     @Async
     @Scheduled(cron = "${miapp.cron}")//tiempo en properties
     public void generarEstadistica(){
-
-        // Corregido
         // De una colección, ¿en qué provincia se agrupan la mayor cantidad de hechos reportados?
         List<ColeccionProvincia> coleccionProvincias = datosQuery.obtenerMayorCantHechosProvinciaEnColeccion();
 
-        // Corregido
         // ¿Cuál es la categoría con mayor cantidad de hechos reportados?
         CategoriaCantidad categoriaCantidad = datosQuery.categoriaMayorCantHechos();
 
-        // Corregido
         // ¿En qué provincia se presenta la mayor cantidad de hechos de una cierta categoría?
         List<CategoriaProvincia> categoriaProvincias = datosQuery.mayorCantHechosCategoriaXProvincia();
 
-        // Corregido
         // ¿A qué hora del día ocurren la mayor cantidad de hechos de una cierta categoría?
         List<CategoriaHora> categoriaHoras = datosQuery.horaMayorCantHechos();
 
-        // Corregido
         // ¿Cuántas solicitudes de eliminación son spam?
         Long cantidadDeSpam = datosQuery.cantSolicitudesEliminacionSpam();
         Estadisticas estadisticas = new Estadisticas(cantidadDeSpam,
             categoriaCantidad, categoriaHoras, categoriaProvincias, coleccionProvincias);
-
-
 
         this.estadisticasActuales = estadisticas;
         this.estadisticasRepository.save(estadisticas);

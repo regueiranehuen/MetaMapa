@@ -28,8 +28,6 @@ public class FiltroPais extends Filtro {
 
     public FiltroPais(Pais pais, List<Long> ubicaciones_ids) {
         this.pais = pais;
-        System.out.println("PAIS: " + pais.getPais());
-        ubicaciones_ids.forEach(a -> System.out.println("ubicaciones_ids: " + a));
         this.ubicaciones_ids = ubicaciones_ids;
     }
 
@@ -50,12 +48,12 @@ public class FiltroPais extends Filtro {
     public <T> Specification<T> toSpecification(Class<T> clazz) {
 
         if (ubicaciones_ids == null || ubicaciones_ids.isEmpty()) {
-            System.out.println("Lista de ubicaciones vacía -> Filtro FALSE");
+            
             return (root, query, cb) -> cb.disjunction(); // Nunca se cumple
         }
 
         for(Long id: ubicaciones_ids){
-            System.out.println("SOY UNA UBICACION EN PAIS: " + id);
+            
         }
 
         return (root, query, cb) -> {

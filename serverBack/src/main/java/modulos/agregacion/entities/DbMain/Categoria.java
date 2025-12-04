@@ -27,7 +27,3 @@ public class Categoria {
         sinonimos = new ArrayList<>();
     }
 }
-
-// TODO: Testear algoritmos consenso
-// TODO: Arreglar querys de servicio de estadistica
-// TODO: HACER EL PUNTO EXTRA!!

@@ -43,10 +43,10 @@ public class WebApiCallerService {
 
 
         String accessToken = getAccessTokenFromSession();
-        System.out.println("ACCESS TOKEN DE x: " + accessToken);
+        
         String refreshToken = getRefreshTokenFromSession();
 
-        System.out.println("REFRESH TOKEN DE x: " + refreshToken);
+        
 
         TokenResponse tr = TokenResponse.builder()
                 .accessToken(accessToken)
@@ -337,7 +337,7 @@ public class WebApiCallerService {
 
         MultipartBodyBuilder builder = new MultipartBodyBuilder();
 
-        System.out.println("→ Construyendo multipart para subir hecho");
+        
 
         // =========================================
         // 1) PARTE META (SIEMPRE JSON)
@@ -441,7 +441,7 @@ public class WebApiCallerService {
                     .toEntity(type)
                     .block();
         }
-        // Si HAY token → usar método con token
+        // Si HAY token → usar method con token
         return postMultipartHecho(url, dto, type);
     }
 

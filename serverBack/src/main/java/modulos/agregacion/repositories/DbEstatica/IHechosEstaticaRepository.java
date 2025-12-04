@@ -114,7 +114,6 @@ LIMIT 1;
     """, nativeQuery = true)
     Long findCantHechosIgualTituloDiferentesAtributos(@Param("hecho_id") Long hechoId);
 
-    //TODO ESTA QUERY MUGROSA NO ANDA, ME PUDRI
     @Query(value = """
         SELECT h1.*
         FROM hecho_estatica h1

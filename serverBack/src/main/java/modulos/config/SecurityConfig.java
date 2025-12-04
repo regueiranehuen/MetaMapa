@@ -30,13 +30,12 @@ public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        System.out.println("=== CONFIGURANDO SECURITY ===");
+        
 
         http
                 .csrf(AbstractHttpConfigurer::disable)
                 .sessionManagement(s -> s.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth
-                        // ⬇️ Usando antMatcher (Ant-style). Estos quedan públicos.
                         .requestMatchers(
                                 antMatcher("/**/auth/**"),
                                 antMatcher("/**/auth/refresh/**"),
@@ -49,20 +48,3 @@ public class SecurityConfig {
         return http.build();
     }
 }
-/*
-http
-        .csrf(AbstractHttpConfigurer::disable)
-  .sessionManagement(s -> s.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-        .authorizeHttpRequests(auth -> auth
-        .requestMatchers(
-          "/api/auth/**",
-                  "/api/usuario/public/**",   // <── agrega esto
-                  "/public/**",
-                  "/error", "/favicon.ico", "/css/**", "/js/**"
-).permitAll()
-      .anyRequest().authenticated()
-  )
-          .addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
-
-
-*/

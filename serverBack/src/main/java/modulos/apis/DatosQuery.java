@@ -1,5 +1,6 @@
 package modulos.apis;
 
+import jakarta.transaction.Transactional;
 import modulos.agregacion.entities.DbDinamica.HechoDinamica;
 import modulos.agregacion.entities.DbEstatica.HechoEstatica;
 import modulos.agregacion.entities.DbMain.*;
@@ -43,6 +44,7 @@ public class DatosQuery implements IDatosQuery{
     }
 
     @Override
+    @Transactional
     public List<ColeccionProvincia> obtenerMayorCantHechosProvinciaEnColeccion() {
         // De una colección, ¿en qué provincia se agrupan la mayor cantidad de hechos reportados?
 

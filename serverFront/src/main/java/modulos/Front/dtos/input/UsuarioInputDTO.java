@@ -3,7 +3,6 @@ package modulos.Front.dtos.input;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 
-// Nombre único dato obligatorio (entrega 1)
 @Data
 public class UsuarioInputDTO {
     @NotNull(message = "Campo nombre obligatorio")

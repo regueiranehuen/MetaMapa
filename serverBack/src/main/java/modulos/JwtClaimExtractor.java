@@ -62,17 +62,17 @@ public class JwtClaimExtractor {
         String subject = claims.getSubject(); // 'sub' (Ej: ID de usuario)
         Date expiration = claims.getExpiration(); // 'exp' (Ej: Fecha de caducidad)
 
-        System.out.println("Subject (Usuario): " + subject);
-        System.out.println("Expira en: " + expiration);
+        
+        
 
         // 2. Claims personalizados
 
         // Acceder a un String (Ej: nombre del rol)
         String rol = claims.get("rol_principal", String.class);
-        System.out.println("Rol Principal: " + rol);
+        
 
         // Acceder a una lista de Strings (Ej: roles/authorities)
         List<String> rolesList = claims.get("roles", List.class);
-        System.out.println("Lista de Roles: " + rolesList);
+        
     }
 }

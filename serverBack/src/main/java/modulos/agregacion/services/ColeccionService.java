@@ -100,7 +100,7 @@ incluir automáticamente todos los hechos de categoría “Incendio forestal” 
     public ResponseEntity<?> crearColeccion(ColeccionInputDTO dtoInput, String username) {
 
 
-        System.out.println("PAISES DEL ORTO IDS: " + dtoInput.getCriterios().getPaisId());
+        
 
         ResponseEntity<?> rta = checkeoAdmin(username);
 
@@ -115,7 +115,6 @@ incluir automáticamente todos los hechos de categoría “Incendio forestal” 
         coleccion.setActivo(true);
         coleccion.setModificado(false);
 
-//todo endpoint get all algoritmo consenso con (nombre)
         if (dtoInput.getAlgoritmoConsenso() != null){
             switch (dtoInput.getAlgoritmoConsenso()) {
                 case "MAYORIA_ABSOLUTA":
@@ -134,49 +133,12 @@ incluir automáticamente todos los hechos de categoría “Incendio forestal” 
 
         List<List<IFiltro>> filtros = FormateadorHecho.obtenerListaDeFiltros(FormateadorHecho.formatearFiltrosColeccionDinamica(buscadores, dtoInput.getCriterios()));
 
-        for (int i = 0; i < filtros.size(); i++) {
-            List<IFiltro> grupo = filtros.get(i);
-            System.out.println("🧩 Grupo #" + i + " (" + grupo.size() + " filtro/s):");
-
-            for (IFiltro filtro : grupo) {
-                if (filtro instanceof FiltroCategoria fc) {
-                    System.out.println("  [FiltroCategoria] id=" + fc.getCategoria().getId() +
-                            ", nombre=" + fc.getCategoria().getTitulo());
-                } else if (filtro instanceof FiltroContenidoMultimedia fcm) {
-                    System.out.println("  [FiltroContenidoMultimedia] tipo=" + fcm.getTipoContenido());
-                } else if (filtro instanceof FiltroDescripcion fd) {
-                    System.out.println("  [FiltroDescripcion] texto=" + fd.getDescripcion());
-                } else if (filtro instanceof FiltroFechaAcontecimiento ffa) {
-                    System.out.println("  [FiltroFechaAcontecimiento] desde=" + ffa.getFechaInicial() +
-                            ", hasta=" + ffa.getFechaFinal());
-                } else if (filtro instanceof FiltroFechaCarga ffc) {
-                    System.out.println("  [FiltroFechaCarga] desde=" + ffc.getFechaInicial() +
-                            ", hasta=" + ffc.getFechaFinal());
-                } else if (filtro instanceof FiltroFuente ff) {
-                    System.out.println("  [FiltroFuente] fuente=" + ff.getFuenteDeseada());
-                } else if (filtro instanceof FiltroPais fp) {
-                    System.out.println("  [FiltroPais] id=" + fp.getPais().getId() +
-                            ", nombre=" + fp.getPais().getPais());
-                } else if (filtro instanceof FiltroProvincia fprov) {
-                    System.out.println("  [FiltroProvincia] id=" + fprov.getProvincia().getId() +
-                            ", nombre=" + fprov.getProvincia().getProvincia());
-                } else if (filtro instanceof FiltroTitulo ft) {
-                    System.out.println("  [FiltroTitulo] titulo=" + ft.getTitulo());
-                } else {
-                    System.out.println("  [Otro tipo de filtro] " + filtro.getClass().getSimpleName());
-                }
-            }
-        }
-
         List<Filtro> filtrosJuntos = filtros.stream()
                 .flatMap(List::stream)     // aplana las sublistas
                 .map(f -> (Filtro) f)      // castea cada elemento individual
                 .collect(Collectors.toCollection(ArrayList::new)); // mutable ✅
         coleccion.setCriterios(filtrosJuntos);
 
-        for(Filtro filtro : filtrosJuntos){
-            System.out.println("SKIBIDI " + filtro.getClass());
-        }
 
         coleccionesRepo.saveAndFlush(coleccion);
         return ResponseEntity.status(HttpStatus.CREATED).body("La colección se creó correctamente");
@@ -207,40 +169,6 @@ incluir automáticamente todos los hechos de categoría “Incendio forestal” 
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("No se encontró la colección");
         }
 
-        for (int i = 0; i < coleccion.getCriterios().size(); i++) {
-            List<IFiltro> grupo = Collections.singletonList(coleccion.getCriterios().get(i));
-            System.out.println("🧩 Grupo #" + i + " (" + grupo.size() + " filtro/s):");
-
-            for (IFiltro filtro : grupo) {
-                if (filtro instanceof FiltroCategoria fc) {
-                    System.out.println("  [FiltroCategoria] id=" + fc.getCategoria().getId() +
-                            ", nombre=" + fc.getCategoria().getTitulo());
-                } else if (filtro instanceof FiltroContenidoMultimedia fcm) {
-                    System.out.println("  [FiltroContenidoMultimedia] tipo=" + fcm.getTipoContenido());
-                } else if (filtro instanceof FiltroDescripcion fd) {
-                    System.out.println("  [FiltroDescripcion] texto=" + fd.getDescripcion());
-                } else if (filtro instanceof FiltroFechaAcontecimiento ffa) {
-                    System.out.println("  [FiltroFechaAcontecimiento] desde=" + ffa.getFechaInicial() +
-                            ", hasta=" + ffa.getFechaFinal());
-                } else if (filtro instanceof FiltroFechaCarga ffc) {
-                    System.out.println("  [FiltroFechaCarga] desde=" + ffc.getFechaInicial() +
-                            ", hasta=" + ffc.getFechaFinal());
-                } else if (filtro instanceof FiltroFuente ff) {
-                    System.out.println("  [FiltroFuente] fuente=" + ff.getFuenteDeseada());
-                } else if (filtro instanceof FiltroPais fp) {
-                    System.out.println("  [FiltroPais] id=" + fp.getPais().getId() +
-                            ", nombre=" + fp.getPais().getPais());
-                } else if (filtro instanceof FiltroProvincia fprov) {
-                    System.out.println("  [FiltroProvincia] id=" + fprov.getProvincia().getId() +
-                            ", nombre=" + fprov.getProvincia().getProvincia());
-                } else if (filtro instanceof FiltroTitulo ft) {
-                    System.out.println("  [FiltroTitulo] titulo=" + ft.getTitulo());
-                } else {
-                    System.out.println("  [Otro tipo de filtro] " + filtro.getClass().getSimpleName());
-                }
-            }
-        }
-
         coleccion.incrementarAccesos();
         coleccionesRepo.save(coleccion);
 
@@ -263,7 +191,7 @@ incluir automáticamente todos los hechos de categoría “Incendio forestal” 
             dto.setAlgoritmoDeConsenso("Múltiples menciones");
         }
 
-        System.out.println("ALGORITMO DE CONSENSO: " + dto.getAlgoritmoDeConsenso());
+        
 
         dto.setCriterios(FormateadorHecho.filtrosColeccionToString(coleccion.getCriterios()));
 
@@ -442,7 +370,7 @@ Esto asegura que la colección refleje solo los hechos de las fuentes actualment
     @Transactional
     @Scheduled(cron = "0 * * * * *")
     public void ejecutarAlgoritmoConsenso(){
-        System.out.println("ENTRO a algoritmo de consenso");
+        
         List<Coleccion> colecciones = coleccionesRepo.findAllByActivoTrue();
         List<Dataset> datasets = datasetsRepo.findAll();
         colecciones.forEach(coleccion-> {if(coleccion.getAlgoritmoConsenso() != null) coleccion.getAlgoritmoConsenso().ejecutarAlgoritmoConsenso(buscadores.getBuscadorHecho(), datasets, coleccion);});
@@ -484,12 +412,10 @@ Esto asegura que la colección refleje solo los hechos de las fuentes actualment
         return ResponseEntity.status(HttpStatus.OK).build();
     }
 
-
+    @Async
     @Scheduled(cron = "0 * * * * *") // cada hora
     @Transactional
     public void refrescarColeccionesCronjob() {
-
-        System.out.println("Iniciando refrescar colecciones");
 
         Specification<HechoEstatica> specs1 = (root, query, cb) -> {
             if (query != null) query.distinct(true); // útil si después hay JOINs
@@ -522,41 +448,16 @@ Esto asegura que la colección refleje solo los hechos de las fuentes actualment
 
             for (int i = 0; i < filtrosXCategoria.size(); i++) {
                 List<IFiltro> grupo = filtrosXCategoria.get(i);
-                System.out.println("🧩 Grupo #" + i + " (" + grupo.size() + " filtro/s):");
 
                 for (IFiltro filtro : grupo) {
-                    if (filtro instanceof FiltroCategoria fc) {
-                        System.out.println("  [FiltroCategoria] id=" + fc.getCategoria().getId() +
-                                ", nombre=" + fc.getCategoria().getTitulo());
-                    } else if (filtro instanceof FiltroContenidoMultimedia fcm) {
-                        System.out.println("  [FiltroContenidoMultimedia] tipo=" + fcm.getTipoContenido());
-                    } else if (filtro instanceof FiltroDescripcion fd) {
-                        System.out.println("  [FiltroDescripcion] texto=" + fd.getDescripcion());
-                    } else if (filtro instanceof FiltroFechaAcontecimiento ffa) {
-                        System.out.println("  [FiltroFechaAcontecimiento] desde=" + ffa.getFechaInicial() +
-                                ", hasta=" + ffa.getFechaFinal());
-                    } else if (filtro instanceof FiltroFechaCarga ffc) {
-                        System.out.println("  [FiltroFechaCarga] desde=" + ffc.getFechaInicial() +
-                                ", hasta=" + ffc.getFechaFinal());
-                    } else if (filtro instanceof FiltroFuente ff) {
-                        System.out.println("  [FiltroFuente] fuente=" + ff.getFuenteDeseada());
-                    } else if (filtro instanceof FiltroPais fp) {
-                        fp.refrescarUbicaciones_ids(this.buscadores.getBuscadorUbicacion().buscarUbicacionesConPais(fp.getPais().getId())); //TODO OJO CON BORRAR ESTO CUANDO BORREMOS LOS PRINTS
-                        System.out.println("  [FiltroPais] id=" + fp.getPais().getId() +
-                                ", nombre=" + fp.getPais().getPais());
-                        System.out.println("    ubicaciones_ids = " + fp.getUbicaciones_ids());
-                    } else if (filtro instanceof FiltroProvincia fprov) {
-                        fprov.refrescarUbicaciones_ids(this.buscadores.getBuscadorUbicacion().buscarUbicacionesConProvincia(fprov.getProvincia().getId()));//TODO LO MISMO QUE ARRIBA
-                        System.out.println("  [FiltroProvincia] id=" + fprov.getProvincia().getId() +
-                                ", nombre=" + fprov.getProvincia().getProvincia());
-                    } else if (filtro instanceof FiltroTitulo ft) {
-                        System.out.println("  [FiltroTitulo] titulo=" + ft.getTitulo());
-                    } else {
-                        System.out.println("  [Otro tipo de filtro] " + filtro.getClass().getSimpleName());
+                    if (filtro instanceof FiltroPais fp) {
+                        fp.refrescarUbicaciones_ids(this.buscadores.getBuscadorUbicacion().buscarUbicacionesConPais(fp.getPais().getId()));
+                    }
+                    else if (filtro instanceof FiltroProvincia fprov) {
+                        fprov.refrescarUbicaciones_ids(this.buscadores.getBuscadorUbicacion().buscarUbicacionesConProvincia(fprov.getProvincia().getId()));
                     }
                 }
             }
-
 
             Specification<HechoEstatica> specsEstatica = crearSpecs(filtrosXCategoria, HechoEstatica.class);
             Specification<HechoDinamica> specsDinamica = crearSpecs(filtrosXCategoria, HechoDinamica.class);
@@ -581,25 +482,12 @@ Esto asegura que la colección refleje solo los hechos de las fuentes actualment
             List<HechoDinamica> hechosDinamica = hechosDinamicaRepository.findAll(specFinalDinamica);
             List<HechoProxy> hechosProxy = hechosProxyRepository.findAll(specFinalProxy);
 
-            hechosEstatica.forEach(h-> System.out.println("Hecho estatica filtrado: " + h.getAtributosHecho().getTitulo()));
-
-            hechosDinamica.forEach(h-> System.out.println("Hecho dinamica filtrado: " + h.getAtributosHecho().getTitulo()));
-
-
-            System.out.println("== RESULTADOS PARA COLECCION: " + coleccion.getTitulo() + " ==");
-            System.out.println("HechosEstatica: " + hechosEstatica.size());
-            System.out.println("HechosDinamica: " + hechosDinamica.size());
-            System.out.println("HechosProxy: " + hechosProxy.size());
-
-
             List<Hecho> hechosFiltrados = new ArrayList<>();
             hechosFiltrados.addAll(hechosEstatica);
             hechosFiltrados.addAll(hechosDinamica);
             hechosFiltrados.addAll(hechosProxy);
 
             hechosFiltrados.forEach(hecho -> hecho.getAtributosHecho().setModificado(false));
-
-            hechosFiltrados.forEach(hecho -> System.out.println("Titulo hecho filtrado: " + hecho.getAtributosHecho().getTitulo()));
 
             if(!hechosFiltrados.isEmpty()) {
                 coleccion.setModificado(false);
@@ -644,13 +532,13 @@ Esto asegura que la colección refleje solo los hechos de las fuentes actualment
 
     private <T> Specification<T> crearSpecs(List<List<IFiltro>> filtrosXCategoria, Class<T> clazz) {
 
-        System.out.println("ENTRO A crearSpecs");
-        System.out.println("Total categorías: " + (filtrosXCategoria != null ? filtrosXCategoria.size() : "null"));
+        
+        
 
         Specification<T> specFinal = null;
 
         if (filtrosXCategoria == null || filtrosXCategoria.isEmpty()) {
-            System.out.println("La lista de filtros por categoría está vacía o es null.");
+            
             return null;
         }
 
@@ -658,16 +546,16 @@ Esto asegura que la colección refleje solo los hechos de las fuentes actualment
             List<IFiltro> categoria = filtrosXCategoria.get(i);
 
             if (categoria == null || categoria.isEmpty()) {
-                System.out.println("Categoría " + i + " vacía o null, se saltea.");
+                
                 continue;
             }
 
-            System.out.println("Procesando categoría " + i + " con " + categoria.size() + " filtros.");
+            
 
             Specification<T> specCategoria = categoria.stream()
                     .map(f -> {
                         Specification<T> spec = f.toSpecification(clazz);
-                        System.out.println("  Filtro: " + f + " -> Spec: " + (spec != null ? "OK" : "null"));
+                        
                         return spec;
                     })
                     .filter(Objects::nonNull)
@@ -675,14 +563,14 @@ Esto asegura que la colección refleje solo los hechos de las fuentes actualment
                     .orElse(null);
 
             if (specCategoria == null) {
-                System.out.println("No se generó spec para categoría " + i + ".");
+                
                 continue;
             }
 
             specFinal = (specFinal == null) ? specCategoria : specFinal.and(specCategoria);
         }
 
-        System.out.println("Spec final generada: " + (specFinal != null ? "OK" : "null"));
+        
 
         return specFinal;
     }

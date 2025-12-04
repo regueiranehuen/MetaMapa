@@ -89,9 +89,9 @@ public class FechaParser {
         for (String fecha : fechasDePrueba) {
             try {
                 LocalDateTime zdt = parsearFecha(fecha);
-                System.out.println("Entrada: " + fecha + " -> Parsed: " + zdt.format(formatterSalida));
+                
             } catch (IllegalArgumentException e) {
-                System.out.println("Entrada: " + fecha + " -> Error: " + e.getMessage());
+                
             }
         }
     }

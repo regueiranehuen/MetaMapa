@@ -23,10 +23,10 @@ public class GestorArchivos {
 
     public static String guardarArchivo(MultipartFile file) throws IOException {
         Path uploadPath = Paths.get(UPLOAD_DIR);
-        System.out.println("UPLOAD DIR ABSOLUTO: " + uploadPath);
+        
 
         if (Files.notExists(uploadPath)) {
-            System.out.println("NO EXISTE uploads, la creo");
+            
             Files.createDirectories(uploadPath);
         }
 
@@ -46,10 +46,10 @@ public class GestorArchivos {
             // Verifica si existe
             if (Files.exists(path)) {
                 Files.delete(path);
-                System.out.println("Archivo eliminado: " + rutaArchivo);
+                
                 return true;
             } else {
-                System.out.println("El archivo no existe: " + rutaArchivo);
+                
                 return false;
             }
 

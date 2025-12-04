@@ -126,8 +126,8 @@ public class BuscadorHecho {
 
         if (hecho != null && hecho.getAtributosHecho() != null) {
             for(HechoEstatica h : hechosASubir){
-                System.out.println("LATITUD 1 " + hecho.getAtributosHecho().getLatitud());
-                System.out.println("LATITUD 2 " + h.getAtributosHecho().getLatitud());
+                
+                
 
                 if(normEq(h.getAtributosHecho().getTitulo(), hecho.getAtributosHecho().getTitulo())
                 && normEq(h.getAtributosHecho().getDescripcion(), hecho.getAtributosHecho().getDescripcion())

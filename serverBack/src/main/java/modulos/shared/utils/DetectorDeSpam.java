@@ -20,9 +20,6 @@ public class DetectorDeSpam {
 
 
     public static boolean esSpam(String texto) {
-        /*if (texto == null || texto.trim().isEmpty() || texto.length() > 500) {
-            return true; // Texto vacío o corto no se puede recibir
-        }*/
 
         if (texto == null){
             return false;

@@ -21,7 +21,6 @@ public interface IProvinciaRepository extends JpaRepository<Provincia, Long> {
         limit 1""",nativeQuery = true)
     List<CategoriaProvinciaProjection> obtenerCategoriaMayorHechosProvincia();
 
-    // TODO: SINONIMOS DE PROVINCIAS QUE SE CORRESPONDAN CON EL PAIS ASOCIADO
     @Query("""
 SELECT p
 FROM Provincia p

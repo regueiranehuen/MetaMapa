@@ -30,7 +30,7 @@ public class SolicitudHechoController {
     @PreAuthorize("hasRole('ADMINISTRADOR')")
     @PostMapping("/evaluar/subir")
     public String evaluarSolicitudSubida(@Valid @ModelAttribute SolicitudHechoEvaluarInputDTO dtoInput){
-        System.out.println("JUSTIFICACION: " + dtoInput.getMensaje());
+        
         ResponseEntity<?> rta = solicitudHechoService.evaluarSolicitudSubida(dtoInput);
 
         if (rta.getStatusCode().is2xxSuccessful()) {
@@ -70,13 +70,13 @@ public class SolicitudHechoController {
     @PostMapping("/public/subir-hecho")
     public String enviarSolicitudSubirHecho(@Valid @ModelAttribute SolicitudHechoInputDTO dto, RedirectAttributes ra){
 
-        System.out.println("HOLA SOY UNA DESCRIPCION FELIZ: " + dto.getDescripcion());
+        
 
         ResponseEntity<?> rta = this.solicitudHechoService.enviarSolicitudSubirHecho(dto);
 
-        System.out.println("HOLA YA ME COMUNIQUÉ AAA");
+        
 
-        System.out.println("RECIBI ESTE CODIGO: " +rta.getStatusCode().value());
+        
 
 
         if(rta.getStatusCode().is2xxSuccessful()){
@@ -159,7 +159,7 @@ public class SolicitudHechoController {
         ResponseEntity<?> rta = this.solicitudHechoService.getAllReportes();
 
         if(rta.getStatusCode().is2xxSuccessful()){
-            return "reportes"; // TODO vista de lista de reportes
+            return "reportes";
 
         }
         else if(rta.getBody() != null) {

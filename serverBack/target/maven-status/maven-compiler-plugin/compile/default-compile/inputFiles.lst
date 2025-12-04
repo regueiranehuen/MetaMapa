@@ -1,182 +1,182 @@
-C:\Users\nehue\Escritorio\MetaMapa\serverBack\src\main\java\modulos\agregacion\entities\DbMain\hechoRef\HechoRef.java
-C:\Users\nehue\Escritorio\MetaMapa\serverBack\src\main\java\modulos\agregacion\repositories\DbMain\IReporteHechoRepository.java
-C:\Users\nehue\Escritorio\MetaMapa\serverBack\src\main\java\modulos\agregacion\entities\DbMain\filtros\Filtro.java
-C:\Users\nehue\Escritorio\MetaMapa\serverBack\src\main\java\modulos\agregacion\entities\DbMain\UbicacionString.java
-C:\Users\nehue\Escritorio\MetaMapa\serverBack\src\main\java\modulos\agregacion\entities\DbMain\Coleccion.java
-C:\Users\nehue\Escritorio\MetaMapa\serverBack\src\main\java\modulos\agregacion\entities\fuentes\Responses\ColeccionesResponse.java
-C:\Users\nehue\Escritorio\MetaMapa\serverBack\src\main\java\modulos\agregacion\repositories\DbMain\IHechoRefRepository.java
-C:\Users\nehue\Escritorio\MetaMapa\serverBack\src\main\java\modulos\agregacion\entities\atributosHecho\AtributosHechoModificar.java
-C:\Users\nehue\Escritorio\MetaMapa\serverBack\src\main\java\modulos\agregacion\entities\atributosHecho\OrigenConexion.java
-C:\Users\nehue\Escritorio\MetaMapa\serverBack\src\main\java\modulos\agregacion\entities\DbMain\algoritmosConsenso\AlgoritmoConsensoMultiplesMenciones.java
-C:\Users\nehue\Escritorio\MetaMapa\serverBack\src\main\java\modulos\shared\dtos\input\CriteriosColeccionDTO.java
-C:\Users\nehue\Escritorio\MetaMapa\serverBack\src\main\java\modulos\shared\dtos\input\SolicitudHechoEliminarInputDTO.java
-C:\Users\nehue\Escritorio\MetaMapa\serverBack\src\main\java\modulos\agregacion\entities\DbMain\Filtrador.java
-C:\Users\nehue\Escritorio\MetaMapa\serverBack\src\main\java\modulos\agregacion\entities\HechoMemoria.java
-C:\Users\nehue\Escritorio\MetaMapa\serverBack\src\main\java\modulos\servicioEstadistica\entities\CategoriaHora.java
-C:\Users\nehue\Escritorio\MetaMapa\serverBack\src\main\java\modulos\agregacion\entities\DbMain\Sinonimo.java
-C:\Users\nehue\Escritorio\MetaMapa\serverBack\src\main\java\modulos\agregacion\entities\DbMain\filtros\IFiltro.java
-C:\Users\nehue\Escritorio\MetaMapa\serverBack\src\main\java\modulos\shared\dtos\input\EditarNombreDeUsuarioDtoInput.java
-C:\Users\nehue\Escritorio\MetaMapa\serverBack\src\main\java\modulos\agregacion\entities\DbMain\Mensaje.java
-C:\Users\nehue\Escritorio\MetaMapa\serverBack\src\main\java\modulos\agregacion\entities\DbMain\usuario\Rol.java
-C:\Users\nehue\Escritorio\MetaMapa\serverBack\src\main\java\modulos\shared\utils\JwtUtil.java
-C:\Users\nehue\Escritorio\MetaMapa\serverBack\src\main\java\modulos\agregacion\repositories\DbDinamica\ISolicitudEliminarHechoRepository.java
-C:\Users\nehue\Escritorio\MetaMapa\serverBack\src\main\java\modulos\runners\JsonCleaner.java
-C:\Users\nehue\Escritorio\MetaMapa\serverBack\src\main\java\modulos\shared\dtos\input\ImportacionHechosInputDTO.java
-C:\Users\nehue\Escritorio\MetaMapa\serverBack\src\main\java\modulos\buscadores\Normalizador.java
-C:\Users\nehue\Escritorio\MetaMapa\serverBack\src\main\java\modulos\agregacion\controllers\CategoriaController.java
-C:\Users\nehue\Escritorio\MetaMapa\serverBack\src\main\java\modulos\agregacion\repositories\DbDinamica\ISolicitudRepository.java
-C:\Users\nehue\Escritorio\MetaMapa\serverBack\src\main\java\modulos\shared\dtos\input\SolicitudHechoEvaluarInputDTO.java
-C:\Users\nehue\Escritorio\MetaMapa\serverBack\src\main\java\modulos\apis\DatosQuery.java
-C:\Users\nehue\Escritorio\MetaMapa\serverBack\src\main\java\modulos\agregacion\config\DbHechosEstaticaConfig.java
-C:\Users\nehue\Escritorio\MetaMapa\serverBack\src\main\java\modulos\agregacion\entities\atributosHecho\ContenidoMultimedia.java
-C:\Users\nehue\Escritorio\MetaMapa\serverBack\src\main\java\modulos\agregacion\entities\DbMain\RespuestaHttp.java
-C:\Users\nehue\Escritorio\MetaMapa\serverBack\src\main\java\modulos\shared\utils\GestorRoles.java
-C:\Users\nehue\Escritorio\MetaMapa\serverBack\src\main\java\modulos\agregacion\entities\DbMain\algoritmosConsenso\IAlgoritmoConsenso.java
-C:\Users\nehue\Escritorio\MetaMapa\serverBack\src\main\java\modulos\agregacion\repositories\DbMain\ICategoriaRepository.java
-C:\Users\nehue\Escritorio\MetaMapa\serverBack\src\main\java\modulos\buscadores\BuscadorFiltro.java
-C:\Users\nehue\Escritorio\MetaMapa\serverBack\src\main\java\modulos\agregacion\entities\DbMain\algoritmosConsenso\AlgoritmoConsensoMayoriaSimple.java
-C:\Users\nehue\Escritorio\MetaMapa\serverBack\src\main\java\modulos\agregacion\entities\fuentes\Responses\HechosResponse.java
-C:\Users\nehue\Escritorio\MetaMapa\serverBack\src\main\java\modulos\buscadores\BuscadorHecho.java
-C:\Users\nehue\Escritorio\MetaMapa\serverBack\src\main\java\modulos\shared\dtos\output\SolicitudHechoOutputDTO.java
-C:\Users\nehue\Escritorio\MetaMapa\serverBack\src\main\java\modulos\shared\dtos\input\EvaluarReporteInputDTO.java
-C:\Users\nehue\Escritorio\MetaMapa\serverBack\src\main\java\modulos\shared\utils\DetectorDeSpam.java
-C:\Users\nehue\Escritorio\MetaMapa\serverBack\src\main\java\modulos\agregacion\entities\DbMain\Pais.java
-C:\Users\nehue\Escritorio\MetaMapa\serverBack\src\main\java\modulos\agregacion\repositories\DbEstatica\IHechosEstaticaRepository.java
-C:\Users\nehue\Escritorio\MetaMapa\serverBack\src\main\java\modulos\agregacion\repositories\DbMain\IColeccionRepository.java
-C:\Users\nehue\Escritorio\MetaMapa\serverBack\src\main\java\modulos\agregacion\entities\DbProxy\HechoProxy.java
-C:\Users\nehue\Escritorio\MetaMapa\serverBack\src\main\java\modulos\agregacion\controllers\HechosController.java
-C:\Users\nehue\Escritorio\MetaMapa\serverBack\src\main\java\modulos\shared\dtos\input\ColeccionUpdateInputDTO.java
-C:\Users\nehue\Escritorio\MetaMapa\serverBack\src\main\java\modulos\agregacion\controllers\ColeccionController.java
-C:\Users\nehue\Escritorio\MetaMapa\serverBack\src\main\java\modulos\agregacion\converters\LocalDateTimeConverter.java
-C:\Users\nehue\Escritorio\MetaMapa\serverBack\src\main\java\modulos\agregacion\entities\fuentes\Responses\HechosMetamapaResponse.java
-C:\Users\nehue\Escritorio\MetaMapa\serverBack\src\main\java\modulos\agregacion\repositories\DbDinamica\IHechosDinamicaRepository.java
-C:\Users\nehue\Escritorio\MetaMapa\serverBack\src\main\java\modulos\agregacion\entities\DbMain\filtros\FiltroDescripcion.java
-C:\Users\nehue\Escritorio\MetaMapa\serverBack\src\main\java\modulos\buscadores\BuscadorUbicacion.java
-C:\Users\nehue\Escritorio\MetaMapa\serverBack\src\main\java\modulos\agregacion\controllers\SolicitudHechoController.java
-C:\Users\nehue\Escritorio\MetaMapa\serverBack\src\main\java\modulos\servicioEstadistica\entities\CategoriaProvincia.java
-C:\Users\nehue\Escritorio\MetaMapa\serverBack\src\main\java\modulos\agregacion\entities\DbDinamica\solicitudes\SolicitudHecho.java
-C:\Users\nehue\Escritorio\MetaMapa\serverBack\src\main\java\modulos\agregacion\entities\DbMain\Ubicacion.java
-C:\Users\nehue\Escritorio\MetaMapa\serverBack\src\main\java\modulos\agregacion\entities\fuentes\FuenteProxy.java
-C:\Users\nehue\Escritorio\MetaMapa\serverBack\src\main\java\modulos\shared\dtos\input\ColeccionInputDTO.java
-C:\Users\nehue\Escritorio\MetaMapa\serverBack\src\main\java\modulos\agregacion\entities\DbMain\projections\SolicitudHechoProjection.java
-C:\Users\nehue\Escritorio\MetaMapa\serverBack\src\main\java\modulos\servicioEstadistica\repositories\IColeccionProvinciaRepository.java
-C:\Users\nehue\Escritorio\MetaMapa\serverBack\src\main\java\modulos\shared\dtos\output\ColeccionOutputDTO.java
-C:\Users\nehue\Escritorio\MetaMapa\serverBack\src\main\java\modulos\filters\JwtAuthenticationFilter.java
-C:\Users\nehue\Escritorio\MetaMapa\serverBack\src\main\java\modulos\agregacion\repositories\DbMain\IUsuarioRepository.java
-C:\Users\nehue\Escritorio\MetaMapa\serverBack\src\main\java\modulos\agregacion\repositories\DbProxy\IHechosProxyRepository.java
-C:\Users\nehue\Escritorio\MetaMapa\serverBack\src\main\java\modulos\shared\dtos\input\GetHechosColeccionInputDTO.java
-C:\Users\nehue\Escritorio\MetaMapa\serverBack\src\main\java\modulos\servicioEstadistica\entities\Estadisticas.java
-C:\Users\nehue\Escritorio\MetaMapa\serverBack\src\main\java\modulos\shared\dtos\input\HechoModificarInputDTO.java
-C:\Users\nehue\Escritorio\MetaMapa\serverBack\src\main\java\modulos\shared\dtos\input\SinonimoInputDto.java
-C:\Users\nehue\Escritorio\MetaMapa\serverBack\src\main\java\modulos\shared\dtos\output\ReporteHechoOutputDTO.java
-C:\Users\nehue\Escritorio\MetaMapa\serverBack\src\main\java\modulos\servicioEstadistica\entities\ColeccionProvincia.java
-C:\Users\nehue\Escritorio\MetaMapa\serverBack\src\main\java\modulos\agregacion\entities\fuentes\FuenteDinamica.java
-C:\Users\nehue\Escritorio\MetaMapa\serverBack\src\main\java\modulos\JwtClaimExtractor.java
-C:\Users\nehue\Escritorio\MetaMapa\serverBack\src\main\java\modulos\agregacion\entities\DbMain\filtros\FiltroFechaCarga.java
-C:\Users\nehue\Escritorio\MetaMapa\serverBack\src\main\java\modulos\agregacion\entities\atributosHecho\AtributosHecho.java
-C:\Users\nehue\Escritorio\MetaMapa\serverBack\src\main\java\modulos\shared\utils\FormateadorHechoMemoria.java
-C:\Users\nehue\Escritorio\MetaMapa\serverBack\src\main\java\modulos\agregacion\repositories\DbMain\IPaisRepository.java
-C:\Users\nehue\Escritorio\MetaMapa\serverBack\src\main\java\modulos\shared\dtos\output\ProvinciaDto.java
-C:\Users\nehue\Escritorio\MetaMapa\serverBack\src\main\java\modulos\agregacion\entities\DbMain\projections\CategoriaCantidadProjection.java
-C:\Users\nehue\Escritorio\MetaMapa\serverBack\src\main\java\modulos\BodyToListConverter.java
-C:\Users\nehue\Escritorio\MetaMapa\serverBack\src\main\java\modulos\agregacion\services\SinonimoService.java
-C:\Users\nehue\Escritorio\MetaMapa\serverBack\src\main\java\modulos\agregacion\entities\DbMain\PaisProvincias.java
-C:\Users\nehue\Escritorio\MetaMapa\serverBack\src\main\java\modulos\shared\utils\FormateadorHecho.java
-C:\Users\nehue\Escritorio\MetaMapa\serverBack\src\main\java\modulos\agregacion\entities\DbMain\usuario\Usuario.java
-C:\Users\nehue\Escritorio\MetaMapa\serverBack\src\main\java\modulos\shared\dtos\output\RolCambiadoDTO.java
-C:\Users\nehue\Escritorio\MetaMapa\serverBack\src\main\java\modulos\shared\dtos\output\PaisDto.java
-C:\Users\nehue\Escritorio\MetaMapa\serverBack\src\main\java\modulos\shared\dtos\input\TokenResponse.java
-C:\Users\nehue\Escritorio\MetaMapa\serverBack\src\main\java\modulos\shared\dtos\input\CambiarContraseniaDtoInput.java
-C:\Users\nehue\Escritorio\MetaMapa\serverBack\src\main\java\modulos\agregacion\entities\DbMain\Provincia.java
-C:\Users\nehue\Escritorio\MetaMapa\serverBack\src\main\java\modulos\agregacion\entities\atributosHecho\Origen.java
-C:\Users\nehue\Escritorio\MetaMapa\serverBack\src\main\java\modulos\agregacion\entities\DbMain\filtros\FiltroFuente.java
-C:\Users\nehue\Escritorio\MetaMapa\serverBack\src\main\java\modulos\shared\dtos\input\LoginDtoInput.java
-C:\Users\nehue\Escritorio\MetaMapa\serverBack\src\main\java\modulos\buscadores\BuscadorProvincia.java
-C:\Users\nehue\Escritorio\MetaMapa\serverBack\src\main\java\modulos\agregacion\entities\DbMain\Hash.java
-C:\Users\nehue\Escritorio\MetaMapa\serverBack\src\main\java\modulos\agregacion\config\DbMainConfig.java
-C:\Users\nehue\Escritorio\MetaMapa\serverBack\src\main\java\modulos\servicioEstadistica\repositories\ICategoriaCantidadRepository.java
-C:\Users\nehue\Escritorio\MetaMapa\serverBack\src\main\java\modulos\shared\utils\GestorArchivos.java
-C:\Users\nehue\Escritorio\MetaMapa\serverBack\src\main\java\modulos\AtributosHechoMemoria.java
-C:\Users\nehue\Escritorio\MetaMapa\serverBack\src\main\java\modulos\agregacion\entities\DbDinamica\HechoDinamica.java
-C:\Users\nehue\Escritorio\MetaMapa\serverBack\src\main\java\modulos\agregacion\entities\DbMain\filtros\FiltroFechaAcontecimiento.java
-C:\Users\nehue\Escritorio\MetaMapa\serverBack\src\main\java\modulos\agregacion\entities\DbMain\projections\CategoriaProvinciaProjection.java
-C:\Users\nehue\Escritorio\MetaMapa\serverBack\src\main\java\modulos\agregacion\services\CategoriaService.java
-C:\Users\nehue\Escritorio\MetaMapa\serverBack\src\main\java\TestDivertido.java
-C:\Users\nehue\Escritorio\MetaMapa\serverBack\src\main\java\modulos\agregacion\entities\DbMain\Hecho.java
-C:\Users\nehue\Escritorio\MetaMapa\serverBack\src\main\java\modulos\shared\dtos\output\AuthResponseDTO.java
-C:\Users\nehue\Escritorio\MetaMapa\serverBack\src\main\java\modulos\shared\dtos\output\CategoriaDto.java
-C:\Users\nehue\Escritorio\MetaMapa\serverBack\src\main\java\modulos\shared\dtos\output\UsuarioOutputDto.java
-C:\Users\nehue\Escritorio\MetaMapa\serverBack\src\main\java\modulos\agregacion\config\DbHechosProxyConfig.java
-C:\Users\nehue\Escritorio\MetaMapa\serverBack\src\main\java\modulos\servicioEstadistica\ServicioDeEstadistica.java
-C:\Users\nehue\Escritorio\MetaMapa\serverBack\src\main\java\modulos\agregacion\converters\AlgoritmoConsensoConverter.java
-C:\Users\nehue\Escritorio\MetaMapa\serverBack\src\main\java\modulos\agregacion\entities\DbMain\algoritmosConsenso\AlgoritmoConsensoMayoriaAbsoluta.java
-C:\Users\nehue\Escritorio\MetaMapa\serverBack\src\main\java\modulos\agregacion\entities\DbMain\hechoRef\HechoRefKey.java
-C:\Users\nehue\Escritorio\MetaMapa\serverBack\src\main\java\modulos\agregacion\controllers\UsuarioController.java
-C:\Users\nehue\Escritorio\MetaMapa\serverBack\src\main\java\modulos\agregacion\repositories\DbMain\IProvinciaRepository.java
-C:\Users\nehue\Escritorio\MetaMapa\serverBack\src\main\java\modulos\agregacion\entities\AtributosHechoModificarMemoria.java
-C:\Users\nehue\Escritorio\MetaMapa\serverBack\src\main\java\modulos\shared\dtos\output\AtributosModificarDTO.java
-C:\Users\nehue\Escritorio\MetaMapa\serverBack\src\main\java\modulos\shared\dtos\output\VisualizarHechosOutputDTO.java
-C:\Users\nehue\Escritorio\MetaMapa\serverBack\src\main\java\modulos\agregacion\services\SolicitudHechoService.java
-C:\Users\nehue\Escritorio\MetaMapa\serverBack\src\main\java\modulos\servicioEstadistica\repositories\ICategoriaHoraRepository.java
-C:\Users\nehue\Escritorio\MetaMapa\serverBack\src\main\java\modulos\agregacion\entities\atributosHecho\TipoContenido.java
-C:\Users\nehue\Escritorio\MetaMapa\serverBack\src\main\java\modulos\agregacion\entities\fuentes\Responses\HechoMetamapaResponse.java
-C:\Users\nehue\Escritorio\MetaMapa\serverBack\src\main\java\modulos\agregacion\repositories\DbMain\ISinonimoRepository.java
-C:\Users\nehue\Escritorio\MetaMapa\serverBack\src\main\java\modulos\servicioEstadistica\repositories\IEstadisticasRepository.java
-C:\Users\nehue\Escritorio\MetaMapa\serverBack\src\main\java\modulos\shared\dtos\input\ModificarConsensoInputDTO.java
-C:\Users\nehue\Escritorio\MetaMapa\serverBack\src\main\java\modulos\shared\dtos\input\SolicitudHechoModificarInputDTO.java
-C:\Users\nehue\Escritorio\MetaMapa\serverBack\src\main\java\modulos\agregacion\entities\DbDinamica\solicitudes\SolicitudModificarHecho.java
-C:\Users\nehue\Escritorio\MetaMapa\serverBack\src\main\java\modulos\agregacion\entities\DbMain\FiltrosColeccion.java
-C:\Users\nehue\Escritorio\MetaMapa\serverBack\src\main\java\modulos\agregacion\services\HechosService.java
-C:\Users\nehue\Escritorio\MetaMapa\serverBack\src\main\java\modulos\agregacion\repositories\DbDinamica\ISolicitudAgregarHechoRepository.java
-C:\Users\nehue\Escritorio\MetaMapa\serverBack\src\main\java\modulos\agregacion\repositories\DbMain\IUbicacionRepository.java
-C:\Users\nehue\Escritorio\MetaMapa\serverBack\src\main\java\modulos\agregacion\services\ColeccionService.java
-C:\Users\nehue\Escritorio\MetaMapa\serverBack\src\main\java\modulos\agregacion\services\UsuarioService.java
-C:\Users\nehue\Escritorio\MetaMapa\serverBack\src\main\java\modulos\shared\dtos\input\ContenidoMultimediaDTO.java
-C:\Users\nehue\Escritorio\MetaMapa\serverBack\src\main\java\modulos\shared\utils\Geocodificador.java
-C:\Users\nehue\Escritorio\MetaMapa\serverBack\src\main\java\modulos\agregacion\controllers\SinonimoController.java
-C:\Users\nehue\Escritorio\MetaMapa\serverBack\src\main\java\modulos\servicioEstadistica\entities\ProvinciaCantidad.java
-C:\Users\nehue\Escritorio\MetaMapa\serverBack\src\main\java\modulos\shared\dtos\output\PaisProvinciaDTO.java
-C:\Users\nehue\Escritorio\MetaMapa\serverBack\src\main\java\modulos\agregacion\entities\DbMain\filtros\FiltroProvincia.java
-C:\Users\nehue\Escritorio\MetaMapa\serverBack\src\main\java\modulos\agregacion\entities\DbEstatica\Dataset.java
-C:\Users\nehue\Escritorio\MetaMapa\serverBack\src\main\java\modulos\shared\dtos\input\UsuarioInputDTO.java
-C:\Users\nehue\Escritorio\MetaMapa\serverBack\src\main\java\modulos\agregacion\entities\DbMain\projections\CantSolicitudesSpamProjection.java
-C:\Users\nehue\Escritorio\MetaMapa\serverBack\src\main\java\modulos\agregacion\entities\DbMain\filtros\FiltroPais.java
-C:\Users\nehue\Escritorio\MetaMapa\serverBack\src\main\java\modulos\servicioEstadistica\config\DbEstadisticaConfig.java
-C:\Users\nehue\Escritorio\MetaMapa\serverBack\src\main\java\modulos\agregacion\entities\DbMain\DatosColeccion.java
-C:\Users\nehue\Escritorio\MetaMapa\serverBack\src\main\java\modulos\agregacion\entities\fuentes\Requests\LoginRequest.java
-C:\Users\nehue\Escritorio\MetaMapa\serverBack\src\main\java\modulos\agregacion\repositories\DbMain\IAtributosHechoModificarRepository.java
-C:\Users\nehue\Escritorio\MetaMapa\serverBack\src\main\java\modulos\shared\dtos\input\SolicitudHechoInputDTO.java
-C:\Users\nehue\Escritorio\MetaMapa\serverBack\src\main\java\modulos\agregacion\entities\DbDinamica\solicitudes\SolicitudEliminarHecho.java
-C:\Users\nehue\Escritorio\MetaMapa\serverBack\src\main\java\modulos\shared\dtos\output\MensajeOutputDTO.java
-C:\Users\nehue\Escritorio\MetaMapa\serverBack\src\main\java\modulos\agregacion\repositories\DbEstatica\IDatasetsRepository.java
-C:\Users\nehue\Escritorio\MetaMapa\serverBack\src\main\java\modulos\agregacion\entities\DbMain\projections\ColeccionProvinciaProjection.java
-C:\Users\nehue\Escritorio\MetaMapa\serverBack\src\main\java\modulos\agregacion\entities\fuentes\FuenteEstatica.java
-C:\Users\nehue\Escritorio\MetaMapa\serverBack\src\main\java\modulos\agregacion\entities\fuentes\LectorCSV.java
-C:\Users\nehue\Escritorio\MetaMapa\serverBack\src\main\java\modulos\buscadores\BuscadoresRegistry.java
-C:\Users\nehue\Escritorio\MetaMapa\serverBack\src\main\java\modulos\agregacion\entities\DbMain\projections\HoraCategoriaProjection.java
-C:\Users\nehue\Escritorio\MetaMapa\serverBack\src\main\java\modulos\ServerBackApplication.java
-C:\Users\nehue\Escritorio\MetaMapa\serverBack\src\main\java\modulos\agregacion\entities\DbDinamica\solicitudes\SolicitudSubirHecho.java
-C:\Users\nehue\Escritorio\MetaMapa\serverBack\src\main\java\modulos\agregacion\entities\fuentes\Responses\LoginResponse.java
-C:\Users\nehue\Escritorio\MetaMapa\serverBack\src\main\java\modulos\servicioEstadistica\entities\CategoriaCantidad.java
-C:\Users\nehue\Escritorio\MetaMapa\serverBack\src\main\java\modulos\agregacion\entities\DbMain\usuario\DatosPersonalesPublicador.java
-C:\Users\nehue\Escritorio\MetaMapa\serverBack\src\main\java\modulos\agregacion\repositories\DbMain\IMensajeRepository.java
-C:\Users\nehue\Escritorio\MetaMapa\serverBack\src\main\java\modulos\agregacion\entities\DbMain\filtros\FiltroCategoria.java
-C:\Users\nehue\Escritorio\MetaMapa\serverBack\src\main\java\modulos\buscadores\BuscadorPais.java
-C:\Users\nehue\Escritorio\MetaMapa\serverBack\src\main\java\modulos\config\SecurityConfig.java
-C:\Users\nehue\Escritorio\MetaMapa\serverBack\src\main\java\modulos\servicioEstadistica\controller\EstadisticasController.java
-C:\Users\nehue\Escritorio\MetaMapa\serverBack\src\main\java\modulos\agregacion\entities\DbMain\Fuente.java
-C:\Users\nehue\Escritorio\MetaMapa\serverBack\src\main\java\modulos\agregacion\repositories\DbDinamica\ISolicitudModificarHechoRepository.java
-C:\Users\nehue\Escritorio\MetaMapa\serverBack\src\main\java\modulos\agregacion\repositories\DbMain\IFiltroRepository.java
-C:\Users\nehue\Escritorio\MetaMapa\serverBack\src\main\java\modulos\apis\IDatosQuery.java
-C:\Users\nehue\Escritorio\MetaMapa\serverBack\src\main\java\modulos\servicioEstadistica\repositories\ICategoriaProvinciaRepository.java
-C:\Users\nehue\Escritorio\MetaMapa\serverBack\src\main\java\modulos\agregacion\config\DbHechosDinamicaConfig.java
-C:\Users\nehue\Escritorio\MetaMapa\serverBack\src\main\java\modulos\agregacion\entities\fuentes\Responses\HechoResponse.java
-C:\Users\nehue\Escritorio\MetaMapa\serverBack\src\main\java\modulos\agregacion\entities\DbMain\Reporte.java
-C:\Users\nehue\Escritorio\MetaMapa\serverBack\src\main\java\modulos\shared\dtos\input\EditarUsuarioDtoInput.java
-C:\Users\nehue\Escritorio\MetaMapa\serverBack\src\main\java\modulos\buscadores\BuscadorCategoria.java
-C:\Users\nehue\Escritorio\MetaMapa\serverBack\src\main\java\modulos\agregacion\entities\DbMain\Categoria.java
-C:\Users\nehue\Escritorio\MetaMapa\serverBack\src\main\java\modulos\shared\utils\FechaParser.java
-C:\Users\nehue\Escritorio\MetaMapa\serverBack\src\main\java\modulos\agregacion\entities\DbEstatica\HechoEstatica.java
-C:\Users\nehue\Escritorio\MetaMapa\serverBack\src\main\java\modulos\agregacion\entities\DbMain\filtros\FiltroTitulo.java
-C:\Users\nehue\Escritorio\MetaMapa\serverBack\src\main\java\modulos\agregacion\entities\DbMain\filtros\FiltroContenidoMultimedia.java
-C:\Users\nehue\Escritorio\MetaMapa\serverBack\src\main\java\modulos\shared\dtos\output\DatosPersonalesOutputDTO.java
+C:\Users\nehue\Escritorio\Facultad\Diseño de Sistemas\2025-tpa-mi-no-grupo-17\serverBack\src\main\java\modulos\agregacion\entities\DbMain\DatosColeccion.java
+C:\Users\nehue\Escritorio\Facultad\Diseño de Sistemas\2025-tpa-mi-no-grupo-17\serverBack\src\main\java\modulos\servicioEstadistica\ServicioDeEstadistica.java
+C:\Users\nehue\Escritorio\Facultad\Diseño de Sistemas\2025-tpa-mi-no-grupo-17\serverBack\src\main\java\modulos\agregacion\entities\DbMain\hechoRef\HechoRefKey.java
+C:\Users\nehue\Escritorio\Facultad\Diseño de Sistemas\2025-tpa-mi-no-grupo-17\serverBack\src\main\java\modulos\agregacion\entities\DbMain\Categoria.java
+C:\Users\nehue\Escritorio\Facultad\Diseño de Sistemas\2025-tpa-mi-no-grupo-17\serverBack\src\main\java\modulos\agregacion\entities\DbMain\Pais.java
+C:\Users\nehue\Escritorio\Facultad\Diseño de Sistemas\2025-tpa-mi-no-grupo-17\serverBack\src\main\java\modulos\servicioEstadistica\entities\ProvinciaCantidad.java
+C:\Users\nehue\Escritorio\Facultad\Diseño de Sistemas\2025-tpa-mi-no-grupo-17\serverBack\src\main\java\modulos\agregacion\services\SolicitudHechoService.java
+C:\Users\nehue\Escritorio\Facultad\Diseño de Sistemas\2025-tpa-mi-no-grupo-17\serverBack\src\main\java\modulos\shared\utils\JwtUtil.java
+C:\Users\nehue\Escritorio\Facultad\Diseño de Sistemas\2025-tpa-mi-no-grupo-17\serverBack\src\main\java\modulos\shared\dtos\input\EditarUsuarioDtoInput.java
+C:\Users\nehue\Escritorio\Facultad\Diseño de Sistemas\2025-tpa-mi-no-grupo-17\serverBack\src\main\java\modulos\shared\dtos\output\VisualizarHechosOutputDTO.java
+C:\Users\nehue\Escritorio\Facultad\Diseño de Sistemas\2025-tpa-mi-no-grupo-17\serverBack\src\main\java\modulos\shared\dtos\input\ColeccionInputDTO.java
+C:\Users\nehue\Escritorio\Facultad\Diseño de Sistemas\2025-tpa-mi-no-grupo-17\serverBack\src\main\java\modulos\shared\dtos\output\AuthResponseDTO.java
+C:\Users\nehue\Escritorio\Facultad\Diseño de Sistemas\2025-tpa-mi-no-grupo-17\serverBack\src\main\java\modulos\agregacion\entities\fuentes\Requests\LoginRequest.java
+C:\Users\nehue\Escritorio\Facultad\Diseño de Sistemas\2025-tpa-mi-no-grupo-17\serverBack\src\main\java\modulos\buscadores\Normalizador.java
+C:\Users\nehue\Escritorio\Facultad\Diseño de Sistemas\2025-tpa-mi-no-grupo-17\serverBack\src\main\java\modulos\shared\dtos\input\SolicitudHechoEliminarInputDTO.java
+C:\Users\nehue\Escritorio\Facultad\Diseño de Sistemas\2025-tpa-mi-no-grupo-17\serverBack\src\main\java\modulos\agregacion\services\ColeccionService.java
+C:\Users\nehue\Escritorio\Facultad\Diseño de Sistemas\2025-tpa-mi-no-grupo-17\serverBack\src\main\java\modulos\buscadores\BuscadoresRegistry.java
+C:\Users\nehue\Escritorio\Facultad\Diseño de Sistemas\2025-tpa-mi-no-grupo-17\serverBack\src\main\java\modulos\servicioEstadistica\controller\EstadisticasController.java
+C:\Users\nehue\Escritorio\Facultad\Diseño de Sistemas\2025-tpa-mi-no-grupo-17\serverBack\src\main\java\modulos\agregacion\entities\DbMain\Reporte.java
+C:\Users\nehue\Escritorio\Facultad\Diseño de Sistemas\2025-tpa-mi-no-grupo-17\serverBack\src\main\java\modulos\servicioEstadistica\repositories\ICategoriaCantidadRepository.java
+C:\Users\nehue\Escritorio\Facultad\Diseño de Sistemas\2025-tpa-mi-no-grupo-17\serverBack\src\main\java\modulos\shared\dtos\output\AtributosModificarDTO.java
+C:\Users\nehue\Escritorio\Facultad\Diseño de Sistemas\2025-tpa-mi-no-grupo-17\serverBack\src\main\java\modulos\agregacion\repositories\DbDinamica\IHechosDinamicaRepository.java
+C:\Users\nehue\Escritorio\Facultad\Diseño de Sistemas\2025-tpa-mi-no-grupo-17\serverBack\src\main\java\modulos\shared\dtos\input\SolicitudHechoModificarInputDTO.java
+C:\Users\nehue\Escritorio\Facultad\Diseño de Sistemas\2025-tpa-mi-no-grupo-17\serverBack\src\main\java\modulos\agregacion\entities\DbMain\filtros\FiltroFechaAcontecimiento.java
+C:\Users\nehue\Escritorio\Facultad\Diseño de Sistemas\2025-tpa-mi-no-grupo-17\serverBack\src\main\java\modulos\shared\dtos\output\PaisProvinciaDTO.java
+C:\Users\nehue\Escritorio\Facultad\Diseño de Sistemas\2025-tpa-mi-no-grupo-17\serverBack\src\main\java\modulos\agregacion\entities\fuentes\Responses\HechosResponse.java
+C:\Users\nehue\Escritorio\Facultad\Diseño de Sistemas\2025-tpa-mi-no-grupo-17\serverBack\src\main\java\modulos\agregacion\entities\DbMain\Fuente.java
+C:\Users\nehue\Escritorio\Facultad\Diseño de Sistemas\2025-tpa-mi-no-grupo-17\serverBack\src\main\java\modulos\agregacion\repositories\DbDinamica\ISolicitudRepository.java
+C:\Users\nehue\Escritorio\Facultad\Diseño de Sistemas\2025-tpa-mi-no-grupo-17\serverBack\src\main\java\modulos\agregacion\entities\DbProxy\HechoProxy.java
+C:\Users\nehue\Escritorio\Facultad\Diseño de Sistemas\2025-tpa-mi-no-grupo-17\serverBack\src\main\java\modulos\shared\dtos\input\HechoModificarInputDTO.java
+C:\Users\nehue\Escritorio\Facultad\Diseño de Sistemas\2025-tpa-mi-no-grupo-17\serverBack\src\main\java\modulos\agregacion\repositories\DbMain\IAtributosHechoModificarRepository.java
+C:\Users\nehue\Escritorio\Facultad\Diseño de Sistemas\2025-tpa-mi-no-grupo-17\serverBack\src\main\java\modulos\shared\utils\DetectorDeSpam.java
+C:\Users\nehue\Escritorio\Facultad\Diseño de Sistemas\2025-tpa-mi-no-grupo-17\serverBack\src\main\java\modulos\agregacion\entities\AtributosHechoModificarMemoria.java
+C:\Users\nehue\Escritorio\Facultad\Diseño de Sistemas\2025-tpa-mi-no-grupo-17\serverBack\src\main\java\modulos\agregacion\entities\atributosHecho\AtributosHecho.java
+C:\Users\nehue\Escritorio\Facultad\Diseño de Sistemas\2025-tpa-mi-no-grupo-17\serverBack\src\main\java\modulos\agregacion\entities\fuentes\Responses\LoginResponse.java
+C:\Users\nehue\Escritorio\Facultad\Diseño de Sistemas\2025-tpa-mi-no-grupo-17\serverBack\src\main\java\modulos\servicioEstadistica\entities\ColeccionProvincia.java
+C:\Users\nehue\Escritorio\Facultad\Diseño de Sistemas\2025-tpa-mi-no-grupo-17\serverBack\src\main\java\modulos\agregacion\entities\fuentes\LectorCSV.java
+C:\Users\nehue\Escritorio\Facultad\Diseño de Sistemas\2025-tpa-mi-no-grupo-17\serverBack\src\main\java\modulos\agregacion\controllers\UsuarioController.java
+C:\Users\nehue\Escritorio\Facultad\Diseño de Sistemas\2025-tpa-mi-no-grupo-17\serverBack\src\main\java\modulos\agregacion\entities\DbMain\Hecho.java
+C:\Users\nehue\Escritorio\Facultad\Diseño de Sistemas\2025-tpa-mi-no-grupo-17\serverBack\src\main\java\modulos\agregacion\entities\atributosHecho\AtributosHechoModificar.java
+C:\Users\nehue\Escritorio\Facultad\Diseño de Sistemas\2025-tpa-mi-no-grupo-17\serverBack\src\main\java\modulos\agregacion\entities\fuentes\Responses\ColeccionesResponse.java
+C:\Users\nehue\Escritorio\Facultad\Diseño de Sistemas\2025-tpa-mi-no-grupo-17\serverBack\src\main\java\modulos\shared\dtos\input\TokenResponse.java
+C:\Users\nehue\Escritorio\Facultad\Diseño de Sistemas\2025-tpa-mi-no-grupo-17\serverBack\src\main\java\modulos\agregacion\entities\DbMain\filtros\FiltroContenidoMultimedia.java
+C:\Users\nehue\Escritorio\Facultad\Diseño de Sistemas\2025-tpa-mi-no-grupo-17\serverBack\src\main\java\modulos\agregacion\repositories\DbMain\ISinonimoRepository.java
+C:\Users\nehue\Escritorio\Facultad\Diseño de Sistemas\2025-tpa-mi-no-grupo-17\serverBack\src\main\java\modulos\shared\dtos\input\CriteriosColeccionDTO.java
+C:\Users\nehue\Escritorio\Facultad\Diseño de Sistemas\2025-tpa-mi-no-grupo-17\serverBack\src\main\java\modulos\agregacion\controllers\CategoriaController.java
+C:\Users\nehue\Escritorio\Facultad\Diseño de Sistemas\2025-tpa-mi-no-grupo-17\serverBack\src\main\java\modulos\agregacion\config\DbHechosEstaticaConfig.java
+C:\Users\nehue\Escritorio\Facultad\Diseño de Sistemas\2025-tpa-mi-no-grupo-17\serverBack\src\main\java\modulos\servicioEstadistica\entities\CategoriaProvincia.java
+C:\Users\nehue\Escritorio\Facultad\Diseño de Sistemas\2025-tpa-mi-no-grupo-17\serverBack\src\main\java\modulos\agregacion\entities\atributosHecho\TipoContenido.java
+C:\Users\nehue\Escritorio\Facultad\Diseño de Sistemas\2025-tpa-mi-no-grupo-17\serverBack\src\main\java\modulos\shared\dtos\input\GetHechosColeccionInputDTO.java
+C:\Users\nehue\Escritorio\Facultad\Diseño de Sistemas\2025-tpa-mi-no-grupo-17\serverBack\src\main\java\modulos\apis\DatosQuery.java
+C:\Users\nehue\Escritorio\Facultad\Diseño de Sistemas\2025-tpa-mi-no-grupo-17\serverBack\src\main\java\modulos\shared\dtos\input\ContenidoMultimediaDTO.java
+C:\Users\nehue\Escritorio\Facultad\Diseño de Sistemas\2025-tpa-mi-no-grupo-17\serverBack\src\main\java\modulos\agregacion\controllers\SolicitudHechoController.java
+C:\Users\nehue\Escritorio\Facultad\Diseño de Sistemas\2025-tpa-mi-no-grupo-17\serverBack\src\main\java\modulos\agregacion\repositories\DbMain\IProvinciaRepository.java
+C:\Users\nehue\Escritorio\Facultad\Diseño de Sistemas\2025-tpa-mi-no-grupo-17\serverBack\src\main\java\modulos\shared\dtos\output\ProvinciaDto.java
+C:\Users\nehue\Escritorio\Facultad\Diseño de Sistemas\2025-tpa-mi-no-grupo-17\serverBack\src\main\java\modulos\shared\utils\FechaParser.java
+C:\Users\nehue\Escritorio\Facultad\Diseño de Sistemas\2025-tpa-mi-no-grupo-17\serverBack\src\main\java\modulos\agregacion\entities\DbMain\algoritmosConsenso\AlgoritmoConsensoMultiplesMenciones.java
+C:\Users\nehue\Escritorio\Facultad\Diseño de Sistemas\2025-tpa-mi-no-grupo-17\serverBack\src\main\java\modulos\servicioEstadistica\config\DbEstadisticaConfig.java
+C:\Users\nehue\Escritorio\Facultad\Diseño de Sistemas\2025-tpa-mi-no-grupo-17\serverBack\src\main\java\modulos\agregacion\entities\DbMain\filtros\FiltroFuente.java
+C:\Users\nehue\Escritorio\Facultad\Diseño de Sistemas\2025-tpa-mi-no-grupo-17\serverBack\src\main\java\modulos\agregacion\entities\DbMain\filtros\IFiltro.java
+C:\Users\nehue\Escritorio\Facultad\Diseño de Sistemas\2025-tpa-mi-no-grupo-17\serverBack\src\main\java\modulos\agregacion\controllers\HechosController.java
+C:\Users\nehue\Escritorio\Facultad\Diseño de Sistemas\2025-tpa-mi-no-grupo-17\serverBack\src\main\java\modulos\agregacion\entities\DbEstatica\HechoEstatica.java
+C:\Users\nehue\Escritorio\Facultad\Diseño de Sistemas\2025-tpa-mi-no-grupo-17\serverBack\src\main\java\modulos\shared\dtos\output\DatosPersonalesOutputDTO.java
+C:\Users\nehue\Escritorio\Facultad\Diseño de Sistemas\2025-tpa-mi-no-grupo-17\serverBack\src\main\java\modulos\agregacion\entities\fuentes\Responses\HechoResponse.java
+C:\Users\nehue\Escritorio\Facultad\Diseño de Sistemas\2025-tpa-mi-no-grupo-17\serverBack\src\main\java\modulos\agregacion\entities\DbMain\algoritmosConsenso\AlgoritmoConsensoMayoriaAbsoluta.java
+C:\Users\nehue\Escritorio\Facultad\Diseño de Sistemas\2025-tpa-mi-no-grupo-17\serverBack\src\main\java\modulos\agregacion\repositories\DbProxy\IHechosProxyRepository.java
+C:\Users\nehue\Escritorio\Facultad\Diseño de Sistemas\2025-tpa-mi-no-grupo-17\serverBack\src\main\java\modulos\agregacion\entities\DbMain\usuario\DatosPersonalesPublicador.java
+C:\Users\nehue\Escritorio\Facultad\Diseño de Sistemas\2025-tpa-mi-no-grupo-17\serverBack\src\main\java\modulos\agregacion\repositories\DbEstatica\IDatasetsRepository.java
+C:\Users\nehue\Escritorio\Facultad\Diseño de Sistemas\2025-tpa-mi-no-grupo-17\serverBack\src\main\java\modulos\buscadores\BuscadorFiltro.java
+C:\Users\nehue\Escritorio\Facultad\Diseño de Sistemas\2025-tpa-mi-no-grupo-17\serverBack\src\main\java\modulos\agregacion\repositories\DbMain\IUsuarioRepository.java
+C:\Users\nehue\Escritorio\Facultad\Diseño de Sistemas\2025-tpa-mi-no-grupo-17\serverBack\src\main\java\modulos\agregacion\controllers\SinonimoController.java
+C:\Users\nehue\Escritorio\Facultad\Diseño de Sistemas\2025-tpa-mi-no-grupo-17\serverBack\src\main\java\modulos\shared\dtos\input\EditarNombreDeUsuarioDtoInput.java
+C:\Users\nehue\Escritorio\Facultad\Diseño de Sistemas\2025-tpa-mi-no-grupo-17\serverBack\src\main\java\modulos\agregacion\entities\atributosHecho\ContenidoMultimedia.java
+C:\Users\nehue\Escritorio\Facultad\Diseño de Sistemas\2025-tpa-mi-no-grupo-17\serverBack\src\main\java\modulos\agregacion\entities\DbDinamica\solicitudes\SolicitudSubirHecho.java
+C:\Users\nehue\Escritorio\Facultad\Diseño de Sistemas\2025-tpa-mi-no-grupo-17\serverBack\src\main\java\modulos\agregacion\entities\fuentes\Responses\HechosMetamapaResponse.java
+C:\Users\nehue\Escritorio\Facultad\Diseño de Sistemas\2025-tpa-mi-no-grupo-17\serverBack\src\main\java\modulos\buscadores\BuscadorPais.java
+C:\Users\nehue\Escritorio\Facultad\Diseño de Sistemas\2025-tpa-mi-no-grupo-17\serverBack\src\main\java\modulos\shared\dtos\output\SolicitudHechoOutputDTO.java
+C:\Users\nehue\Escritorio\Facultad\Diseño de Sistemas\2025-tpa-mi-no-grupo-17\serverBack\src\main\java\modulos\agregacion\entities\DbMain\projections\HoraCategoriaProjection.java
+C:\Users\nehue\Escritorio\Facultad\Diseño de Sistemas\2025-tpa-mi-no-grupo-17\serverBack\src\main\java\modulos\agregacion\entities\DbMain\filtros\FiltroCategoria.java
+C:\Users\nehue\Escritorio\Facultad\Diseño de Sistemas\2025-tpa-mi-no-grupo-17\serverBack\src\main\java\modulos\agregacion\entities\DbMain\PaisProvincias.java
+C:\Users\nehue\Escritorio\Facultad\Diseño de Sistemas\2025-tpa-mi-no-grupo-17\serverBack\src\main\java\modulos\agregacion\entities\DbMain\projections\CategoriaCantidadProjection.java
+C:\Users\nehue\Escritorio\Facultad\Diseño de Sistemas\2025-tpa-mi-no-grupo-17\serverBack\src\main\java\modulos\agregacion\config\DbMainConfig.java
+C:\Users\nehue\Escritorio\Facultad\Diseño de Sistemas\2025-tpa-mi-no-grupo-17\serverBack\src\main\java\modulos\agregacion\entities\DbMain\filtros\FiltroDescripcion.java
+C:\Users\nehue\Escritorio\Facultad\Diseño de Sistemas\2025-tpa-mi-no-grupo-17\serverBack\src\main\java\modulos\AtributosHechoMemoria.java
+C:\Users\nehue\Escritorio\Facultad\Diseño de Sistemas\2025-tpa-mi-no-grupo-17\serverBack\src\main\java\modulos\shared\dtos\output\MensajeOutputDTO.java
+C:\Users\nehue\Escritorio\Facultad\Diseño de Sistemas\2025-tpa-mi-no-grupo-17\serverBack\src\main\java\modulos\agregacion\entities\DbDinamica\solicitudes\SolicitudModificarHecho.java
+C:\Users\nehue\Escritorio\Facultad\Diseño de Sistemas\2025-tpa-mi-no-grupo-17\serverBack\src\main\java\modulos\agregacion\entities\DbMain\hechoRef\HechoRef.java
+C:\Users\nehue\Escritorio\Facultad\Diseño de Sistemas\2025-tpa-mi-no-grupo-17\serverBack\src\main\java\modulos\agregacion\repositories\DbMain\IHechoRefRepository.java
+C:\Users\nehue\Escritorio\Facultad\Diseño de Sistemas\2025-tpa-mi-no-grupo-17\serverBack\src\main\java\modulos\agregacion\entities\DbMain\RespuestaHttp.java
+C:\Users\nehue\Escritorio\Facultad\Diseño de Sistemas\2025-tpa-mi-no-grupo-17\serverBack\src\main\java\modulos\shared\utils\Geocodificador.java
+C:\Users\nehue\Escritorio\Facultad\Diseño de Sistemas\2025-tpa-mi-no-grupo-17\serverBack\src\main\java\modulos\agregacion\repositories\DbMain\IFiltroRepository.java
+C:\Users\nehue\Escritorio\Facultad\Diseño de Sistemas\2025-tpa-mi-no-grupo-17\serverBack\src\main\java\modulos\shared\dtos\input\LoginDtoInput.java
+C:\Users\nehue\Escritorio\Facultad\Diseño de Sistemas\2025-tpa-mi-no-grupo-17\serverBack\src\main\java\modulos\agregacion\repositories\DbMain\IMensajeRepository.java
+C:\Users\nehue\Escritorio\Facultad\Diseño de Sistemas\2025-tpa-mi-no-grupo-17\serverBack\src\main\java\modulos\agregacion\entities\DbMain\filtros\Filtro.java
+C:\Users\nehue\Escritorio\Facultad\Diseño de Sistemas\2025-tpa-mi-no-grupo-17\serverBack\src\main\java\modulos\shared\dtos\output\ReporteHechoOutputDTO.java
+C:\Users\nehue\Escritorio\Facultad\Diseño de Sistemas\2025-tpa-mi-no-grupo-17\serverBack\src\main\java\modulos\agregacion\entities\atributosHecho\Origen.java
+C:\Users\nehue\Escritorio\Facultad\Diseño de Sistemas\2025-tpa-mi-no-grupo-17\serverBack\src\main\java\modulos\shared\dtos\input\UsuarioInputDTO.java
+C:\Users\nehue\Escritorio\Facultad\Diseño de Sistemas\2025-tpa-mi-no-grupo-17\serverBack\src\main\java\modulos\shared\dtos\input\ColeccionUpdateInputDTO.java
+C:\Users\nehue\Escritorio\Facultad\Diseño de Sistemas\2025-tpa-mi-no-grupo-17\serverBack\src\main\java\modulos\agregacion\entities\DbMain\projections\CategoriaProvinciaProjection.java
+C:\Users\nehue\Escritorio\Facultad\Diseño de Sistemas\2025-tpa-mi-no-grupo-17\serverBack\src\main\java\modulos\agregacion\repositories\DbMain\IColeccionRepository.java
+C:\Users\nehue\Escritorio\Facultad\Diseño de Sistemas\2025-tpa-mi-no-grupo-17\serverBack\src\main\java\modulos\shared\dtos\output\CategoriaDto.java
+C:\Users\nehue\Escritorio\Facultad\Diseño de Sistemas\2025-tpa-mi-no-grupo-17\serverBack\src\main\java\modulos\agregacion\entities\fuentes\FuenteProxy.java
+C:\Users\nehue\Escritorio\Facultad\Diseño de Sistemas\2025-tpa-mi-no-grupo-17\serverBack\src\main\java\modulos\JwtClaimExtractor.java
+C:\Users\nehue\Escritorio\Facultad\Diseño de Sistemas\2025-tpa-mi-no-grupo-17\serverBack\src\main\java\modulos\BodyToListConverter.java
+C:\Users\nehue\Escritorio\Facultad\Diseño de Sistemas\2025-tpa-mi-no-grupo-17\serverBack\src\main\java\modulos\agregacion\services\SinonimoService.java
+C:\Users\nehue\Escritorio\Facultad\Diseño de Sistemas\2025-tpa-mi-no-grupo-17\serverBack\src\main\java\modulos\agregacion\converters\LocalDateTimeConverter.java
+C:\Users\nehue\Escritorio\Facultad\Diseño de Sistemas\2025-tpa-mi-no-grupo-17\serverBack\src\main\java\modulos\buscadores\BuscadorHecho.java
+C:\Users\nehue\Escritorio\Facultad\Diseño de Sistemas\2025-tpa-mi-no-grupo-17\serverBack\src\main\java\modulos\agregacion\entities\DbDinamica\solicitudes\SolicitudHecho.java
+C:\Users\nehue\Escritorio\Facultad\Diseño de Sistemas\2025-tpa-mi-no-grupo-17\serverBack\src\main\java\modulos\agregacion\entities\DbMain\Coleccion.java
+C:\Users\nehue\Escritorio\Facultad\Diseño de Sistemas\2025-tpa-mi-no-grupo-17\serverBack\src\main\java\modulos\agregacion\entities\DbMain\filtros\FiltroTitulo.java
+C:\Users\nehue\Escritorio\Facultad\Diseño de Sistemas\2025-tpa-mi-no-grupo-17\serverBack\src\main\java\modulos\agregacion\repositories\DbMain\IReporteHechoRepository.java
+C:\Users\nehue\Escritorio\Facultad\Diseño de Sistemas\2025-tpa-mi-no-grupo-17\serverBack\src\main\java\modulos\shared\dtos\input\SolicitudHechoEvaluarInputDTO.java
+C:\Users\nehue\Escritorio\Facultad\Diseño de Sistemas\2025-tpa-mi-no-grupo-17\serverBack\src\main\java\modulos\shared\utils\GestorRoles.java
+C:\Users\nehue\Escritorio\Facultad\Diseño de Sistemas\2025-tpa-mi-no-grupo-17\serverBack\src\main\java\modulos\agregacion\entities\DbEstatica\Dataset.java
+C:\Users\nehue\Escritorio\Facultad\Diseño de Sistemas\2025-tpa-mi-no-grupo-17\serverBack\src\main\java\modulos\agregacion\entities\DbMain\filtros\FiltroPais.java
+C:\Users\nehue\Escritorio\Facultad\Diseño de Sistemas\2025-tpa-mi-no-grupo-17\serverBack\src\main\java\modulos\servicioEstadistica\repositories\ICategoriaProvinciaRepository.java
+C:\Users\nehue\Escritorio\Facultad\Diseño de Sistemas\2025-tpa-mi-no-grupo-17\serverBack\src\main\java\modulos\shared\dtos\input\ImportacionHechosInputDTO.java
+C:\Users\nehue\Escritorio\Facultad\Diseño de Sistemas\2025-tpa-mi-no-grupo-17\serverBack\src\main\java\modulos\agregacion\services\HechosService.java
+C:\Users\nehue\Escritorio\Facultad\Diseño de Sistemas\2025-tpa-mi-no-grupo-17\serverBack\src\main\java\TestDivertido.java
+C:\Users\nehue\Escritorio\Facultad\Diseño de Sistemas\2025-tpa-mi-no-grupo-17\serverBack\src\main\java\modulos\buscadores\BuscadorProvincia.java
+C:\Users\nehue\Escritorio\Facultad\Diseño de Sistemas\2025-tpa-mi-no-grupo-17\serverBack\src\main\java\modulos\agregacion\converters\AlgoritmoConsensoConverter.java
+C:\Users\nehue\Escritorio\Facultad\Diseño de Sistemas\2025-tpa-mi-no-grupo-17\serverBack\src\main\java\modulos\agregacion\entities\fuentes\FuenteEstatica.java
+C:\Users\nehue\Escritorio\Facultad\Diseño de Sistemas\2025-tpa-mi-no-grupo-17\serverBack\src\main\java\modulos\shared\dtos\input\SolicitudHechoInputDTO.java
+C:\Users\nehue\Escritorio\Facultad\Diseño de Sistemas\2025-tpa-mi-no-grupo-17\serverBack\src\main\java\modulos\agregacion\entities\DbMain\projections\SolicitudHechoProjection.java
+C:\Users\nehue\Escritorio\Facultad\Diseño de Sistemas\2025-tpa-mi-no-grupo-17\serverBack\src\main\java\modulos\agregacion\entities\DbMain\usuario\Rol.java
+C:\Users\nehue\Escritorio\Facultad\Diseño de Sistemas\2025-tpa-mi-no-grupo-17\serverBack\src\main\java\modulos\buscadores\BuscadorCategoria.java
+C:\Users\nehue\Escritorio\Facultad\Diseño de Sistemas\2025-tpa-mi-no-grupo-17\serverBack\src\main\java\modulos\shared\dtos\input\ModificarConsensoInputDTO.java
+C:\Users\nehue\Escritorio\Facultad\Diseño de Sistemas\2025-tpa-mi-no-grupo-17\serverBack\src\main\java\modulos\servicioEstadistica\repositories\IEstadisticasRepository.java
+C:\Users\nehue\Escritorio\Facultad\Diseño de Sistemas\2025-tpa-mi-no-grupo-17\serverBack\src\main\java\modulos\agregacion\entities\fuentes\Responses\HechoMetamapaResponse.java
+C:\Users\nehue\Escritorio\Facultad\Diseño de Sistemas\2025-tpa-mi-no-grupo-17\serverBack\src\main\java\modulos\shared\dtos\output\PaisDto.java
+C:\Users\nehue\Escritorio\Facultad\Diseño de Sistemas\2025-tpa-mi-no-grupo-17\serverBack\src\main\java\modulos\agregacion\entities\DbMain\Hash.java
+C:\Users\nehue\Escritorio\Facultad\Diseño de Sistemas\2025-tpa-mi-no-grupo-17\serverBack\src\main\java\modulos\agregacion\config\DbHechosDinamicaConfig.java
+C:\Users\nehue\Escritorio\Facultad\Diseño de Sistemas\2025-tpa-mi-no-grupo-17\serverBack\src\main\java\modulos\buscadores\BuscadorUbicacion.java
+C:\Users\nehue\Escritorio\Facultad\Diseño de Sistemas\2025-tpa-mi-no-grupo-17\serverBack\src\main\java\modulos\agregacion\entities\DbMain\Sinonimo.java
+C:\Users\nehue\Escritorio\Facultad\Diseño de Sistemas\2025-tpa-mi-no-grupo-17\serverBack\src\main\java\modulos\agregacion\repositories\DbDinamica\ISolicitudAgregarHechoRepository.java
+C:\Users\nehue\Escritorio\Facultad\Diseño de Sistemas\2025-tpa-mi-no-grupo-17\serverBack\src\main\java\modulos\servicioEstadistica\entities\Estadisticas.java
+C:\Users\nehue\Escritorio\Facultad\Diseño de Sistemas\2025-tpa-mi-no-grupo-17\serverBack\src\main\java\modulos\agregacion\entities\DbMain\projections\ColeccionProvinciaProjection.java
+C:\Users\nehue\Escritorio\Facultad\Diseño de Sistemas\2025-tpa-mi-no-grupo-17\serverBack\src\main\java\modulos\servicioEstadistica\entities\CategoriaCantidad.java
+C:\Users\nehue\Escritorio\Facultad\Diseño de Sistemas\2025-tpa-mi-no-grupo-17\serverBack\src\main\java\modulos\config\SecurityConfig.java
+C:\Users\nehue\Escritorio\Facultad\Diseño de Sistemas\2025-tpa-mi-no-grupo-17\serverBack\src\main\java\modulos\servicioEstadistica\repositories\IColeccionProvinciaRepository.java
+C:\Users\nehue\Escritorio\Facultad\Diseño de Sistemas\2025-tpa-mi-no-grupo-17\serverBack\src\main\java\modulos\agregacion\entities\DbMain\usuario\Usuario.java
+C:\Users\nehue\Escritorio\Facultad\Diseño de Sistemas\2025-tpa-mi-no-grupo-17\serverBack\src\main\java\modulos\shared\utils\FormateadorHechoMemoria.java
+C:\Users\nehue\Escritorio\Facultad\Diseño de Sistemas\2025-tpa-mi-no-grupo-17\serverBack\src\main\java\modulos\agregacion\entities\DbMain\algoritmosConsenso\AlgoritmoConsensoMayoriaSimple.java
+C:\Users\nehue\Escritorio\Facultad\Diseño de Sistemas\2025-tpa-mi-no-grupo-17\serverBack\src\main\java\modulos\servicioEstadistica\entities\CategoriaHora.java
+C:\Users\nehue\Escritorio\Facultad\Diseño de Sistemas\2025-tpa-mi-no-grupo-17\serverBack\src\main\java\modulos\agregacion\entities\DbMain\Filtrador.java
+C:\Users\nehue\Escritorio\Facultad\Diseño de Sistemas\2025-tpa-mi-no-grupo-17\serverBack\src\main\java\modulos\agregacion\repositories\DbDinamica\ISolicitudModificarHechoRepository.java
+C:\Users\nehue\Escritorio\Facultad\Diseño de Sistemas\2025-tpa-mi-no-grupo-17\serverBack\src\main\java\modulos\filters\JwtAuthenticationFilter.java
+C:\Users\nehue\Escritorio\Facultad\Diseño de Sistemas\2025-tpa-mi-no-grupo-17\serverBack\src\main\java\modulos\ServerBackApplication.java
+C:\Users\nehue\Escritorio\Facultad\Diseño de Sistemas\2025-tpa-mi-no-grupo-17\serverBack\src\main\java\modulos\agregacion\entities\DbDinamica\HechoDinamica.java
+C:\Users\nehue\Escritorio\Facultad\Diseño de Sistemas\2025-tpa-mi-no-grupo-17\serverBack\src\main\java\modulos\agregacion\config\DbHechosProxyConfig.java
+C:\Users\nehue\Escritorio\Facultad\Diseño de Sistemas\2025-tpa-mi-no-grupo-17\serverBack\src\main\java\modulos\shared\dtos\output\RolCambiadoDTO.java
+C:\Users\nehue\Escritorio\Facultad\Diseño de Sistemas\2025-tpa-mi-no-grupo-17\serverBack\src\main\java\modulos\agregacion\entities\fuentes\FuenteDinamica.java
+C:\Users\nehue\Escritorio\Facultad\Diseño de Sistemas\2025-tpa-mi-no-grupo-17\serverBack\src\main\java\modulos\servicioEstadistica\repositories\ICategoriaHoraRepository.java
+C:\Users\nehue\Escritorio\Facultad\Diseño de Sistemas\2025-tpa-mi-no-grupo-17\serverBack\src\main\java\modulos\shared\dtos\output\UsuarioOutputDto.java
+C:\Users\nehue\Escritorio\Facultad\Diseño de Sistemas\2025-tpa-mi-no-grupo-17\serverBack\src\main\java\modulos\agregacion\repositories\DbMain\IUbicacionRepository.java
+C:\Users\nehue\Escritorio\Facultad\Diseño de Sistemas\2025-tpa-mi-no-grupo-17\serverBack\src\main\java\modulos\agregacion\entities\DbMain\filtros\FiltroProvincia.java
+C:\Users\nehue\Escritorio\Facultad\Diseño de Sistemas\2025-tpa-mi-no-grupo-17\serverBack\src\main\java\modulos\agregacion\repositories\DbMain\IPaisRepository.java
+C:\Users\nehue\Escritorio\Facultad\Diseño de Sistemas\2025-tpa-mi-no-grupo-17\serverBack\src\main\java\modulos\agregacion\entities\DbMain\Ubicacion.java
+C:\Users\nehue\Escritorio\Facultad\Diseño de Sistemas\2025-tpa-mi-no-grupo-17\serverBack\src\main\java\modulos\agregacion\repositories\DbDinamica\ISolicitudEliminarHechoRepository.java
+C:\Users\nehue\Escritorio\Facultad\Diseño de Sistemas\2025-tpa-mi-no-grupo-17\serverBack\src\main\java\modulos\agregacion\services\UsuarioService.java
+C:\Users\nehue\Escritorio\Facultad\Diseño de Sistemas\2025-tpa-mi-no-grupo-17\serverBack\src\main\java\modulos\apis\IDatosQuery.java
+C:\Users\nehue\Escritorio\Facultad\Diseño de Sistemas\2025-tpa-mi-no-grupo-17\serverBack\src\main\java\modulos\agregacion\entities\DbDinamica\solicitudes\SolicitudEliminarHecho.java
+C:\Users\nehue\Escritorio\Facultad\Diseño de Sistemas\2025-tpa-mi-no-grupo-17\serverBack\src\main\java\modulos\shared\dtos\output\ColeccionOutputDTO.java
+C:\Users\nehue\Escritorio\Facultad\Diseño de Sistemas\2025-tpa-mi-no-grupo-17\serverBack\src\main\java\modulos\shared\dtos\input\SinonimoInputDto.java
+C:\Users\nehue\Escritorio\Facultad\Diseño de Sistemas\2025-tpa-mi-no-grupo-17\serverBack\src\main\java\modulos\agregacion\repositories\DbMain\ICategoriaRepository.java
+C:\Users\nehue\Escritorio\Facultad\Diseño de Sistemas\2025-tpa-mi-no-grupo-17\serverBack\src\main\java\modulos\shared\dtos\input\CambiarContraseniaDtoInput.java
+C:\Users\nehue\Escritorio\Facultad\Diseño de Sistemas\2025-tpa-mi-no-grupo-17\serverBack\src\main\java\modulos\agregacion\entities\DbMain\UbicacionString.java
+C:\Users\nehue\Escritorio\Facultad\Diseño de Sistemas\2025-tpa-mi-no-grupo-17\serverBack\src\main\java\modulos\shared\utils\FormateadorHecho.java
+C:\Users\nehue\Escritorio\Facultad\Diseño de Sistemas\2025-tpa-mi-no-grupo-17\serverBack\src\main\java\modulos\agregacion\entities\DbMain\algoritmosConsenso\IAlgoritmoConsenso.java
+C:\Users\nehue\Escritorio\Facultad\Diseño de Sistemas\2025-tpa-mi-no-grupo-17\serverBack\src\main\java\modulos\agregacion\entities\DbMain\FiltrosColeccion.java
+C:\Users\nehue\Escritorio\Facultad\Diseño de Sistemas\2025-tpa-mi-no-grupo-17\serverBack\src\main\java\modulos\agregacion\entities\DbMain\Mensaje.java
+C:\Users\nehue\Escritorio\Facultad\Diseño de Sistemas\2025-tpa-mi-no-grupo-17\serverBack\src\main\java\modulos\shared\utils\GestorArchivos.java
+C:\Users\nehue\Escritorio\Facultad\Diseño de Sistemas\2025-tpa-mi-no-grupo-17\serverBack\src\main\java\modulos\agregacion\entities\DbMain\filtros\FiltroFechaCarga.java
+C:\Users\nehue\Escritorio\Facultad\Diseño de Sistemas\2025-tpa-mi-no-grupo-17\serverBack\src\main\java\modulos\agregacion\entities\atributosHecho\OrigenConexion.java
+C:\Users\nehue\Escritorio\Facultad\Diseño de Sistemas\2025-tpa-mi-no-grupo-17\serverBack\src\main\java\modulos\agregacion\entities\DbMain\Provincia.java
+C:\Users\nehue\Escritorio\Facultad\Diseño de Sistemas\2025-tpa-mi-no-grupo-17\serverBack\src\main\java\modulos\agregacion\controllers\ColeccionController.java
+C:\Users\nehue\Escritorio\Facultad\Diseño de Sistemas\2025-tpa-mi-no-grupo-17\serverBack\src\main\java\modulos\agregacion\repositories\DbEstatica\IHechosEstaticaRepository.java
+C:\Users\nehue\Escritorio\Facultad\Diseño de Sistemas\2025-tpa-mi-no-grupo-17\serverBack\src\main\java\modulos\runners\JsonCleaner.java
+C:\Users\nehue\Escritorio\Facultad\Diseño de Sistemas\2025-tpa-mi-no-grupo-17\serverBack\src\main\java\modulos\shared\dtos\input\EvaluarReporteInputDTO.java
+C:\Users\nehue\Escritorio\Facultad\Diseño de Sistemas\2025-tpa-mi-no-grupo-17\serverBack\src\main\java\modulos\agregacion\services\CategoriaService.java
+C:\Users\nehue\Escritorio\Facultad\Diseño de Sistemas\2025-tpa-mi-no-grupo-17\serverBack\src\main\java\modulos\agregacion\entities\DbMain\projections\CantSolicitudesSpamProjection.java
+C:\Users\nehue\Escritorio\Facultad\Diseño de Sistemas\2025-tpa-mi-no-grupo-17\serverBack\src\main\java\modulos\agregacion\entities\HechoMemoria.java

@@ -93,7 +93,6 @@ public final class Geocodificador {
 
                 List<String> nombresProv = provinciasPorIso2.getOrDefault(row.iso2, Collections.emptyList());
 
-                // construir entidades Provincia (deduplicadas, ordenadas)
                 List<Provincia> provincias = new ArrayList<>(nombresProv.size());
                 Set<String> vistos = new HashSet<>();
                 for (String n : nombresProv) {
@@ -107,16 +106,8 @@ public final class Geocodificador {
                 }
                 provincias.sort(Comparator.comparing(Provincia::getProvincia, coll));
 
-                // Si tenés constructor (Pais, List<Provincia>):
                 out.add(new PaisProvincias(pais, provincias));
 
-                // Si NO lo tenés, usá esta variante:
-                /*
-                PaisProvincias pp = new PaisProvincias();
-                pp.setPais(pais);
-                pp.setProvincias(provincias);
-                out.add(pp);
-                */
             }
 
             // Orden final por nombre de país

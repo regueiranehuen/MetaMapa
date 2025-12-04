@@ -162,7 +162,7 @@ public class UsuarioService {
         Usuario usuario = usuarioRepo.findByNombreDeUsuario(username).orElse(null);
 
         if (usuario != null){
-            System.out.println("HOLAA SOY ESTE USUARIO:" + usuario.getNombreDeUsuario());
+            
             UsuarioOutputDto usuarioDto = new UsuarioOutputDto();
             usuarioDto.setId(usuario.getId());
             usuarioDto.setNombreDeUsuario(usuario.getNombreDeUsuario());

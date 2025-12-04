@@ -136,9 +136,9 @@ public class SolicitudHechoService {
 
         List<ContenidoMultimedia> contenidosMultimedia = new ArrayList<>();
 
-        System.out.println("VOY A ENTRAR A CONTENIDO MULTIMEDIA");
+        
         if (files != null){
-            System.out.println("ENTRE!! QUE EMOCION");
+            
             for(MultipartFile file : files) {
                 try {
                     String url = GestorArchivos.guardarArchivo(file);
@@ -172,7 +172,7 @@ public class SolicitudHechoService {
         }
 
         if (DetectorDeSpam.esSpam(dto.getTitulo()) || DetectorDeSpam.esSpam(dto.getDescripcion())) {
-            System.out.println("SOY UNA x AL IGUAL QUE EL DETECTOR DE SPAM");
+            
             solicitudHecho.setProcesada(true);
             solicitudHecho.setRechazadaPorSpam(true);
             hechosDinamicaRepository.saveAndFlush(hecho);
@@ -220,7 +220,7 @@ public class SolicitudHechoService {
             solicitudEliminarHechoRepo.save(solicitud);
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Se detectó spam"); // 400 - solicitud rechazada por spam
         }
-        System.out.println("LA JUSTIFICACION TIENE LENGTH: " + solicitud.getJustificacion().length());
+        
         solicitudEliminarHechoRepo.save(solicitud);
         return ResponseEntity.status(HttpStatus.OK).build();
     }
@@ -321,7 +321,7 @@ public class SolicitudHechoService {
     @Transactional
     public ResponseEntity<?> evaluarSolicitudSubirHecho(SolicitudHechoEvaluarInputDTO dtoInput, String username) {
 
-        System.out.println("JUSTIFICACION: " + dtoInput.getMensaje());
+        
 
         RolCambiadoDTO dto = new RolCambiadoDTO();
         dto.setRolModificado(false);
@@ -689,9 +689,9 @@ public class SolicitudHechoService {
 
     public ResponseEntity<Integer> getPorcentajeSolicitudesProcesadas() {
 
-        System.out.println("Entre a solicitudes");
+        
         Integer porcentaje = solicitudRepository.porcentajeProcesadas().intValue();
-        System.out.println("PORCENTAJE: " + porcentaje);
+        
         return ResponseEntity.ok().body(porcentaje);
     }
 
@@ -764,7 +764,7 @@ public class SolicitudHechoService {
         contenidoMultimediaFinal.addAll(attrs.getContenidoMultimediaAgregar());
 
         List<ContenidoMultimedia> contenidoMultimediaAMantener = new ArrayList<>();
-        System.out.println("CONTENIDO A ELIMINAR: " + attrs.getContenidoMultimediaEliminar());
+        
 
         if (attrs.getContenidoMultimediaEliminar() == null || attrs.getContenidoMultimediaEliminar().isEmpty()){
             contenidoMultimediaAMantener.addAll(attrOriginal.getContenidosMultimedia());

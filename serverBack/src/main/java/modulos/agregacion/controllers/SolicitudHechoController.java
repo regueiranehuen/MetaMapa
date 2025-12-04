@@ -100,7 +100,7 @@ public class SolicitudHechoController {
 
     @GetMapping("/atributos-hecho")
     public ResponseEntity<?> getAtributosSolicitudHecho(@Valid @RequestParam Long id_solicitud, @AuthenticationPrincipal String username){
-        System.out.println("WAZAAA ME ENCANTA OBTENER ATRIBUTOS DEL HECHO A MODIFICAR");
+        
         return solicitudHechoService.getAtributosSolicitudHecho(id_solicitud, username);
     }
 

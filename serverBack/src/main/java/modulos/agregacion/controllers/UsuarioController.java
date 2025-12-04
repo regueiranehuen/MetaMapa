@@ -32,7 +32,7 @@ public class UsuarioController {
     // Anda
     @PostMapping("/public/crear")
     public ResponseEntity<?> crearUsuario(@Valid @RequestBody UsuarioInputDTO dtoInput){
-        System.out.println("HOLA QUIERO CREAR USUARIO EN EL BACK");
+        
         return usuarioService.crearUsuario(dtoInput);
     }
 
@@ -62,7 +62,7 @@ public class UsuarioController {
 
     @GetMapping("/get/usuario")
     public ResponseEntity<?> getUsuarioByNombreUsuario(@AuthenticationPrincipal String username){
-        System.out.println("SOY UN FOROROROROORORORORORO");
+        
         return usuarioService.getUsuarioByNombreUsuarioConToken(username);
     }
 
@@ -75,7 +75,7 @@ public class UsuarioController {
     @PostMapping("/auth")
     public ResponseEntity<?> loginApi(@RequestBody LoginDtoInput dtoInput) {
 
-        System.out.println("LOGIN");
+        
 
         String username = dtoInput.getNombreDeUsuario();
         String password = dtoInput.getContrasenia();
