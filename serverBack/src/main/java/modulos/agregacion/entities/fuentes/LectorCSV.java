@@ -120,9 +120,6 @@ public class LectorCSV {
                     Double latitud = Double.parseDouble(registros.get(indicesColumnas.get(3)));
                     Double longitud = Double.parseDouble(registros.get(indicesColumnas.get(4)));
                     ubicacionString = Geocodificador.obtenerUbicacion(latitud, longitud);
-                    if(ubicacionString == null) {
-                        
-                    }
                     hecho.getAtributosHecho().setLatitud(latitud);
                     hecho.getAtributosHecho().setLongitud(longitud);
                 }
@@ -145,10 +142,6 @@ public class LectorCSV {
                 }else{
                     hecho.getAtributosHecho().setUbicacion_id(null);
                 }
-
-                
-
-                //
 
                 hecho.getAtributosHecho().setFechaAcontecimiento((indicesColumnas.get(5) != -1) ? FechaParser.parsearFecha(registros.get(indicesColumnas.get(5))) : null);
                 
@@ -242,22 +235,6 @@ public class LectorCSV {
             return path;
         } catch (IOException e) {
             throw new UncheckedIOException(e);
-        }
-    }
-
-
-
-    public static Path generarCsvDesdeObjeto(Object obj, String nombreArchivo) {
-        if (obj == null) throw new IllegalArgumentException("obj no puede ser null");
-
-        Path path = Path.of(nombreArchivo);
-        try (var writer = new FileWriter(path.toFile())) {
-            escribirComoCsv(obj, writer);
-            return path;
-        } catch (IOException e) {
-            throw new UncheckedIOException(e);
-        } catch (IntrospectionException | ReflectiveOperationException e) {
-            throw new RuntimeException(e);
         }
     }
 

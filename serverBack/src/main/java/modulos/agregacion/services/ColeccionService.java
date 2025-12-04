@@ -443,7 +443,6 @@ Esto asegura que la colección refleje solo los hechos de las fuentes actualment
 
         for(Coleccion coleccion : colecciones){
 
-
             List<List<IFiltro>> filtrosXCategoria = FormateadorHecho.agruparFiltrosPorClase(coleccion.getCriterios());
 
             for (int i = 0; i < filtrosXCategoria.size(); i++) {

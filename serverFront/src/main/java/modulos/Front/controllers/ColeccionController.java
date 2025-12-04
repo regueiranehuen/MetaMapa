@@ -30,15 +30,6 @@ public class ColeccionController {
     private final HechosService hechosService;
     private final UsuarioService usuarioService;
 
-    // Prueba de conexión entre el server front y el server back
-    /*@GetMapping("/get-all")
-    public ResponseEntity<?> obtenerTodasLasColecciones(){
-        return coleccionService.obtenerTodasLasColecciones();
-    }*/
-
-    // http://localhost:8082/colecciones/get-all
-
-
     @GetMapping("/crear")
     @PreAuthorize("hasRole('ADMINISTRADOR')")
     public String getFormularioColeccion(
@@ -128,8 +119,6 @@ public class ColeccionController {
     @PreAuthorize("hasRole('ADMINISTRADOR')")
     public String crearColeccion(@Valid @ModelAttribute ColeccionInputDTO inputDTO,
                                  RedirectAttributes ra) {
-        
-        
         ResponseEntity<?> rta = coleccionService.crearColeccion(inputDTO);
 
         if (rta.getStatusCode().is2xxSuccessful()) {
@@ -145,18 +134,7 @@ public class ColeccionController {
         ResponseEntity<?> rta = coleccionService.obtenerTodasLasColecciones();
 
         if (rta.getStatusCode().is2xxSuccessful() && rta.getBody() != null) {
-            
             List<ColeccionOutputDTO> colecciones = BodyToListConverter.bodyToList(rta, ColeccionOutputDTO.class);
-            if (colecciones!=null){
-                for (ColeccionOutputDTO coleccionOutputDTO : colecciones){
-                    
-                }
-            }
-            else{
-                
-            }
-
-
             model.addAttribute("colecciones", colecciones);
             model.addAttribute("titulo", "Listado de colecciones");
             return "colecciones";
@@ -168,9 +146,6 @@ public class ColeccionController {
 
     @GetMapping("/public/get/{id_coleccion}")
     public String getColeccion(@PathVariable Long id_coleccion, @ModelAttribute("getHechosColeccionInputDto") GetHechosColeccionInputDTO inputDTO, Model model) {
-
-        
-
 
         ResponseEntity<?> rta = coleccionService.getColeccion(id_coleccion);
 
@@ -268,7 +243,7 @@ public class ColeccionController {
         if (rta.getStatusCode().is2xxSuccessful()){
             ra.addFlashAttribute("mensaje", "Se agregó correctamente la fuente");
             ra.addFlashAttribute("tipo", "success");
-            return "redirect:get/" + id_coleccion; // 👍
+            return "redirect:get/" + id_coleccion;
         }
         return "redirect:/" + rta.getStatusCode().value();
     }

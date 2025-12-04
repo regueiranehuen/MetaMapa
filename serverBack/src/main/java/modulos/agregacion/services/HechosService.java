@@ -379,11 +379,6 @@ Para colecciones no modificadas → reviso solo los hechos cambiados
 
 
             hechosFiltrados.addAll(hechosFiltradosEstatica);
-
-            for (HechoDinamica hd: hechosFiltradosDinamica){
-                
-            }
-
             hechosFiltrados.addAll(hechosFiltradosDinamica);
             hechosFiltrados.addAll(hechosFiltradosProxy);
 
@@ -394,9 +389,6 @@ Para colecciones no modificadas → reviso solo los hechos cambiados
             List<VisualizarHechosOutputDTO> outputDTO = hechosFiltrados.stream()
                     .map(hecho -> crearHechoDto(hecho, VisualizarHechosOutputDTO.class))
                     .toList();
-            for (VisualizarHechosOutputDTO hecho: outputDTO){
-                
-            }
             return ResponseEntity.status(HttpStatus.OK).body(outputDTO);
         } else if (OrigenConexion.fromCodigo(inputDTO.getOrigenConexion()).equals(OrigenConexion.PROXY)) {
             List<HechoMetamapaResponse> outputDTO = hechosFiltrados.stream()

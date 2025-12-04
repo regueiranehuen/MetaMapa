@@ -48,13 +48,9 @@ public class FiltroPais extends Filtro {
     public <T> Specification<T> toSpecification(Class<T> clazz) {
 
         if (ubicaciones_ids == null || ubicaciones_ids.isEmpty()) {
-            
             return (root, query, cb) -> cb.disjunction(); // Nunca se cumple
         }
 
-        for(Long id: ubicaciones_ids){
-            
-        }
 
         return (root, query, cb) -> {
 

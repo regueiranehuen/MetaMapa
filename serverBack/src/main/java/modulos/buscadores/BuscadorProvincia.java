@@ -33,8 +33,6 @@ public class BuscadorProvincia {
     }
 
     public List<Provincia> buscarTodos() {
-        
-
         return this.repoProvincia.findAll();
     }
 
