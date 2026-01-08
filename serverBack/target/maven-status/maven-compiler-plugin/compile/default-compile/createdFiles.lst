@@ -59,7 +59,6 @@ modulos\agregacion\controllers\HechosController.class
 modulos\agregacion\repositories\DbDinamica\ISolicitudRepository.class
 modulos\agregacion\services\UsuarioService.class
 modulos\runners\JsonCleaner.class
-TestDivertido.class
 modulos\shared\dtos\input\EvaluarReporteInputDTO.class
 modulos\servicioEstadistica\entities\CategoriaProvincia.class
 modulos\agregacion\entities\DbMain\filtros\FiltroProvincia.class
