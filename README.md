@@ -13,26 +13,43 @@
 
 ## Algunos ejemplos de uso
 
+### Landing page con hechos destacados y estadísticas del sitio
 <p align="center">
   <img src="img/1.png" width=100% alt="Ejemplo 1"/>
 </p>
 
 ---
 
+### Mapa interactivo con hechos que cuentan con sus respectivas coordenadas
 <p align="center">
   <img src="img/2.png" width=100% alt="Ejemplo 2"/>
 </p>
 
 ---
 
+### Visualización de detalles de un hecho
+<p align="center">
+  <img src="img/3.png" width=100% alt="Ejemplo 3"/>
+</p>
+
+---
+
+### Los hechos pueden incluir contenido multimedia como imágenes y/o videos
 <p align="center">
   <img src="img/4.png" width=100% alt="Ejemplo 4"/>
 </p>
 
 ---
 
+### Visualización de los hechos subidos con su categoría y demás atributos. En este caso sólo se observan categorías fútbol y deportes
 <p align="center">
-  <img src="img/3.png" width=100% alt="Ejemplo 3"/>
+  <img src="img/5.png" width=100% alt="Ejemplo 5"/>
+</p>
+
+---
+
+<p align="center">
+  <img src="img/6.png" width=100% alt="Ejemplo 6"/>
 </p>
 
 
