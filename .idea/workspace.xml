@@ -123,7 +123,7 @@
       </set>
     </option>
   </component>
-  <component name="RunManager" selected="Spring Boot.ServerBackApplication">
+  <component name="RunManager" selected="Spring Boot.ServerFrontApplication (1)">
     <configuration name="ServerBackApplication" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="modulos.ServerBackApplication" />
       <module name="serverBack" />
@@ -352,7 +352,7 @@
       <workItem from="1767804337679" duration="219000" />
       <workItem from="1767806451684" duration="517000" />
       <workItem from="1767809666535" duration="702000" />
-      <workItem from="1767847316591" duration="1399000" />
+      <workItem from="1767847316591" duration="2593000" />
     </task>
     <task id="LOCAL-00001" summary="Merge branch 'entrega_6' of https://github.com/dds-utn/2025-tpa-mi-no-grupo-17 into entrega_6&#10;&#10;# Conflicts:&#10;#&#9;.idea/workspace.xml">
       <option name="closed" value="true" />
