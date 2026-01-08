@@ -54,7 +54,7 @@
 
 ### Pestaña de perfil
 #### El usuario puede modificar tanto sus datos personales como su nombre de usuario y contraseña
-#### En el ejemplo, el usuario tiene el rol de ADMINISTRADOR, por lo que puede crear nuevas categorías, colecciones, analizar solicitudes sobre hechos realizadas por usuarios contribuyentes/visualizadores e importar y subir hechos.
+#### En el ejemplo, el usuario tiene el rol de ADMINISTRADOR, por lo que tiene un panel que le permite crear nuevas categorías, colecciones, analizar solicitudes sobre hechos realizadas por usuarios contribuyentes/visualizadores e importar hechos desde un CSV.
 <p align="center">
   <img src="img/6.png" width=100% alt="Ejemplo 6"/>
 </p>
