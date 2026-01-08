@@ -4,7 +4,7 @@
 
 - Está estructurado en dos proyectos Maven que se comunican entre sí mediante API Rest. 
   - Server Backend: Encargado de la lógica de negocio.
-    - Tecnologías: Java Spring Boot, MySQL, Hibernate/JPA
+    - Tecnologías: Java Spring Boot, Spring Security, MySQL, Hibernate/JPA
   - Server Frontend: Encargado del renderizado de las vistas.
     - Almacena la sesión del usuario, y dentro de la misma almacena un access token y un refresh token, ambos generados por Server Backend cuando el usuario inicia sesión.
       - Con el access token, el Server Frontend se comunica con el Server Backend. 
