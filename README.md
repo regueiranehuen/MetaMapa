@@ -8,7 +8,7 @@
   - Server Frontend: Encargado del renderizado de las vistas.
     - Almacena la sesión del usuario, y dentro de la misma almacena un access token y un refresh token, ambos generados por Server Backend cuando el usuario inicia sesión.
       - Con el access token, el Server Frontend se comunica con el Server Backend. 
-    - Tecnologías: HTML, CSS, Javascript, Thymeleaf, Bootstrap
+    - Tecnologías: Java Spring Boot, Spring Security, HTML, CSS, Javascript, Thymeleaf, Bootstrap
 
 - Por la estructura de los proyectos explicada anteriormente, las sesiones del usuario resultan ser mixtas.
   
