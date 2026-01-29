@@ -4,11 +4,11 @@
 
 - Está estructurado en dos proyectos Maven que se comunican entre sí mediante API Rest. 
   - Server Backend: Encargado de la lógica de negocio.
-    - Tecnologías: Java Spring Boot, MySQL, Hibernate/JPA
+    - Tecnologías: Java Spring Boot, Spring Security, MySQL, Hibernate/JPA
   - Server Frontend: Encargado del renderizado de las vistas.
     - Almacena la sesión del usuario, y dentro de la misma almacena un access token y un refresh token, ambos generados por Server Backend cuando el usuario inicia sesión.
       - Con el access token, el Server Frontend se comunica con el Server Backend. 
-    - Tecnologías: HTML, CSS, Javascript, Thymeleaf, Bootstrap
+    - Tecnologías: Java Spring Boot, Spring Security, HTML, CSS, Javascript, Thymeleaf, Bootstrap
 
 - Por la estructura de los proyectos explicada anteriormente, las sesiones del usuario resultan ser mixtas.
   
@@ -52,6 +52,9 @@
 
 ---
 
+### Pestaña de perfil
+#### El usuario puede modificar tanto sus datos personales como su nombre de usuario y contraseña
+#### En el ejemplo, el usuario tiene el rol de ADMINISTRADOR, por lo que tiene un panel que le permite crear nuevas categorías, colecciones, analizar solicitudes sobre hechos realizadas por usuarios contribuyentes/visualizadores e importar hechos desde un CSV.
 <p align="center">
   <img src="img/6.png" width=100% alt="Ejemplo 6"/>
 </p>
