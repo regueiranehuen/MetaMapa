@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org" th:replace="~{layout/base :: html}">
+<main th:fragment="contenido">
+
+    <!-- Hero Header -->
+    <section class="requests-hero">
+        <div class="container">
+            <div class="row align-items-center justify-content-between">
+                <div class="col-lg-7">
+                    <div class="requests-badge mb-3">
+                        <i class="bi bi-clipboard-check me-2"></i>Panel de Administración
+                    </div>
+                    <h1 class="display-5 fw-bold mb-2 animated-gradient-text">
+                        Solicitudes Pendientes
+                    </h1>
+                    <p class="lead text-muted mb-0">
+                        Revisá y gestioná las solicitudes de contribución de la comunidad
+                    </p>
+                </div>
+                <div class="col-lg-auto">
+                    <div class="counter-badge">
+                        <div class="counter-number" th:text="${solicitudes != null ? solicitudes.size() : 0}">0</div>
+                        <div class="counter-label">Pendientes</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <div class="container pb-5">
+        <!-- Estado vacío -->
+        <div th:if="${solicitudes == null or #lists.isEmpty(solicitudes)}" class="empty-state-box mt-4">
+            <div class="empty-illustration">
+                <i class="bi bi-check-circle"></i>
+            </div>
+            <h3 class="mb-2">¡Todo al día!</h3>
+            <p class="text-muted mb-4">
+                No hay solicitudes pendientes de revisión. Excelente trabajo manteniendo la plataforma actualizada.
+            </p>
+            <a th:href="@{/hechos/public/get-all}" class="btn btn-lg btn-explorar-hechos">
+                <i class="bi bi-compass me-2"></i>Explorar hechos
+            </a>
+        </div>
+
+        <!-- Lista de solicitudes -->
+        <div class="requests-list mt-4"
+             th:if="${solicitudes != null and !#lists.isEmpty(solicitudes)}">
+
+            <article class="request-card"
+                     th:each="s : ${solicitudes}"
+                     th:id="${'sol-' + s.id}"
+                     th:with="
+            esSubir=${s.tipo} == 'SUBIR',
+            esEliminar=${s.tipo} == 'ELIMINAR',
+            esModificar = ${s.tipo} == 'MODIFICAR',
+            actionUrl=${esSubir} ? '/solicitudes-hecho/evaluar/subir'
+                     : (${esEliminar} ? '/solicitudes-hecho/evaluar/eliminar'
+                                      : '/solicitudes-hecho/evaluar/modificar')
+         ">
+
+                <a class="request-content"
+                   th:if="${s.hechoId != null}"
+                   th:href="${esModificar} ?
+        @{/hechos/public/get(
+            id_hecho=${s.hechoId},
+            fuente='DINAMICA',
+            id_solicitud=${s.id},
+            es-de-modificar=true
+        )}
+        :
+        @{/hechos/public/get(
+            id_hecho=${s.hechoId},
+            fuente='DINAMICA',
+            id_solicitud=${s.id},
+            es-de-modificar=false
+        )}">
+
+
+
+
+
+                <div class="request-header">
+                        <span class="request-type-badge"
+                              th:classappend="${esSubir} ? 'badge-subir' : (${esEliminar} ? 'badge-eliminar' : 'badge-modificar')"
+                              th:text="${s.tipo}">SUBIR</span>
+                    <span class="request-date">
+                        <i class="bi bi-calendar3 me-1"></i>
+                        <span th:text="${s.fecha != null ? #strings.substringBefore(s.fecha, 'T') : '—'}">
+                            2025-11-05
+                        </span>
+                    </span>
+
+                </div>
+
+                    <h5 class="request-title">
+                        Solicitud de <span th:text="${#strings.toLowerCase(s.tipo)}">subir</span>
+                    </h5>
+
+                    <div class="request-user">
+                        <i class="bi bi-person-circle me-2"></i>
+                        <span th:text="${s.username}">usuario</span>
+                    </div>
+
+                    <div class="request-justification" th:if="${s.justificacion != null}">
+                        <div class="justification-label">
+                            <i class="bi bi-chat-left-text me-1"></i>Justificación
+                        </div>
+                        <div class="justification-text" th:text="${s.justificacion}">—</div>
+                    </div>
+                </a>
+
+                <div class="request-content request-content-inactive"
+                     th:if="${s.hechoId == null}">
+
+                    <div class="request-header">
+                        <span class="request-type-badge"
+                              th:classappend="${esSubir} ? 'badge-subir' : (${esEliminar} ? 'badge-eliminar' : 'badge-modificar')"
+                              th:text="${s.tipo}">SUBIR</span>
+                        <span class="request-date">
+                            <i class="bi bi-calendar3 me-1"></i>
+                            <span th:text="${s.fecha != null ? #strings.substringBefore(s.fecha, 'T') : '—'}">
+                                2025-11-05
+                            </span>
+                        </span>
+
+                    </div>
+
+                    <h5 class="request-title">
+                        Solicitud de <span th:text="${#strings.toLowerCase(s.tipo)}">subir</span>
+                    </h5>
+
+                    <div class="request-user">
+                        <i class="bi bi-person-circle me-2"></i>
+                        <span th:text="${s.username}">usuario</span>
+                        <span class="badge bg-secondary ms-2">Sin hecho asociado</span>
+                    </div>
+
+                    <div class="request-justification" th:if="${s.justificacion != null}">
+                        <div class="justification-label">
+                            <i class="bi bi-chat-left-text me-1"></i>Justificación
+                        </div>
+                        <div class="justification-text" th:text="${s.justificacion}">—</div>
+                        <div class="justification-text" th:text="${s.justificacion}">—</div>
+                    </div>
+                </div>
+
+                <div class="request-actions">
+                    <form method="post" th:action="${actionUrl}">
+                        <input type="hidden" name="id_solicitud" th:value="${s.id}">
+                        <input type="hidden" name="respuesta" value="true">
+                        <input type="hidden" th:if="${_csrf != null}"
+                               th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
+                        <button class="btn btn-accept" type="submit">
+                            <i class="bi bi-check-circle me-1"></i>Aceptar
+                        </button>
+                    </form>
+
+                    <button class="btn btn-reject"
+                            th:if="${s.username != null}"
+                            data-bs-toggle="modal" data-bs-target="#modalRechazo"
+                            th:attr="data-id=${s.id}, data-tipo=${s.tipo}, data-action=${actionUrl}">
+                        <i class="bi bi-x-circle me-1"></i>Rechazar
+                    </button>
+
+                    <!-- RECHAZAR DIRECTO (usuario anónimo) -->
+                    <form th:if="${s.username == null}"
+                          method="post"
+                          th:action="${actionUrl}"
+                          class="w-100">
+                        <input type="hidden" name="id_solicitud" th:value="${s.id}">
+                        <input type="hidden" name="respuesta" value="false">
+                        <!-- mensaje fijo para cumplir con el DTO -->
+                        <input type="hidden" name="mensaje"
+                               value="Solicitud anónima rechazada automáticamente.">
+                        <input type="hidden" th:if="${_csrf != null}"
+                               th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
+                        <button class="btn btn-reject w-100" type="submit">
+                            <i class="bi bi-x-circle me-1"></i>Rechazar
+                        </button>
+                    </form>
+                </div>
+            </article>
+
+        </div>
+    </div>
+
+    <div class="modal fade" id="modalRechazo" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <form class="modal-content border-0"
+                  id="formRechazo"
+                  method="post"
+                  th:object="${solicitudHechoEvaluarInputDTO}"
+                  style="border-radius:20px;overflow:hidden">
+                <div class="modal-header" style="background:linear-gradient(135deg,#fee2e2,#fecaca);border:none;padding:2rem">
+                    <h5 class="modal-title fw-bold" style="color:#991b1b">
+                        <i class="bi bi-exclamation-triangle-fill me-2"></i>
+                        Rechazar solicitud de <span id="rechazoTipo"></span>
+                    </h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+
+                <div class="modal-body" style="padding:2rem">
+                    <label class="form-label fw-semibold mb-2">Motivo del rechazo</label>
+                    <label for="rechazoMensaje"></label>
+                    <textarea class="form-control"
+                              th:field="*{mensaje}"  id="rechazoMensaje"
+                              rows="4"
+                              maxlength="300"
+                              placeholder="Explicá brevemente por qué se rechaza esta solicitud..."
+                              style="border-radius:12px;border:1px solid #e9ecef;background:#f8f9ff"
+                              required></textarea>
+                    <div class="form-text text-end mt-2">
+                        <i class="bi bi-info-circle me-1"></i>Máximo 300 caracteres
+                    </div>
+                </div>
+
+                <input type="hidden" th:field="*{id_solicitud}" id="rechazoId"/>
+
+                <input type="hidden" name="respuesta" value="false"/>
+
+                <input type="hidden" th:if="${_csrf != null}"
+                       th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+
+                <div class="modal-footer" style="border:none;padding:1.5rem 2rem 2rem">
+                    <button class="btn btn-outline-secondary" data-bs-dismiss="modal" style="border-radius:12px">
+                        Cancelar
+                    </button>
+                    <button class="btn btn-danger" type="submit" style="border-radius:12px;padding:.75rem 1.5rem">
+                        <i class="bi bi-x-circle me-1"></i>Confirmar rechazo
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <style>
+        .requests-hero{padding:80px 0 40px;background:radial-gradient(ellipse 1400px 800px at 50% -100px,rgba(102,126,234,.12) 0%,transparent 50%);position:relative;overflow:hidden}
+        .requests-hero::before{content:'';position:absolute;inset:0;background:url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%236b5cff' fill-opacity='0.03'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");pointer-events:none}
+        .requests-badge{background:linear-gradient(135deg,rgba(139,92,246,.15),rgba(167,139,250,.15));color:#8b5cf6;padding:.65rem 1.5rem;border-radius:50px;font-size:.875rem;font-weight:600;display:inline-flex;align-items:center;border:1px solid rgba(139,92,246,.2)}
+        .counter-badge{background:#fff;padding:1.5rem 2rem;border-radius:20px;text-align:center;border:1px solid rgba(0,0,0,.06);box-shadow:0 8px 24px rgba(0,0,0,.1)}
+        .counter-number{font-size:3rem;font-weight:700;color:#667eea;line-height:1}
+        .counter-label{font-size:.875rem;color:#64748b;margin-top:.5rem;font-weight:600}
+        .empty-state-box{background:#fff;border-radius:24px;padding:5rem 2rem;text-align:center;border:2px dashed #e9ecef}
+        .empty-illustration{width:120px;height:120px;margin:0 auto 2rem;background:linear-gradient(135deg,rgba(16,185,129,.1),rgba(5,150,105,.1));border-radius:50%;display:flex;align-items:center;justify-content:center}
+        .empty-illustration i{font-size:3rem;color:#059669}
+        .requests-list{display:flex;flex-direction:column;gap:1.5rem}
+        .request-card{background:#fff;border-radius:20px;border:1px solid rgba(0,0,0,.06);box-shadow:0 4px 12px rgba(0,0,0,.05);display:flex;align-items:stretch;overflow:hidden;transition:all .3s ease}
+        .request-card:hover{box-shadow:0 12px 32px rgba(0,0,0,.1);transform:translateY(-2px)}
+        .request-content{flex:1;padding:1.5rem;text-decoration:none;color:inherit;display:block;transition:background .2s ease}
+        .request-content:hover{background:#f8f9ff}
+        .request-content-inactive{cursor:default;opacity:.85}
+        .request-content-inactive:hover{background:transparent}
+        .request-header{display:flex;align-items:center;gap:1rem;margin-bottom:1rem;flex-wrap:wrap}
+        .request-type-badge{padding:.5rem 1rem;border-radius:10px;font-size:.8rem;font-weight:700;letter-spacing:.02em;text-transform:uppercase}
+        .badge-subir{background:linear-gradient(135deg,rgba(16,185,129,.15),rgba(5,150,105,.15));color:#059669;border:1px solid rgba(5,150,105,.2)}
+        .badge-eliminar{background:linear-gradient(135deg,rgba(220,38,38,.15),rgba(185,28,28,.15));color:#dc2626;border:1px solid rgba(220,38,38,.2)}
+        .badge-modificar{background:linear-gradient(135deg,rgba(245,158,11,.15),rgba(251,191,36,.15));color:#f59e0b;border:1px solid rgba(245,158,11,.2)}
+        .request-date{font-size:.875rem;color:#64748b;display:flex;align-items:center}
+        .request-title{font-size:1.1rem;font-weight:700;color:#1a202c;margin-bottom:.75rem}
+        .request-user{font-size:.9rem;color:#475569;display:flex;align-items:center;margin-bottom:1rem}
+        .request-justification{background:#f8f9ff;border-left:3px solid #667eea;padding:1rem;border-radius:0 12px 12px 0;margin-top:1rem}
+        .justification-label{font-size:.8rem;font-weight:600;color:#667eea;margin-bottom:.5rem;display:flex;align-items:center}
+        .justification-text{font-size:.9rem;color:#475569;line-height:1.5}
+        .request-actions{display:flex;flex-direction:column;gap:.75rem;padding:1.5rem;border-left:1px solid #f1f5f9;background:linear-gradient(90deg,#fafbff,#fff);min-width:180px;justify-content:center}
+        .btn-accept,.btn-reject{border-radius:12px;font-weight:600;padding:.75rem 1.25rem;border:none;transition:all .2s ease;width:100%;display:flex;align-items:center;justify-content:center;gap:.5rem}
+        .btn-accept{background:linear-gradient(135deg,#059669,#047857);color:#fff;box-shadow:0 4px 12px rgba(5,150,105,.3)}
+        .btn-accept:hover{background:linear-gradient(135deg,#047857,#065f46);transform:translateY(-2px);box-shadow:0 6px 16px rgba(5,150,105,.4);color:#fff}
+        .btn-reject{background:linear-gradient(135deg,#dc2626,#b91c1c);color:#fff;box-shadow:0 4px 12px rgba(220,38,38,.3)}
+        .btn-reject:hover{background:linear-gradient(135deg,#b91c1c,#991b1b);transform:translateY(-2px);box-shadow:0 6px 16px rgba(220,38,38,.4);color:#fff}
+        .btn-explorar-hechos{background:linear-gradient(135deg,#667eea,#8b5cf6);color:#fff;border:none;border-radius:999px;padding:.9rem 2.5rem;font-weight:600;box-shadow:0 8px 22px rgba(107,92,246,.35);display:inline-flex;align-items:center;gap:.5rem;transition:all .25s ease}
+        .btn-explorar-hechos i{color:#fff}
+        .btn-explorar-hechos:hover{background:linear-gradient(135deg,#5a67d8,#7c3aed);transform:translateY(-2px);box-shadow:0 12px 28px rgba(88,80,236,.45);color:#fff}
+        .btn-explorar-hechos:focus{outline:none;box-shadow:0 0 0 .18rem rgba(139,92,246,.4)}
+
+        @media (max-width:991px){
+            .requests-hero{padding:60px 0 30px}
+            .display-5{font-size:2rem}
+            .counter-badge{padding:1rem 1.5rem}
+            .counter-number{font-size:2rem}
+            .empty-state-box{padding:3rem 1.5rem}
+            .empty-illustration{width:80px;height:80px}
+            .empty-illustration i{font-size:2rem}
+            .request-card{flex-direction:column}
+            .request-actions{flex-direction:row;border-left:none;border-top:1px solid #f1f5f9;min-width:auto}
+        }
+    </style>
+
+    <script>
+        // Modal rechazo: setea acción, tipo e id
+        const modal = document.getElementById('modalRechazo');
+        modal.addEventListener('show.bs.modal', (ev) => {
+            const btn = ev.relatedTarget;
+            const id = btn.getAttribute('data-id');
+            const tipo = btn.getAttribute('data-tipo');
+            const action = btn.getAttribute('data-action');
+            document.getElementById('rechazoTipo').textContent = tipo;
+            document.getElementById('rechazoId').value = id;
+            document.getElementById('formRechazo').action = action;
+            document.getElementById('rechazoMensaje').value = '';
+        });
+    </script>
+
+</main>
+</html>

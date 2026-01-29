@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="es"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="https://www.thymeleaf.org/extras/spring-security"
+      th:replace="~{layout/base :: html}">
+
+<main th:fragment="contenido">
+
+    <section class="contribute-hero">
+        <div class="container position-relative">
+
+            <div class="row align-items-center justify-content-center">
+                <div class="col-lg-8 text-center">
+
+                    <span class="contribute-badge mb-3">
+                        <i class="bi bi-collection"></i>
+                        <span>Organiza tu conocimiento</span>
+                    </span>
+
+                    <h1 class="display-5 fw-bold mb-2 animated-gradient-text">
+                        Listado de Colecciones
+                    </h1>
+                    <p class="lead text-muted mb-0">
+                        Organizá y curá conjuntos de hechos históricos relacionados en colecciones temáticas
+                    </p>
+                </div>
+            </div>
+
+            <div sec:authorize="hasRole('ADMINISTRADOR')" class="top-action-button-v2">
+                <a th:href="@{/colecciones/crear}" class="btn-icon-top-action">
+                    <i class="bi bi-plus-circle me-2"></i>Nueva colección
+                </a>
+            </div>
+
+            <div class="d-flex flex-wrap justify-content-end align-items-center gap-3 pt-4"
+                 th:if="${colecciones != null and !#lists.isEmpty(colecciones)}">
+                <span class="results-badge-inline">
+                    <i class="bi bi-check-circle-fill"></i>
+                    <span th:text="${#lists.size(colecciones)} + ' resultados'">0 resultados</span>
+                </span>
+
+                <span id="rangeInfo" class="text-muted small">Viendo 1–0 de 0 resultados</span>
+
+                <div class="d-flex align-items-center gap-2">
+                    <label for="pageSize" class="text-muted small mb-0">Mostrar:</label>
+                    <select id="pageSize" class="form-select form-select-sm" style="width:auto;border-radius:10px">
+                        <option value="10">10</option>
+                        <option value="20" selected>20</option>
+                        <option value="30">30</option>
+                        <option value="40">40</option>
+                        <option value="50">50</option>
+                        <option value="0">Todos</option>
+                    </select>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <section class="container pb-5">
+        <div th:if="${colecciones == null or #lists.isEmpty(colecciones)}" class="empty-state">
+            <div class="empty-icon">
+                <i class="bi bi-collection"></i>
+            </div>
+            <h3 class="mb-2">No hay colecciones aún</h3>
+            <p class="text-muted mb-4">Creá tu primera colección para comenzar a organizar hechos históricos</p>
+            <a th:href="@{/colecciones/crear}" class="btn btn-primary btn-lg" sec:authorize="hasRole('ADMINISTRADOR')">
+                <i class="bi bi-plus-circle me-2"></i>Crear primera colección
+            </a>
+        </div>
+
+        <div id="coleccionesGrid" class="row g-4" th:if="${colecciones != null and !#lists.isEmpty(colecciones)}">
+            <div class="col-12 col-sm-6 col-lg-4 col-xxl-3 coleccion-item" th:each="c : ${colecciones}">
+                <div class="collection-card">
+                    <div class="card-header-custom">
+                        <div class="d-flex align-items-start gap-3">
+                            <div class="icon-box">
+                                <i class="bi bi-collection"></i>
+                            </div>
+                            <div class="flex-grow-1 min-w-0">
+                                <h5 class="card-title-custom mb-1" th:text="${c.titulo} ?: 'Colección'">Colección</h5>
+                                <p class="card-description" th:text="${c.descripcion} ?: 'Sin descripción'">Sin descripción</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card-body-custom">
+                        <div class="card-actions">
+                            <a class="btn btn-outline-primary flex-grow-1" th:href="@{/colecciones/public/get/{id}(id=${c.id})}">
+                                <i class="bi bi-eye me-1"></i>Ver detalle
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <style>
+        .contribute-hero{padding:80px 0 40px;background:radial-gradient(ellipse 1400px 800px at 50% -100px,rgba(102,126,234,.12) 0%,transparent 50%);position:relative;overflow:hidden}
+        .contribute-hero::before{content:'';position:absolute;inset:0;background:url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%236b5cff' fill-opacity='0.03'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");pointer-events:none}
+        .contribute-badge{background:linear-gradient(135deg,rgba(79,70,229,.12),rgba(129,140,248,.12));color:#4f46e5;padding:.6rem 1.5rem;border-radius:999px;font-size:.85rem;font-weight:600;display:inline-flex;align-items:center;gap:.4rem;border:1px solid rgba(79,70,229,.22)}
+        .hero-section{background:radial-gradient(ellipse 1400px 800px at 50% -100px,rgba(102,126,234,.15) 0%,rgba(255,255,255,0) 50%);position:relative}
+        .hero-section::before{content:'';position:absolute;top:0;left:0;right:0;bottom:0;background:url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%236b5cff' fill-opacity='0.03'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");opacity:.5;pointer-events:none}
+        .results-badge-inline{background:#fff;padding:.5rem 1rem;border-radius:12px;border:1px solid #e9ecef;display:inline-flex;align-items:center;gap:.5rem;font-weight:600;color:#1a202c;font-size:.875rem;box-shadow:0 2px 8px rgba(0,0,0,.05)}
+        .results-badge-inline i{color:#10b981;font-size:1rem}
+        .empty-state{text-align:center;padding:5rem 2rem;background:#fff;border-radius:24px;border:2px dashed #e9ecef}
+        .empty-icon{width:120px;height:120px;margin:0 auto 2rem;background:linear-gradient(135deg,#667eea15 0%,#764ba215 100%);border-radius:50%;display:flex;align-items:center;justify-content:center}
+        .empty-icon i{font-size:3rem;color:#6b5cff}
+        .collection-card{background:#fff;border-radius:20px;overflow:hidden;transition:all .3s cubic-bezier(.4,0,.2,1);border:1px solid rgba(0,0,0,.06);height:100%;display:flex;flex-direction:column}
+        .collection-card:hover{transform:translateY(-8px);box-shadow:0 20px 40px rgba(0,0,0,.1);border-color:rgba(107,92,255,.2)}
+        .card-header-custom{padding:1.5rem;background:linear-gradient(135deg,#f8f9ff 0%,#fff 100%);border-bottom:1px solid rgba(0,0,0,.05)}
+        .icon-box{width:48px;height:48px;background:linear-gradient(135deg,#667eea 0%,#764ba2 100%);border-radius:14px;display:flex;align-items:center;justify-content:center;flex-shrink:0;box-shadow:0 4px 12px rgba(102,126,234,.3)}
+        .icon-box i{font-size:1.25rem;color:#fff}
+        .card-title-custom{font-size:1.1rem;font-weight:700;color:#1a202c;margin:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+        .card-description{font-size:.875rem;color:#64748b;margin:0;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;line-height:1.4}
+        .card-body-custom{padding:1.5rem;flex-grow:1;display:flex;flex-direction:column;justify-content:flex-end}
+        .card-actions{display:flex;gap:.5rem;align-items:center}
+        .btn{border-radius:12px;font-weight:600;transition:all .2s ease}
+        .btn:hover{transform:translateY(-2px)}
+        .btn-primary{background:linear-gradient(135deg,#667eea 0%,#764ba2 100%);border:none}
+        .btn-primary:hover{background:linear-gradient(135deg,#5568d3 0%,#63408b 100%);box-shadow:0 8px 16px rgba(102,126,234,.3)}
+        .btn-outline-primary{border-color:#6b5cff;color:#6b5cff}
+        .btn-outline-primary:hover{background:#6b5cff;border-color:#6b5cff;color:#fff}
+
+        @media (max-width:768px){
+            .hero-section{padding:2rem 0!important}
+            .display-5{font-size:2rem}
+            .empty-state{padding:3rem 1.5rem}
+            .empty-icon{width:80px;height:80px}
+            .empty-icon i{font-size:2rem}
+        }
+    </style>
+
+    <script>
+        (function () {
+          const grid = document.getElementById('coleccionesGrid');
+          if (!grid) return;
+
+          const items = Array.from(grid.querySelectorAll('.coleccion-item'));
+          const total = items.length;
+
+          const select = document.getElementById('pageSize');
+          const info   = document.getElementById('rangeInfo');
+
+          // Preferencia previa
+          const saved = localStorage.getItem('coleccionesPageSize');
+          if (saved !== null && select.querySelector(`option[value="${saved}"]`)) {
+            select.value = saved;
+          }
+
+          function render() {
+            const n = parseInt(select.value, 10);
+            const showAll = (n === 0) || (n >= total);
+
+            items.forEach((el, idx) => {
+              el.style.display = (showAll || idx < n) ? '' : 'none';
+            });
+
+            const shown = showAll ? total : Math.min(n, total);
+            if (info) info.textContent = `Viendo 1–${shown} de ${total} resultados`;
+          }
+
+          select.addEventListener('change', () => {
+            localStorage.setItem('coleccionesPageSize', select.value);
+            render();
+          });
+
+          render();
+        })();
+    </script>
+</main>
+</html>

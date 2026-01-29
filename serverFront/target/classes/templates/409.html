@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{layout/base :: html}">
+<main th:fragment="contenido">
+  <section class="py-5">
+    <div class="container" style="max-width: 720px;">
+      <div class="text-center">
+        <div class="display-1 fw-bold mb-2">409</div>
+        <h1 class="display-5 fw-bold mb-3 animated-gradient-text">
+          Conflicto en la operación
+        </h1>
+        <p class="lead text-muted mb-4">
+          La operación no pudo completarse porque el recurso se encuentra
+          en un estado conflictivo. Intentá refrescar la página o volver a intentar.
+        </p>
+        <a th:href="@{/}" class="btn btn-primary">
+          <i class="bi bi-arrow-clockwise me-2"></i>Volver al inicio
+        </a>
+      </div>
+    </div>
+  </section>
+</main>
+</html>

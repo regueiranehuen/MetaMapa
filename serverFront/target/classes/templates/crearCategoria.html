@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org" th:replace="~{layout/base :: html}">
+<main th:fragment="contenido">
+
+    <section class="contribute-hero">
+        <div class="container position-relative">
+            <div class="row align-items-center justify-content-center">
+                <div class="col-lg-8 text-center">
+                    <span class="contribute-badge mb-3">
+                        <i class="bi bi-tags"></i>
+                        <span>Gestión de categorías</span>
+                    </span>
+
+                    <h1 class="display-5 fw-bold mb-2 animated-gradient-text">
+                        Crear Categoría
+                    </h1>
+                    <p class="lead text-muted mb-0">
+                        Agregá una nueva categoría para clasificar hechos históricos
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="container pb-5">
+        <div class="row justify-content-center">
+            <div class="col-lg-6 col-xl-5">
+                <div class="form-card">
+                    <form th:action="@{/gestion/categorias/crear}" method="post">
+                        <!-- CSRF -->
+                        <input type="hidden" th:if="${_csrf != null}"
+                               th:name="${_csrf.parameterName}"
+                               th:value="${_csrf.token}" />
+
+                        <div class="form-info-box mb-4">
+                            <i class="bi bi-info-circle me-2"></i>
+                            <span>Las categorías son utilizadas para organizar y clasificar los hechos históricos en tu base de datos.</span>
+                        </div>
+
+                        <div class="form-group-custom highlight-input">
+                            <label class="form-label-custom" for="categoria">
+                                <i class="bi bi-tag-fill me-2"></i>Nombre de la categoría
+                            </label>
+                            <input type="text"
+                                   class="form-control-custom"
+                                   id="categoria"
+                                   name="categoria"
+                                   placeholder="Ej: Revolución, Guerra, Descubrimiento..."
+                                   required
+                                   minlength="3" />
+                            <small class="form-hint">
+                                <i class="bi bi-lightbulb me-1"></i>
+                                Elegí un nombre descriptivo y único que represente claramente el tipo de eventos
+                            </small>
+                        </div>
+
+                        <div class="examples-box">
+                            <div class="examples-header">
+                                <i class="bi bi-stars me-2"></i>
+                                <span>Ejemplos de categorías:</span>
+                            </div>
+                            <div class="examples-list">
+                                <span class="example-badge">Conflictos Bélicos</span>
+                                <span class="example-badge">Revoluciones</span>
+                                <span class="example-badge">Descubrimientos</span>
+                                <span class="example-badge">Desastres Naturales</span>
+                                <span class="example-badge">Eventos Políticos</span>
+                                <span class="example-badge">Avances Científicos</span>
+                            </div>
+                        </div>
+
+                        <div class="form-actions">
+                            <a class="btn btn-outline-secondary btn-lg" th:href="@{/usuarios/perfil}">
+                                <i class="bi bi-arrow-left me-2"></i>Cancelar
+                            </a>
+                            <button type="submit" class="btn btn-primary btn-lg">
+                                <i class="bi bi-check2-circle me-2"></i>Crear Categoría
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <style>
+        .contribute-hero {
+            padding: 80px 0 40px;
+            background: radial-gradient(ellipse 1400px 800px at 50% -100px, rgba(102,126,234,.12) 0%, transparent 50%);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .contribute-hero::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%236b5cff' fill-opacity='0.03'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+            pointer-events: none;
+        }
+
+        .contribute-badge {
+            background: linear-gradient(135deg, rgba(79,70,229,.12), rgba(129,140,248,.12));
+            color: #4f46e5;
+            padding: .6rem 1.5rem;
+            border-radius: 999px;
+            font-size: .85rem;
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            gap: .4rem;
+            border: 1px solid rgba(79,70,229,.22);
+        }
+
+        .form-card {
+            background: #fff;
+            border-radius: 24px;
+            padding: 2.5rem;
+            box-shadow: 0 4px 20px rgba(0,0,0,.08);
+            border: 1px solid rgba(0,0,0,.06);
+        }
+
+        .form-info-box {
+            background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%);
+            border-left: 4px solid #3b82f6;
+            padding: 1rem 1.25rem;
+            border-radius: 12px;
+            color: #1e40af;
+            font-size: .9rem;
+            display: flex;
+            align-items: flex-start;
+        }
+
+        .form-info-box i {
+            margin-top: 2px;
+            flex-shrink: 0;
+        }
+
+        .form-group-custom {
+            margin-bottom: 2rem;
+        }
+
+        .form-label-custom {
+            font-weight: 600;
+            color: #1a202c;
+            margin-bottom: .75rem;
+            display: flex;
+            align-items: center;
+            font-size: .95rem;
+        }
+
+        .form-control-custom {
+            width: 100%;
+            padding: .875rem 1.125rem;
+            border: 2px solid #e9ecef;
+            border-radius: 12px;
+            font-size: .95rem;
+            transition: all .2s ease;
+            background: #fff;
+        }
+
+        .form-control-custom:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 4px rgba(102,126,234,.1);
+        }
+
+        .form-hint {
+            display: block;
+            color: #64748b;
+            font-size: .85rem;
+            margin-top: .5rem;
+            display: flex;
+            align-items: flex-start;
+        }
+
+        .form-hint i {
+            margin-top: 2px;
+            flex-shrink: 0;
+            color: #f59e0b;
+        }
+
+        .highlight-input {
+            background: linear-gradient(135deg, #f8f9ff 0%, #fff 100%);
+            border-radius: 16px;
+            padding: 1.5rem;
+            border: 2px dashed #e9ecef;
+        }
+
+        .examples-box {
+            background: #f8f9fa;
+            border-radius: 16px;
+            padding: 1.25rem;
+            margin-bottom: 2rem;
+        }
+
+        .examples-header {
+            font-weight: 600;
+            color: #1a202c;
+            margin-bottom: .75rem;
+            display: flex;
+            align-items: center;
+            font-size: .9rem;
+        }
+
+        .examples-header i {
+            color: #f59e0b;
+        }
+
+        .examples-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: .5rem;
+        }
+
+        .example-badge {
+            background: #fff;
+            border: 1px solid #e9ecef;
+            padding: .4rem .875rem;
+            border-radius: 999px;
+            font-size: .8rem;
+            color: #64748b;
+            font-weight: 500;
+            transition: all .2s ease;
+        }
+
+        .example-badge:hover {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: #fff;
+            border-color: transparent;
+            transform: translateY(-2px);
+        }
+
+        .form-actions {
+            display: flex;
+            gap: 1rem;
+            margin-top: 2.5rem;
+            padding-top: 2rem;
+            border-top: 1px solid #e9ecef;
+        }
+
+        .btn {
+            border-radius: 12px;
+            font-weight: 600;
+            transition: all .2s ease;
+            flex: 1;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border: none;
+            box-shadow: 0 4px 12px rgba(102,126,234,.25);
+        }
+
+        .btn-primary:hover {
+            background: linear-gradient(135deg, #5568d3 0%, #63408b 100%);
+            box-shadow: 0 6px 16px rgba(102,126,234,.35);
+        }
+
+        .btn-outline-secondary {
+            border: 2px solid #e9ecef;
+            color: #64748b;
+        }
+
+        .btn-outline-secondary:hover {
+            background: #f8f9fa;
+            border-color: #cbd5e0;
+            color: #1a202c;
+        }
+
+        @media (max-width: 768px) {
+            .contribute-hero {
+                padding: 3rem 0 2rem;
+            }
+
+            .display-5 {
+                font-size: 2rem;
+            }
+
+            .form-card {
+                padding: 1.5rem;
+            }
+
+            .form-actions {
+                flex-direction: column;
+            }
+
+            .examples-list {
+                justify-content: center;
+            }
+        }
+    </style>
+
+</main>
+</html>

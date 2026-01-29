@@ -1,0 +1,551 @@
+<!DOCTYPE html>
+<html lang="es"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      th:replace="~{layout/base :: html}">
+
+<main th:fragment="contenido">
+
+    <section class="contribute-hero">
+        <div class="container position-relative">
+            <div class="row align-items-center justify-content-center">
+                <div class="col-lg-8 text-center">
+                    <div class="contribute-badge mb-3">
+                        <i class="bi bi-stars me-2"></i>Contribución Colaborativa
+                    </div>
+                    <h1 class="display-5 fw-bold mb-2 animated-gradient-text">
+                        Nuevo Hecho Histórico
+                    </h1>
+                    <p class="lead text-muted mb-0">
+                        Completá los datos del acontecimiento para sumarlo a la comunidad de MetaMapa
+                    </p>
+                </div>
+            </div>
+
+            <div sec:authorize="hasRole('ADMINISTRADOR')" class="top-action-button-v2">
+                <a th:href="@{/hechos/importar}" class="btn-icon-top-action">
+                    <i class="bi bi-upload me-2"></i>Importar hechos
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <div class="container pb-5">
+        <!-- Mini-form GET para recargar provincias sin perder datos -->
+        <form id="filtroPaisForm" th:action="@{/public/contribuir}" method="get" style="display:none;">
+            <input type="hidden" name="titulo">
+            <input type="hidden" name="descripcion">
+            <input type="hidden" name="fechaAcontecimiento">
+            <input type="hidden" name="latitud">
+            <input type="hidden" name="longitud">
+            <input type="hidden" name="id_categoria">
+            <input type="hidden" name="id_provincia">
+            <input type="hidden" name="id_pais" id="filtroPaisInput">
+        </form>
+
+        <form id="formPost"
+              class="mt-4"
+              th:object="${solicitudHecho}"
+              th:action="@{/solicitudes-hecho/public/subir-hecho}"
+              method="post"
+              enctype="multipart/form-data">
+
+            <input type="hidden" th:if="${_csrf != null}"
+                   th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+
+            <div class="form-card-collection mb-4">
+                <div class="form-card-header-collection">
+                    <div class="form-card-icon-collection">
+                        <i class="bi bi-info-circle-fill"></i>
+                    </div>
+                    <h5 class="mb-0">Información Básica</h5>
+                </div>
+                <div class="form-card-body-collection">
+                    <div class="row g-3">
+
+                        <div class="col-md-6">
+                            <label class="form-label-collection">
+                                <i class="bi bi-text-left me-2"></i>Título del hecho
+                                <span class="text-danger">*</span>
+                            </label>
+                            <input class="form-control-collection"
+                                   th:field="*{titulo}"
+                                   placeholder="Ej: Revolución de Mayo"
+                                   required>
+                        </div>
+
+                        <div class="col-md-6">
+                            <label class="form-label-collection">
+                                <i class="bi bi-tag me-2"></i>Categoría
+                                <span class="text-danger">*</span>
+                            </label>
+                            <select class="form-select-collection"
+                                    th:field="*{id_categoria}"
+                                    required>
+                                <option value="">Seleccionar categoría</option>
+                                <option th:each="cat : ${categorias}"
+                                        th:value="${cat.id}"
+                                        th:text="${cat.categoria}"></option>
+                            </select>
+                        </div>
+
+                        <div class="col-12">
+                            <label class="form-label-collection">
+                                <i class="bi bi-card-text me-2"></i>Descripción del evento
+                                <span class="text-danger">*</span>
+                            </label>
+                            <textarea class="form-control-collection"
+                                      th:field="*{descripcion}"
+                                      rows="3"
+                                      placeholder="Describí el acontecimiento con el mayor detalle posible..."
+                                      required></textarea>
+                            <small class="form-text-collection">
+                                Incluí contexto histórico, personajes relevantes y consecuencias.
+                            </small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-card-collection mb-4">
+                <div class="form-card-header-collection">
+                    <div class="form-card-icon-collection bg-gradient-green">
+                        <i class="bi bi-geo-alt-fill"></i>
+                    </div>
+                    <h5 class="mb-0">Ubicación y Fecha</h5>
+                </div>
+                <div class="form-card-body-collection">
+                    <div class="row g-3">
+
+                        <div class="col-md-6">
+                            <label class="form-label-collection">
+                                <i class="bi bi-globe-americas me-2"></i>País
+                            </label>
+                            <select id="selectPais"
+                                    class="form-select-collection"
+                                    th:field="*{id_pais}"
+                                    th:attr="data-pais-id=${pais != null} ? ${pais.id} : null"
+                                    onchange="
+                                      const post = document.getElementById('formPost');
+                                      const getF = document.getElementById('filtroPaisForm');
+
+                                      ['titulo','descripcion','fechaAcontecimiento','latitud','longitud','id_categoria','id_provincia']
+                                        .forEach(n => {
+                                          const src = post.querySelector(`[name='${n}']`);
+                                          const dst = getF.querySelector(`[name='${n}']`);
+                                          if (src && dst) dst.value = src.value ?? '';
+                                        });
+
+                                      getF.querySelector('[name=id_pais]').value = this.value;
+                                      getF.querySelector('[name=id_provincia]').value = '';
+
+                                      getF.submit();
+                                    ">
+                                <option value="">Seleccionar país</option>
+                                <option th:each="paisItem : ${paises}"
+                                        th:value="${paisItem.id}"
+                                        th:text="${paisItem.pais}"></option>
+                            </select>
+                        </div>
+
+                        <div class="col-md-6">
+                            <label class="form-label-collection">
+                                <i class="bi bi-signpost me-2"></i>Provincia / Estado
+                            </label>
+                            <select id="selectProvincia"
+                                    class="form-select-collection"
+                                    th:field="*{id_provincia}"
+                                    th:attr="disabled=${solicitudHecho.id_pais == null}"
+                                    th:attrappend=" data-prov-id=${provincia != null} ? ${provincia.id} : null">
+                                <option value="">Seleccionar provincia/estado</option>
+                                <option th:each="prov : ${provincias}"
+                                        th:value="${prov.id}"
+                                        th:text="${prov.provincia}"></option>
+                            </select>
+                            <small class="form-text-collection"
+                                   th:if="${solicitudHecho.id_pais == null}">
+                                Primero seleccioná un país.
+                            </small>
+                        </div>
+
+                        <div class="col-md-6">
+                            <label class="form-label-collection">
+                                <i class="bi bi-calendar-event me-2"></i>Fecha del acontecimiento
+                                <span class="text-danger">*</span>
+                            </label>
+                            <input type="date"
+                                   class="form-control-collection"
+                                   th:field="*{fechaAcontecimiento}"
+                                   required>
+                        </div>
+
+                        <div class="col-md-6">
+                            <label class="form-label-collection">
+                                <i class="bi bi-pin-map me-2"></i>Coordenadas (opcional)
+                            </label>
+                            <div class="coordinates-group">
+                                <input type="number" step="any"
+                                       class="form-control-collection"
+                                       th:field="*{latitud}"
+                                       placeholder="Latitud">
+                                <span class="coordinates-separator">,</span>
+                                <input type="number" step="any"
+                                       class="form-control-collection"
+                                       th:field="*{longitud}"
+                                       placeholder="Longitud">
+                            </div>
+                            <small class="form-text-collection">
+                                Podés obtenerlas haciendo clic en el mapa interactivo.
+                            </small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="import-card mb-4">
+                <div class="import-card-header">
+                    <div class="import-card-icon bg-gradient-green">
+                        <i class="bi bi-file-earmark-arrow-up-fill"></i>
+                    </div>
+                    <h5 class="mb-0">Contenido Multimedia</h5>
+                </div>
+
+                <div class="import-card-body">
+
+                    <label for="multimediaFiles" class="file-upload-zone" id="dropZone">
+                        <div class="upload-icon-container">
+                            <i class="bi bi-cloud-arrow-up-fill"></i>
+                        </div>
+
+                        <div class="upload-text">
+                            <p class="upload-title">Arrastrá tus archivos aquí</p>
+                            <p class="upload-subtitle">o hacé clic para seleccionarlos</p>
+                        </div>
+
+                        <div class="upload-requirements">
+                <span class="requirement-item">
+                    <i class="bi bi-check-circle-fill me-1"></i>Acepta imágenes, videos, audio, txt, pdf, csv, docx, etc.
+                </span>
+                            <span class="requirement-item">
+                    <i class="bi bi-check-circle-fill me-1"></i>Podés subir varios archivos a la vez
+                </span>
+                        </div>
+                    </label>
+
+                    <input type="file"
+                           id="multimediaFiles"
+                           name="contenidosMultimedia"
+                           multiple
+                           class="d-none"
+                           accept="image/*,video/*,audio/*,.txt,.pdf,.csv,.doc,.docx,.xlsx">
+
+                    <div id="fileListDisplay" class="selected-file-display"></div>
+
+                </div>
+            </div>
+
+
+
+            <div class="action-buttons-collection">
+                <a th:href="@{/hechos/public/get-all}" class="btn btn-secondary-collection">
+                    <i class="bi bi-arrow-left me-2"></i>Cancelar
+                </a>
+
+                <button type="submit"
+                        class="btn btn-primary-collection"
+                        sec:authorize="!hasRole('ADMINISTRADOR')">
+                    <i class="bi bi-send-fill me-2"></i>Enviar solicitud
+                </button>
+
+                <button type="submit"
+                        class="btn btn-primary-collection"
+                        sec:authorize="hasRole('ADMINISTRADOR')"
+                        th:formaction="@{/hechos/subir}">
+                    <i class="bi bi-upload me-2"></i>Subir hecho
+                </button>
+            </div>
+        </form>
+    </div>
+
+
+
+    <style>
+
+        .import-card {
+            background:#fff;
+            border-radius:16px;
+            padding:0;
+            border:1px solid #e5e7eb;
+            box-shadow:0 10px 24px rgba(2,6,23,.05);
+        }
+
+        .import-card-header {
+            display:flex;
+            align-items:center;
+            gap:1rem;
+            padding:1.2rem 1.4rem;
+            border-bottom:1px solid #e5e7eb;
+        }
+
+        .import-card-icon {
+            width:45px;
+            height:45px;
+            display:flex;
+            align-items:center;
+            justify-content:center;
+            border-radius:12px;
+            color:#fff;
+            font-size:1.4rem;
+        }
+
+        .bg-gradient-green {
+            background:linear-gradient(135deg,#22c55e,#16a34a);
+        }
+
+        .import-card-body {
+            padding:1.6rem;
+        }
+
+        .file-upload-zone {
+            border:2px dashed #7c3aed;
+            border-radius:16px;
+            padding:2rem;
+            text-align:center;
+            cursor:pointer;
+            transition:all .25s ease;
+            background:#faf5ff;
+            display:block;
+            position:relative;
+        }
+
+        .file-upload-zone:hover {
+            background:#f3e8ff;
+            border-color:#5b21b6;
+        }
+
+        .upload-icon-container {
+            font-size:2.7rem;
+            color:#7c3aed;
+            margin-bottom:.6rem;
+        }
+
+        .upload-title {
+            font-weight:700;
+            margin-bottom:.2rem;
+        }
+
+        .upload-subtitle {
+            color:#6b7280;
+            font-size:.9rem;
+            margin-bottom:1rem;
+        }
+
+        .upload-requirements {
+            display:flex;
+            flex-direction:column;
+            gap:.4rem;
+            margin-top:1rem;
+            color:#4b5563;
+            font-size:.85rem;
+        }
+
+        .requirement-item i {
+            color:#22c55e;
+        }
+
+        .selected-file-display {
+            margin-top:1rem;
+            font-size:.9rem;
+            color:#374151;
+        }
+        .selected-file-display .file-item {
+            background:#f3e8ff;
+            border-radius:8px;
+            padding:.45rem .7rem;
+            margin-bottom:.35rem;
+        }
+
+        .contribute-hero{padding:80px 0 40px;background:radial-gradient(ellipse 1400px 800px at 50% -100px,rgba(102,126,234,.12) 0%,transparent 50%);position:relative;overflow:hidden}
+        .contribute-hero::before{content:'';position:absolute;inset:0;background:url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%236b5cff' fill-opacity='0.03'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");pointer-events:none}
+        .contribute-badge{background:linear-gradient(135deg,rgba(79,70,229,.12),rgba(129,140,248,.12));color:#4f46e5;padding:.6rem 1.5rem;border-radius:999px;font-size:.85rem;font-weight:600;display:inline-flex;align-items:center;gap:.4rem;border:1px solid rgba(79,70,229,.22)}
+        .form-card-collection{background:#fff;border-radius:20px;border:1px solid rgba(0,0,0,.06);box-shadow:0 4px 12px rgba(0,0,0,.05);overflow:hidden}
+        .form-card-header-collection{padding:1.2rem 1.75rem;background:linear-gradient(135deg,#f8f9ff 0%,#fff 100%);border-bottom:1px solid rgba(0,0,0,.05);display:flex;align-items:center;gap:1rem}
+        .form-card-icon-collection{width:44px;height:44px;background:linear-gradient(135deg,#667eea,#764ba2);border-radius:14px;display:flex;align-items:center;justify-content:center;color:#fff;font-size:1.4rem;box-shadow:0 4px 10px rgba(102,126,234,.3)}
+        .form-card-icon-collection.bg-gradient-green{background:linear-gradient(135deg,#10b981,#059669)}
+        .form-card-body-collection{padding:1.6rem 1.75rem 1.6rem}
+        .form-card-body-collection .row.g-3{--bs-gutter-y:0.7rem;--bs-gutter-x:1.5rem}
+        .form-label-collection{display:flex;align-items:center;gap:.35rem;font-size:.88rem;font-weight:600;color:#475569;margin-bottom:.25rem}
+        .form-control-collection,.form-select-collection{background:#f8f9ff;border:1px solid #e5e7eb;border-radius:12px;padding:.7rem 1rem;font-size:.86rem;color:#111827;transition:all .2s ease;width:100%}
+        .form-control-collection:focus,.form-select-collection:focus{border-color:#667eea;background:#fff;box-shadow:0 0 0 .18rem rgba(102,126,234,.12);outline:none}
+        .form-control-collection::placeholder{color:#9ca3af}
+        textarea.form-control-collection{min-height:90px;resize:vertical}
+        .form-text-collection{display:block;margin-top:.2rem;font-size:.78rem;color:#6b7280}
+        .coordinates-group{display:flex;align-items:center;gap:.45rem}
+        .coordinates-separator{color:#9ca3af;font-weight:600}
+        .action-buttons-collection{display:flex;gap:1rem;justify-content:flex-end;margin-top:1.8rem;flex-wrap:wrap}
+        .btn-primary-collection,.btn-secondary-collection{border-radius:12px;padding:.75rem 2rem;font-size:.86rem;font-weight:600;display:inline-flex;align-items:center;gap:.4rem;text-decoration:none;transition:all .2s ease}
+        .btn-primary-collection{background:linear-gradient(135deg,#667eea,#764ba2);border:none;color:#fff;box-shadow:0 4px 12px rgba(102,126,234,.3)}
+        .btn-primary-collection:hover{transform:translateY(-2px);box-shadow:0 6px 16px rgba(102,126,234,.4);color:#fff}
+        .btn-secondary-collection{background:#fff;border:2px solid #e5e7eb;color:#6b7280}
+        .btn-secondary-collection:hover{border-color:#667eea;color:#4f46e5;box-shadow:0 4px 10px rgba(148,163,253,.25);transform:translateY(-2px)}
+        .contribute-hero .container {position: relative;}
+        @media (max-width:768px){.contribute-hero{padding:60px 0 30px}.display-5{font-size:2rem}.form-card-body-collection{padding:1.3rem 1.25rem 1.3rem}.coordinates-group{flex-direction:column;align-items:stretch}.coordinates-separator{display:none}.action-buttons-collection{justify-content:stretch}.action-buttons-collection a,.action-buttons-collection button{flex:1;justify-content:center}.top-action-button-v2{position:static;text-align:center;margin-top:20px;width:100%;padding:0 15px}.btn-icon-top-action{width:100%;justify-content:center;padding:.75rem 1.5rem}}
+    </style>
+
+    <script>
+        // 1. Obtener los elementos del DOM
+        const inputFiles = document.getElementById('multimediaFiles');
+        const dropZone = document.getElementById('dropZone');
+        const fileListDisplay = document.getElementById('fileListDisplay');
+
+        // Función para convertir bytes a un formato legible (KB, MB, GB)
+        function formatBytes(bytes, decimals = 2) {
+            if (bytes === 0) return '0 Bytes';
+
+            const k = 1024;
+            const dm = decimals < 0 ? 0 : decimals;
+            const sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB'];
+
+            const i = Math.floor(Math.log(bytes) / Math.log(k));
+
+            return parseFloat((bytes / Math.pow(k, i)).toFixed(dm)) + ' ' + sizes[i];
+        }
+
+        // Función principal para listar y mostrar los archivos seleccionados
+        function handleFiles(files) {
+            // Limpiar la vista previa anterior
+            fileListDisplay.innerHTML = '';
+
+            if (files.length === 0) {
+                return;
+            }
+
+            // Crear el encabezado de la lista
+            let header = document.createElement('div');
+            header.className = 'file-list-header';
+            header.textContent = `Archivos seleccionados (${files.length}):`;
+            fileListDisplay.appendChild(header);
+
+            // Iterar sobre la colección de archivos
+            Array.from(files).forEach(file => {
+                let fileItem = document.createElement('div');
+                fileItem.className = 'file-item';
+
+                // Nombre e icono del archivo
+                let fileNameDiv = document.createElement('div');
+                fileNameDiv.className = 'file-name';
+
+                // Determinar el icono basado en el tipo MIME o extensión
+                let iconClass;
+                if (file.type.startsWith('image/')) {
+                    iconClass = 'bi-image';
+                } else if (file.type.startsWith('video/')) {
+                    iconClass = 'bi-camera-video';
+                } else if (file.type.startsWith('audio/')) {
+                    iconClass = 'bi-mic';
+                } else if (file.name.endsWith('.pdf')) {
+                    iconClass = 'bi-file-pdf';
+                } else if (file.name.endsWith('.csv')) {
+                    iconClass = 'bi-file-earmark-excel';
+                } else if (file.name.endsWith('.doc') || file.name.endsWith('.docx')) {
+                    iconClass = 'bi-file-earmark-word';
+                } else {
+                    iconClass = 'bi-file-earmark';
+                }
+
+
+                fileNameDiv.innerHTML = `<i class="bi ${iconClass}"></i> ${file.name}`;
+
+                // Tamaño del archivo
+                let fileSizeSpan = document.createElement('span');
+                fileSizeSpan.className = 'file-size';
+                fileSizeSpan.textContent = formatBytes(file.size);
+
+                fileItem.appendChild(fileNameDiv);
+                fileItem.appendChild(fileSizeSpan);
+                fileListDisplay.appendChild(fileItem);
+            });
+
+            // En este punto, los archivos están en la variable `files` y listos para ser enviados.
+        }
+
+
+        // 2. Evento para el input de archivo (cuando el usuario hace click y selecciona)
+        inputFiles.addEventListener('change', (event) => {
+            handleFiles(event.target.files);
+        });
+
+
+        // 3. Eventos para la funcionalidad de Drag and Drop (Arrastrar y Soltar)
+
+        // Evitar el comportamiento por defecto del navegador (abrir el archivo)
+        ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+            dropZone.addEventListener(eventName, preventDefaults, false);
+            document.body.addEventListener(eventName, preventDefaults, false);
+        });
+
+        function preventDefaults(e) {
+            e.preventDefault();
+            e.stopPropagation();
+        }
+
+        // Cambiar la clase CSS para el efecto visual de "arrastrar sobre"
+        ['dragenter', 'dragover'].forEach(eventName => {
+            dropZone.addEventListener(eventName, () => {
+                dropZone.classList.add('dragover');
+            }, false);
+        });
+
+        ['dragleave', 'drop'].forEach(eventName => {
+            dropZone.addEventListener(eventName, () => {
+                dropZone.classList.remove('dragover');
+            }, false);
+        });
+
+        // Manejar el archivo cuando se suelta
+        dropZone.addEventListener('drop', (event) => {
+            const dt = event.dataTransfer;
+            const files = dt.files;
+
+            // Pasar los archivos a la función de manejo
+            handleFiles(files);
+        }, false);
+
+    </script>
+
+    <!-- Auto-preselección País/Provincia detectados (misma lógica que ya tenías) -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const selPais = document.getElementById('selectPais');
+            const selProv = document.getElementById('selectProvincia');
+
+            const detectedPaisId = selPais?.dataset?.paisId || '';
+            const detectedProvId = selProv?.dataset?.provId || '';
+
+            if (detectedPaisId && !selPais.value) {
+                const post = document.getElementById('formPost');
+                const getF  = document.getElementById('filtroPaisForm');
+
+                ['titulo','descripcion','fechaAcontecimiento','latitud','longitud','id_categoria','id_provincia']
+                    .forEach(n => {
+                        const src = post.querySelector(`[name='${n}']`);
+                        const dst = getF.querySelector(`[name='${n}']`);
+                        if (src && dst) dst.value = src.value ?? '';
+                    });
+
+                getF.querySelector('[name=id_pais]').value = detectedPaisId;
+                getF.submit();
+                return;
+            }
+
+            if (detectedPaisId && selPais && !selPais.value) {
+                selPais.value = detectedPaisId;
+            }
+            if (detectedProvId && selProv) {
+                selProv.value = detectedProvId;
+            }
+        });
+    </script>
+
+</main>
+</html>

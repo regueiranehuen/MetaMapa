@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{layout/base :: html}">
+<main th:fragment="contenido">
+    <section class="py-5">
+        <div class="container" style="max-width: 720px;">
+            <div class="text-center">
+                <div class="display-1 fw-bold mb-2">403</div>
+                <h1 class="display-5 fw-bold mb-3 animated-gradient-text">
+                    Acceso denegado
+                </h1>
+                <p class="lead text-muted mb-4">
+                    No tenés permisos suficientes para acceder a este recurso.
+                    Si creés que se trata de un error, contactá a un administrador.
+                </p>
+                <a th:href="@{/}" class="btn btn-primary">
+                    <i class="bi bi-house me-2"></i>Volver al inicio
+                </a>
+            </div>
+        </div>
+    </section>
+</main>
+</html>

@@ -5,384 +5,76 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="f850432b-1600-446e-abba-2862d1cc44e3" name="Changes" comment="Merge branch 'entrega_6' of https://github.com/dds-utn/2025-tpa-mi-no-grupo-17 into entrega_6&#10;&#10;# Conflicts:&#10;#&#9;.idea/workspace.xml">
-      <change afterPath="$PROJECT_DIR$/serverBack/src/main/java/com/tpagrupo17/Metamapa/entities/DbMain/algoritmosConsenso/IAlgoritmoConsenso.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/serverBack/src/main/java/dds/.gitkeep" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/serverBack/src/main/java/modulos/AtributosHechoMemoria.java" beforeDir="false" afterPath="$PROJECT_DIR$/serverBack/src/main/java/com/tpagrupo17/Metamapa/entities/DbMain/hechoRef/AtributosHechoMemoria.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/serverBack/src/main/java/modulos/BodyToListConverter.java" beforeDir="false" afterPath="$PROJECT_DIR$/serverBack/src/main/java/com/tpagrupo17/Metamapa/utils/BodyToListConverter.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/serverBack/src/main/java/modulos/JwtClaimExtractor.java" beforeDir="false" afterPath="$PROJECT_DIR$/serverBack/src/main/java/com/tpagrupo17/Metamapa/JWT/JwtClaimExtractor.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/serverBack/src/main/java/modulos/ServerBackApplication.java" beforeDir="false" afterPath="$PROJECT_DIR$/serverBack/src/main/java/com/tpagrupo17/Metamapa/ServerBackApplication.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/serverBack/src/main/java/modulos/agregacion/config/DbHechosDinamicaConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/serverBack/src/main/java/com/tpagrupo17/Metamapa/configs/DbHechosDinamicaConfig.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/serverBack/src/main/java/modulos/agregacion/config/DbHechosEstaticaConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/serverBack/src/main/java/com/tpagrupo17/Metamapa/configs/DbHechosEstaticaConfig.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/serverBack/src/main/java/modulos/agregacion/config/DbHechosProxyConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/serverBack/src/main/java/com/tpagrupo17/Metamapa/configs/DbHechosProxyConfig.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/serverBack/src/main/java/modulos/agregacion/config/DbMainConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/serverBack/src/main/java/com/tpagrupo17/Metamapa/configs/DbMainConfig.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/serverBack/src/main/java/modulos/agregacion/controllers/CategoriaController.java" beforeDir="false" afterPath="$PROJECT_DIR$/serverBack/src/main/java/com/tpagrupo17/Metamapa/controllers/CategoriaController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/serverBack/src/main/java/modulos/agregacion/controllers/ColeccionController.java" beforeDir="false" afterPath="$PROJECT_DIR$/serverBack/src/main/java/com/tpagrupo17/Metamapa/controllers/ColeccionController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/serverBack/src/main/java/modulos/agregacion/controllers/HechosController.java" beforeDir="false" afterPath="$PROJECT_DIR$/serverBack/src/main/java/com/tpagrupo17/Metamapa/controllers/HechosController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/serverBack/src/main/java/modulos/agregacion/controllers/SinonimoController.java" beforeDir="false" afterPath="$PROJECT_DIR$/serverBack/src/main/java/com/tpagrupo17/Metamapa/controllers/SinonimoController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/serverBack/src/main/java/modulos/agregacion/controllers/SolicitudHechoController.java" beforeDir="false" afterPath="$PROJECT_DIR$/serverBack/src/main/java/com/tpagrupo17/Metamapa/controllers/SolicitudHechoController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/serverBack/src/main/java/modulos/agregacion/controllers/UsuarioController.java" beforeDir="false" afterPath="$PROJECT_DIR$/serverBack/src/main/java/com/tpagrupo17/Metamapa/controllers/UsuarioController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/serverBack/src/main/java/modulos/agregacion/converters/AlgoritmoConsensoConverter.java" beforeDir="false" afterPath="$PROJECT_DIR$/serverBack/src/main/java/com/tpagrupo17/Metamapa/converters/AlgoritmoConsensoConverter.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/serverBack/src/main/java/modulos/agregacion/converters/LocalDateTimeConverter.java" beforeDir="false" afterPath="$PROJECT_DIR$/serverBack/src/main/java/com/tpagrupo17/Metamapa/converters/LocalDateTimeConverter.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/serverBack/src/main/java/modulos/agregacion/entities/AtributosHechoModificarMemoria.java" beforeDir="false" afterPath="$PROJECT_DIR$/serverBack/src/main/java/com/tpagrupo17/Metamapa/entities/AtributosHechoModificarMemoria.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/serverBack/src/main/java/modulos/agregacion/entities/DbDinamica/HechoDinamica.java" beforeDir="false" afterPath="$PROJECT_DIR$/serverBack/src/main/java/com/tpagrupo17/Metamapa/entities/DbDinamica/HechoDinamica.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/serverBack/src/main/java/modulos/agregacion/entities/DbDinamica/solicitudes/SolicitudEliminarHecho.java" beforeDir="false" afterPath="$PROJECT_DIR$/serverBack/src/main/java/com/tpagrupo17/Metamapa/entities/DbDinamica/Solicitudes/SolicitudEliminarHecho.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/serverBack/src/main/java/modulos/agregacion/entities/DbDinamica/solicitudes/SolicitudHecho.java" beforeDir="false" afterPath="$PROJECT_DIR$/serverBack/src/main/java/com/tpagrupo17/Metamapa/entities/DbDinamica/Solicitudes/SolicitudHecho.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/serverBack/src/main/java/modulos/agregacion/entities/DbDinamica/solicitudes/SolicitudModificarHecho.java" beforeDir="false" afterPath="$PROJECT_DIR$/serverBack/src/main/java/com/tpagrupo17/Metamapa/entities/DbDinamica/Solicitudes/SolicitudModificarHecho.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/serverBack/src/main/java/modulos/agregacion/entities/DbDinamica/solicitudes/SolicitudSubirHecho.java" beforeDir="false" afterPath="$PROJECT_DIR$/serverBack/src/main/java/com/tpagrupo17/Metamapa/entities/DbDinamica/Solicitudes/SolicitudSubirHecho.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/serverBack/src/main/java/modulos/agregacion/entities/DbEstatica/Dataset.java" beforeDir="false" afterPath="$PROJECT_DIR$/serverBack/src/main/java/com/tpagrupo17/Metamapa/entities/DbEstatica/Dataset.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/serverBack/src/main/java/modulos/agregacion/entities/DbEstatica/HechoEstatica.java" beforeDir="false" afterPath="$PROJECT_DIR$/serverBack/src/main/java/com/tpagrupo17/Metamapa/entities/DbEstatica/HechoEstatica.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/serverBack/src/main/java/modulos/agregacion/entities/DbMain/Categoria.java" beforeDir="false" afterPath="$PROJECT_DIR$/serverBack/src/main/java/com/tpagrupo17/Metamapa/entities/DbMain/Categoria.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/serverBack/src/main/java/modulos/agregacion/entities/DbMain/Coleccion.java" beforeDir="false" afterPath="$PROJECT_DIR$/serverBack/src/main/java/com/tpagrupo17/Metamapa/entities/DbMain/Coleccion.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/serverBack/src/main/java/modulos/agregacion/entities/DbMain/DatosColeccion.java" beforeDir="false" afterPath="$PROJECT_DIR$/serverBack/src/main/java/com/tpagrupo17/Metamapa/entities/DbMain/DatosColeccion.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/serverBack/src/main/java/modulos/agregacion/entities/DbMain/Filtrador.java" beforeDir="false" afterPath="$PROJECT_DIR$/serverBack/src/main/java/com/tpagrupo17/Metamapa/entities/DbMain/Filtrador.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/serverBack/src/main/java/modulos/agregacion/entities/DbMain/FiltrosColeccion.java" beforeDir="false" afterPath="$PROJECT_DIR$/serverBack/src/main/java/com/tpagrupo17/Metamapa/entities/DbMain/FiltrosColeccion.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/serverBack/src/main/java/modulos/agregacion/entities/DbMain/Fuente.java" beforeDir="false" afterPath="$PROJECT_DIR$/serverBack/src/main/java/com/tpagrupo17/Metamapa/entities/DbMain/Fuente.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/serverBack/src/main/java/modulos/agregacion/entities/DbMain/Hash.java" beforeDir="false" afterPath="$PROJECT_DIR$/serverBack/src/main/java/com/tpagrupo17/Metamapa/entities/DbMain/Hash.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/serverBack/src/main/java/modulos/agregacion/entities/DbMain/Hecho.java" beforeDir="false" afterPath="$PROJECT_DIR$/serverBack/src/main/java/com/tpagrupo17/Metamapa/entities/DbMain/Hecho.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/serverBack/src/main/java/modulos/agregacion/entities/DbMain/Mensaje.java" beforeDir="false" afterPath="$PROJECT_DIR$/serverBack/src/main/java/com/tpagrupo17/Metamapa/entities/DbMain/Mensaje.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/serverBack/src/main/java/modulos/agregacion/entities/DbMain/Pais.java" beforeDir="false" afterPath="$PROJECT_DIR$/serverBack/src/main/java/com/tpagrupo17/Metamapa/entities/DbMain/Pais.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/serverBack/src/main/java/modulos/agregacion/entities/DbMain/PaisProvincias.java" beforeDir="false" afterPath="$PROJECT_DIR$/serverBack/src/main/java/com/tpagrupo17/Metamapa/entities/DbMain/PaisProvincias.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/serverBack/src/main/java/modulos/agregacion/entities/DbMain/Provincia.java" beforeDir="false" afterPath="$PROJECT_DIR$/serverBack/src/main/java/com/tpagrupo17/Metamapa/entities/DbMain/Provincia.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/serverBack/src/main/java/modulos/agregacion/entities/DbMain/Reporte.java" beforeDir="false" afterPath="$PROJECT_DIR$/serverBack/src/main/java/com/tpagrupo17/Metamapa/entities/DbMain/Reporte.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/serverBack/src/main/java/modulos/agregacion/entities/DbMain/RespuestaHttp.java" beforeDir="false" afterPath="$PROJECT_DIR$/serverBack/src/main/java/com/tpagrupo17/Metamapa/entities/DbMain/RespuestaHttp.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/serverBack/src/main/java/modulos/agregacion/entities/DbMain/Sinonimo.java" beforeDir="false" afterPath="$PROJECT_DIR$/serverBack/src/main/java/com/tpagrupo17/Metamapa/entities/DbMain/Sinonimo.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/serverBack/src/main/java/modulos/agregacion/entities/DbMain/Ubicacion.java" beforeDir="false" afterPath="$PROJECT_DIR$/serverBack/src/main/java/com/tpagrupo17/Metamapa/entities/DbMain/Ubicacion.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/serverBack/src/main/java/modulos/agregacion/entities/DbMain/UbicacionString.java" beforeDir="false" afterPath="$PROJECT_DIR$/serverBack/src/main/java/com/tpagrupo17/Metamapa/entities/DbMain/UbicacionString.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/serverBack/src/main/java/modulos/agregacion/entities/DbMain/algoritmosConsenso/AlgoritmoConsensoMayoriaAbsoluta.java" beforeDir="false" afterPath="$PROJECT_DIR$/serverBack/src/main/java/com/tpagrupo17/Metamapa/entities/DbMain/algoritmosConsenso/AlgoritmoConsensoMayoriaAbsoluta.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/serverBack/src/main/java/modulos/agregacion/entities/DbMain/algoritmosConsenso/AlgoritmoConsensoMayoriaSimple.java" beforeDir="false" afterPath="$PROJECT_DIR$/serverBack/src/main/java/com/tpagrupo17/Metamapa/entities/DbMain/algoritmosConsenso/AlgoritmoConsensoMayoriaSimple.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/serverBack/src/main/java/modulos/agregacion/entities/DbMain/algoritmosConsenso/AlgoritmoConsensoMultiplesMenciones.java" beforeDir="false" afterPath="$PROJECT_DIR$/serverBack/src/main/java/com/tpagrupo17/Metamapa/entities/DbMain/algoritmosConsenso/AlgoritmoConsensoMultiplesMenciones.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/serverBack/src/main/java/modulos/agregacion/entities/DbMain/algoritmosConsenso/IAlgoritmoConsenso.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/serverBack/src/main/java/modulos/agregacion/entities/DbMain/filtros/Filtro.java" beforeDir="false" afterPath="$PROJECT_DIR$/serverBack/src/main/java/com/tpagrupo17/Metamapa/entities/DbMain/filtros/Filtro.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/serverBack/src/main/java/modulos/agregacion/entities/DbMain/filtros/FiltroCategoria.java" beforeDir="false" afterPath="$PROJECT_DIR$/serverBack/src/main/java/com/tpagrupo17/Metamapa/entities/DbMain/filtros/FiltroCategoria.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/serverBack/src/main/java/modulos/agregacion/entities/DbMain/filtros/FiltroContenidoMultimedia.java" beforeDir="false" afterPath="$PROJECT_DIR$/serverBack/src/main/java/com/tpagrupo17/Metamapa/entities/DbMain/filtros/FiltroContenidoMultimedia.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/serverBack/src/main/java/modulos/agregacion/entities/DbMain/filtros/FiltroDescripcion.java" beforeDir="false" afterPath="$PROJECT_DIR$/serverBack/src/main/java/com/tpagrupo17/Metamapa/entities/DbMain/filtros/FiltroDescripcion.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/serverBack/src/main/java/modulos/agregacion/entities/DbMain/filtros/FiltroFechaAcontecimiento.java" beforeDir="false" afterPath="$PROJECT_DIR$/serverBack/src/main/java/com/tpagrupo17/Metamapa/entities/DbMain/filtros/FiltroFechaAcontecimiento.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/serverBack/src/main/java/modulos/agregacion/entities/DbMain/filtros/FiltroFechaCarga.java" beforeDir="false" afterPath="$PROJECT_DIR$/serverBack/src/main/java/com/tpagrupo17/Metamapa/entities/DbMain/filtros/FiltroFechaCarga.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/serverBack/src/main/java/modulos/agregacion/entities/DbMain/filtros/FiltroFuente.java" beforeDir="false" afterPath="$PROJECT_DIR$/serverBack/src/main/java/com/tpagrupo17/Metamapa/entities/DbMain/filtros/FiltroFuente.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/serverBack/src/main/java/modulos/agregacion/entities/DbMain/filtros/FiltroPais.java" beforeDir="false" afterPath="$PROJECT_DIR$/serverBack/src/main/java/com/tpagrupo17/Metamapa/entities/DbMain/filtros/FiltroPais.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/serverBack/src/main/java/modulos/agregacion/entities/DbMain/filtros/FiltroProvincia.java" beforeDir="false" afterPath="$PROJECT_DIR$/serverBack/src/main/java/com/tpagrupo17/Metamapa/entities/DbMain/filtros/FiltroProvincia.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/serverBack/src/main/java/modulos/agregacion/entities/DbMain/filtros/FiltroTitulo.java" beforeDir="false" afterPath="$PROJECT_DIR$/serverBack/src/main/java/com/tpagrupo17/Metamapa/entities/DbMain/filtros/FiltroTitulo.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/serverBack/src/main/java/modulos/agregacion/entities/DbMain/filtros/IFiltro.java" beforeDir="false" afterPath="$PROJECT_DIR$/serverBack/src/main/java/com/tpagrupo17/Metamapa/entities/DbMain/filtros/IFiltro.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/serverBack/src/main/java/modulos/agregacion/entities/DbMain/hechoRef/HechoRef.java" beforeDir="false" afterPath="$PROJECT_DIR$/serverBack/src/main/java/com/tpagrupo17/Metamapa/entities/DbMain/hechoRef/HechoRef.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/serverBack/src/main/java/modulos/agregacion/entities/DbMain/hechoRef/HechoRefKey.java" beforeDir="false" afterPath="$PROJECT_DIR$/serverBack/src/main/java/com/tpagrupo17/Metamapa/entities/DbMain/hechoRef/HechoRefKey.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/serverBack/src/main/java/modulos/agregacion/entities/DbMain/projections/CantSolicitudesSpamProjection.java" beforeDir="false" afterPath="$PROJECT_DIR$/serverBack/src/main/java/com/tpagrupo17/Metamapa/entities/DbMain/projections/CantSolicitudesSpamProjection.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/serverBack/src/main/java/modulos/agregacion/entities/DbMain/projections/CategoriaCantidadProjection.java" beforeDir="false" afterPath="$PROJECT_DIR$/serverBack/src/main/java/com/tpagrupo17/Metamapa/entities/DbMain/projections/CategoriaCantidadProjection.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/serverBack/src/main/java/modulos/agregacion/entities/DbMain/projections/CategoriaProvinciaProjection.java" beforeDir="false" afterPath="$PROJECT_DIR$/serverBack/src/main/java/com/tpagrupo17/Metamapa/entities/DbMain/projections/CategoriaProvinciaProjection.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/serverBack/src/main/java/modulos/agregacion/entities/DbMain/projections/ColeccionProvinciaProjection.java" beforeDir="false" afterPath="$PROJECT_DIR$/serverBack/src/main/java/com/tpagrupo17/Metamapa/entities/DbMain/projections/ColeccionProvinciaProjection.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/serverBack/src/main/java/modulos/agregacion/entities/DbMain/projections/HoraCategoriaProjection.java" beforeDir="false" afterPath="$PROJECT_DIR$/serverBack/src/main/java/com/tpagrupo17/Metamapa/entities/DbMain/projections/HoraCategoriaProjection.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/serverBack/src/main/java/modulos/agregacion/entities/DbMain/projections/SolicitudHechoProjection.java" beforeDir="false" afterPath="$PROJECT_DIR$/serverBack/src/main/java/com/tpagrupo17/Metamapa/entities/DbMain/projections/SolicitudHechoProjection.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/serverBack/src/main/java/modulos/agregacion/entities/DbMain/usuario/DatosPersonalesPublicador.java" beforeDir="false" afterPath="$PROJECT_DIR$/serverBack/src/main/java/com/tpagrupo17/Metamapa/entities/DbMain/usuario/DatosPersonalesPublicador.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/serverBack/src/main/java/modulos/agregacion/entities/DbMain/usuario/Rol.java" beforeDir="false" afterPath="$PROJECT_DIR$/serverBack/src/main/java/com/tpagrupo17/Metamapa/entities/DbMain/usuario/Rol.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/serverBack/src/main/java/modulos/agregacion/entities/DbMain/usuario/Usuario.java" beforeDir="false" afterPath="$PROJECT_DIR$/serverBack/src/main/java/com/tpagrupo17/Metamapa/entities/DbMain/usuario/Usuario.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/serverBack/src/main/java/modulos/agregacion/entities/DbProxy/HechoProxy.java" beforeDir="false" afterPath="$PROJECT_DIR$/serverBack/src/main/java/com/tpagrupo17/Metamapa/entities/DbProxy/HechoProxy.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/serverBack/src/main/java/modulos/agregacion/entities/HechoMemoria.java" beforeDir="false" afterPath="$PROJECT_DIR$/serverBack/src/main/java/com/tpagrupo17/Metamapa/entities/HechoMemoria.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/serverBack/src/main/java/modulos/agregacion/entities/atributosHecho/AtributosHecho.java" beforeDir="false" afterPath="$PROJECT_DIR$/serverBack/src/main/java/com/tpagrupo17/Metamapa/entities/atributosHecho/AtributosHecho.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/serverBack/src/main/java/modulos/agregacion/entities/atributosHecho/AtributosHechoModificar.java" beforeDir="false" afterPath="$PROJECT_DIR$/serverBack/src/main/java/com/tpagrupo17/Metamapa/entities/atributosHecho/AtributosHechoModificar.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/serverBack/src/main/java/modulos/agregacion/entities/atributosHecho/ContenidoMultimedia.java" beforeDir="false" afterPath="$PROJECT_DIR$/serverBack/src/main/java/com/tpagrupo17/Metamapa/entities/atributosHecho/ContenidoMultimedia.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/serverBack/src/main/java/modulos/agregacion/entities/atributosHecho/Origen.java" beforeDir="false" afterPath="$PROJECT_DIR$/serverBack/src/main/java/com/tpagrupo17/Metamapa/entities/atributosHecho/Origen.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/serverBack/src/main/java/modulos/agregacion/entities/atributosHecho/OrigenConexion.java" beforeDir="false" afterPath="$PROJECT_DIR$/serverBack/src/main/java/com/tpagrupo17/Metamapa/entities/atributosHecho/OrigenConexion.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/serverBack/src/main/java/modulos/agregacion/entities/atributosHecho/TipoContenido.java" beforeDir="false" afterPath="$PROJECT_DIR$/serverBack/src/main/java/com/tpagrupo17/Metamapa/entities/atributosHecho/TipoContenido.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/serverBack/src/main/java/modulos/agregacion/entities/fuentes/FuenteDinamica.java" beforeDir="false" afterPath="$PROJECT_DIR$/serverBack/src/main/java/com/tpagrupo17/Metamapa/entities/fuentes/FuenteDinamica.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/serverBack/src/main/java/modulos/agregacion/entities/fuentes/FuenteEstatica.java" beforeDir="false" afterPath="$PROJECT_DIR$/serverBack/src/main/java/com/tpagrupo17/Metamapa/entities/fuentes/FuenteEstatica.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/serverBack/src/main/java/modulos/agregacion/entities/fuentes/FuenteProxy.java" beforeDir="false" afterPath="$PROJECT_DIR$/serverBack/src/main/java/com/tpagrupo17/Metamapa/entities/fuentes/FuenteProxy.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/serverBack/src/main/java/modulos/agregacion/entities/fuentes/LectorCSV.java" beforeDir="false" afterPath="$PROJECT_DIR$/serverBack/src/main/java/com/tpagrupo17/Metamapa/entities/fuentes/LectorCSV.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/serverBack/src/main/java/modulos/agregacion/entities/fuentes/Requests/LoginRequest.java" beforeDir="false" afterPath="$PROJECT_DIR$/serverBack/src/main/java/com/tpagrupo17/Metamapa/entities/fuentes/Requests/LoginRequest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/serverBack/src/main/java/modulos/agregacion/entities/fuentes/Responses/ColeccionesResponse.java" beforeDir="false" afterPath="$PROJECT_DIR$/serverBack/src/main/java/com/tpagrupo17/Metamapa/entities/fuentes/Responses/ColeccionesResponse.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/serverBack/src/main/java/modulos/agregacion/entities/fuentes/Responses/HechoMetamapaResponse.java" beforeDir="false" afterPath="$PROJECT_DIR$/serverBack/src/main/java/com/tpagrupo17/Metamapa/entities/fuentes/Responses/HechoMetamapaResponse.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/serverBack/src/main/java/modulos/agregacion/entities/fuentes/Responses/HechoResponse.java" beforeDir="false" afterPath="$PROJECT_DIR$/serverBack/src/main/java/com/tpagrupo17/Metamapa/entities/fuentes/Responses/HechoResponse.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/serverBack/src/main/java/modulos/agregacion/entities/fuentes/Responses/HechosMetamapaResponse.java" beforeDir="false" afterPath="$PROJECT_DIR$/serverBack/src/main/java/com/tpagrupo17/Metamapa/entities/fuentes/Responses/HechosMetamapaResponse.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/serverBack/src/main/java/modulos/agregacion/entities/fuentes/Responses/HechosResponse.java" beforeDir="false" afterPath="$PROJECT_DIR$/serverBack/src/main/java/com/tpagrupo17/Metamapa/entities/fuentes/Responses/HechosResponse.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/serverBack/src/main/java/modulos/agregacion/entities/fuentes/Responses/LoginResponse.java" beforeDir="false" afterPath="$PROJECT_DIR$/serverBack/src/main/java/com/tpagrupo17/Metamapa/entities/fuentes/Responses/LoginResponse.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/serverBack/src/main/java/modulos/agregacion/repositories/DbDinamica/IHechosDinamicaRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/serverBack/src/main/java/com/tpagrupo17/Metamapa/repositories/DbDinamica/IHechosDinamicaRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/serverBack/src/main/java/modulos/agregacion/repositories/DbDinamica/ISolicitudAgregarHechoRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/serverBack/src/main/java/com/tpagrupo17/Metamapa/repositories/DbDinamica/ISolicitudAgregarHechoRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/serverBack/src/main/java/modulos/agregacion/repositories/DbDinamica/ISolicitudEliminarHechoRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/serverBack/src/main/java/com/tpagrupo17/Metamapa/repositories/DbDinamica/ISolicitudEliminarHechoRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/serverBack/src/main/java/modulos/agregacion/repositories/DbDinamica/ISolicitudModificarHechoRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/serverBack/src/main/java/com/tpagrupo17/Metamapa/repositories/DbDinamica/ISolicitudModificarHechoRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/serverBack/src/main/java/modulos/agregacion/repositories/DbDinamica/ISolicitudRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/serverBack/src/main/java/com/tpagrupo17/Metamapa/repositories/DbDinamica/ISolicitudRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/serverBack/src/main/java/modulos/agregacion/repositories/DbEstatica/IDatasetsRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/serverBack/src/main/java/com/tpagrupo17/Metamapa/repositories/DbEstatica/IDatasetsRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/serverBack/src/main/java/modulos/agregacion/repositories/DbEstatica/IHechosEstaticaRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/serverBack/src/main/java/com/tpagrupo17/Metamapa/repositories/DbEstatica/IHechosEstaticaRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/serverBack/src/main/java/modulos/agregacion/repositories/DbMain/IAtributosHechoModificarRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/serverBack/src/main/java/com/tpagrupo17/Metamapa/repositories/DbMain/IAtributosHechoModificarRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/serverBack/src/main/java/modulos/agregacion/repositories/DbMain/ICategoriaRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/serverBack/src/main/java/com/tpagrupo17/Metamapa/repositories/DbMain/ICategoriaRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/serverBack/src/main/java/modulos/agregacion/repositories/DbMain/IColeccionRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/serverBack/src/main/java/com/tpagrupo17/Metamapa/repositories/DbMain/IColeccionRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/serverBack/src/main/java/modulos/agregacion/repositories/DbMain/IFiltroRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/serverBack/src/main/java/com/tpagrupo17/Metamapa/repositories/DbMain/IFiltroRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/serverBack/src/main/java/modulos/agregacion/repositories/DbMain/IHechoRefRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/serverBack/src/main/java/com/tpagrupo17/Metamapa/repositories/DbMain/IHechoRefRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/serverBack/src/main/java/modulos/agregacion/repositories/DbMain/IMensajeRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/serverBack/src/main/java/com/tpagrupo17/Metamapa/repositories/DbMain/IMensajeRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/serverBack/src/main/java/modulos/agregacion/repositories/DbMain/IPaisRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/serverBack/src/main/java/com/tpagrupo17/Metamapa/repositories/DbMain/IPaisRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/serverBack/src/main/java/modulos/agregacion/repositories/DbMain/IProvinciaRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/serverBack/src/main/java/com/tpagrupo17/Metamapa/repositories/DbMain/IProvinciaRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/serverBack/src/main/java/modulos/agregacion/repositories/DbMain/IReporteHechoRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/serverBack/src/main/java/com/tpagrupo17/Metamapa/repositories/DbMain/IReporteHechoRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/serverBack/src/main/java/modulos/agregacion/repositories/DbMain/ISinonimoRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/serverBack/src/main/java/com/tpagrupo17/Metamapa/repositories/DbMain/ISinonimoRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/serverBack/src/main/java/modulos/agregacion/repositories/DbMain/IUbicacionRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/serverBack/src/main/java/com/tpagrupo17/Metamapa/repositories/DbMain/IUbicacionRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/serverBack/src/main/java/modulos/agregacion/repositories/DbMain/IUsuarioRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/serverBack/src/main/java/com/tpagrupo17/Metamapa/repositories/DbMain/IUsuarioRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/serverBack/src/main/java/modulos/agregacion/repositories/DbProxy/IHechosProxyRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/serverBack/src/main/java/com/tpagrupo17/Metamapa/repositories/DbProxy/IHechosProxyRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/serverBack/src/main/java/modulos/agregacion/services/CategoriaService.java" beforeDir="false" afterPath="$PROJECT_DIR$/serverBack/src/main/java/com/tpagrupo17/Metamapa/services/CategoriaService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/serverBack/src/main/java/modulos/agregacion/services/ColeccionService.java" beforeDir="false" afterPath="$PROJECT_DIR$/serverBack/src/main/java/com/tpagrupo17/Metamapa/services/ColeccionService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/serverBack/src/main/java/modulos/agregacion/services/HechosService.java" beforeDir="false" afterPath="$PROJECT_DIR$/serverBack/src/main/java/com/tpagrupo17/Metamapa/services/HechosService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/serverBack/src/main/java/modulos/agregacion/services/SinonimoService.java" beforeDir="false" afterPath="$PROJECT_DIR$/serverBack/src/main/java/com/tpagrupo17/Metamapa/services/SinonimoService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/serverBack/src/main/java/modulos/agregacion/services/SolicitudHechoService.java" beforeDir="false" afterPath="$PROJECT_DIR$/serverBack/src/main/java/com/tpagrupo17/Metamapa/services/SolicitudHechoService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/serverBack/src/main/java/modulos/agregacion/services/UsuarioService.java" beforeDir="false" afterPath="$PROJECT_DIR$/serverBack/src/main/java/com/tpagrupo17/Metamapa/services/UsuarioService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/serverBack/src/main/java/modulos/apis/DatosQuery.java" beforeDir="false" afterPath="$PROJECT_DIR$/serverBack/src/main/java/com/tpagrupo17/Metamapa/servicioEstadistica/DatosQuery.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/serverBack/src/main/java/modulos/apis/IDatosQuery.java" beforeDir="false" afterPath="$PROJECT_DIR$/serverBack/src/main/java/com/tpagrupo17/Metamapa/servicioEstadistica/repositories/IDatosQuery.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/serverBack/src/main/java/modulos/buscadores/BuscadorCategoria.java" beforeDir="false" afterPath="$PROJECT_DIR$/serverBack/src/main/java/com/tpagrupo17/Metamapa/buscadores/BuscadorCategoria.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/serverBack/src/main/java/modulos/buscadores/BuscadorFiltro.java" beforeDir="false" afterPath="$PROJECT_DIR$/serverBack/src/main/java/com/tpagrupo17/Metamapa/buscadores/BuscadorFiltro.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/serverBack/src/main/java/modulos/buscadores/BuscadorHecho.java" beforeDir="false" afterPath="$PROJECT_DIR$/serverBack/src/main/java/com/tpagrupo17/Metamapa/buscadores/BuscadorHecho.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/serverBack/src/main/java/modulos/buscadores/BuscadorPais.java" beforeDir="false" afterPath="$PROJECT_DIR$/serverBack/src/main/java/com/tpagrupo17/Metamapa/buscadores/BuscadorPais.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/serverBack/src/main/java/modulos/buscadores/BuscadorProvincia.java" beforeDir="false" afterPath="$PROJECT_DIR$/serverBack/src/main/java/com/tpagrupo17/Metamapa/buscadores/BuscadorProvincia.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/serverBack/src/main/java/modulos/buscadores/BuscadorUbicacion.java" beforeDir="false" afterPath="$PROJECT_DIR$/serverBack/src/main/java/com/tpagrupo17/Metamapa/buscadores/BuscadorUbicacion.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/serverBack/src/main/java/modulos/buscadores/BuscadoresRegistry.java" beforeDir="false" afterPath="$PROJECT_DIR$/serverBack/src/main/java/com/tpagrupo17/Metamapa/buscadores/BuscadoresRegistry.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/serverBack/src/main/java/modulos/buscadores/Normalizador.java" beforeDir="false" afterPath="$PROJECT_DIR$/serverBack/src/main/java/com/tpagrupo17/Metamapa/buscadores/Normalizador.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/serverBack/src/main/java/modulos/config/SecurityConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/serverBack/src/main/java/com/tpagrupo17/Metamapa/configs/SecurityConfig.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/serverBack/src/main/java/modulos/filters/JwtAuthenticationFilter.java" beforeDir="false" afterPath="$PROJECT_DIR$/serverBack/src/main/java/com/tpagrupo17/Metamapa/JWT/JwtAuthenticationFilter.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/serverBack/src/main/java/modulos/runners/JsonCleaner.java" beforeDir="false" afterPath="$PROJECT_DIR$/serverBack/src/main/java/com/tpagrupo17/Metamapa/configs/JsonCleaner.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/serverBack/src/main/java/modulos/servicioEstadistica/ServicioDeEstadistica.java" beforeDir="false" afterPath="$PROJECT_DIR$/serverBack/src/main/java/com/tpagrupo17/Metamapa/servicioEstadistica/ServicioDeEstadistica.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/serverBack/src/main/java/modulos/servicioEstadistica/config/DbEstadisticaConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/serverBack/src/main/java/com/tpagrupo17/Metamapa/servicioEstadistica/config/DbEstadisticaConfig.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/serverBack/src/main/java/modulos/servicioEstadistica/controller/EstadisticasController.java" beforeDir="false" afterPath="$PROJECT_DIR$/serverBack/src/main/java/com/tpagrupo17/Metamapa/servicioEstadistica/controller/EstadisticasController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/serverBack/src/main/java/modulos/servicioEstadistica/entities/CategoriaCantidad.java" beforeDir="false" afterPath="$PROJECT_DIR$/serverBack/src/main/java/com/tpagrupo17/Metamapa/servicioEstadistica/entities/CategoriaCantidad.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/serverBack/src/main/java/modulos/servicioEstadistica/entities/CategoriaHora.java" beforeDir="false" afterPath="$PROJECT_DIR$/serverBack/src/main/java/com/tpagrupo17/Metamapa/servicioEstadistica/entities/CategoriaHora.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/serverBack/src/main/java/modulos/servicioEstadistica/entities/CategoriaProvincia.java" beforeDir="false" afterPath="$PROJECT_DIR$/serverBack/src/main/java/com/tpagrupo17/Metamapa/servicioEstadistica/entities/CategoriaProvincia.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/serverBack/src/main/java/modulos/servicioEstadistica/entities/ColeccionProvincia.java" beforeDir="false" afterPath="$PROJECT_DIR$/serverBack/src/main/java/com/tpagrupo17/Metamapa/servicioEstadistica/entities/ColeccionProvincia.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/serverBack/src/main/java/modulos/servicioEstadistica/entities/Estadisticas.java" beforeDir="false" afterPath="$PROJECT_DIR$/serverBack/src/main/java/com/tpagrupo17/Metamapa/servicioEstadistica/entities/Estadisticas.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/serverBack/src/main/java/modulos/servicioEstadistica/entities/ProvinciaCantidad.java" beforeDir="false" afterPath="$PROJECT_DIR$/serverBack/src/main/java/com/tpagrupo17/Metamapa/servicioEstadistica/entities/ProvinciaCantidad.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/serverBack/src/main/java/modulos/servicioEstadistica/repositories/ICategoriaCantidadRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/serverBack/src/main/java/com/tpagrupo17/Metamapa/servicioEstadistica/repositories/ICategoriaCantidadRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/serverBack/src/main/java/modulos/servicioEstadistica/repositories/ICategoriaHoraRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/serverBack/src/main/java/com/tpagrupo17/Metamapa/servicioEstadistica/repositories/ICategoriaHoraRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/serverBack/src/main/java/modulos/servicioEstadistica/repositories/ICategoriaProvinciaRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/serverBack/src/main/java/com/tpagrupo17/Metamapa/servicioEstadistica/repositories/ICategoriaProvinciaRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/serverBack/src/main/java/modulos/servicioEstadistica/repositories/IColeccionProvinciaRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/serverBack/src/main/java/com/tpagrupo17/Metamapa/servicioEstadistica/repositories/IColeccionProvinciaRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/serverBack/src/main/java/modulos/servicioEstadistica/repositories/IEstadisticasRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/serverBack/src/main/java/com/tpagrupo17/Metamapa/servicioEstadistica/repositories/IEstadisticasRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/serverBack/src/main/java/modulos/shared/dtos/input/CambiarContraseniaDtoInput.java" beforeDir="false" afterPath="$PROJECT_DIR$/serverBack/src/main/java/com/tpagrupo17/Metamapa/dtos/input/CambiarContraseniaDtoInput.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/serverBack/src/main/java/modulos/shared/dtos/input/ColeccionInputDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/serverBack/src/main/java/com/tpagrupo17/Metamapa/dtos/input/ColeccionInputDTO.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/serverBack/src/main/java/modulos/shared/dtos/input/ColeccionUpdateInputDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/serverBack/src/main/java/com/tpagrupo17/Metamapa/dtos/input/ColeccionUpdateInputDTO.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/serverBack/src/main/java/modulos/shared/dtos/input/ContenidoMultimediaDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/serverBack/src/main/java/com/tpagrupo17/Metamapa/dtos/input/ContenidoMultimediaDTO.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/serverBack/src/main/java/modulos/shared/dtos/input/CriteriosColeccionDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/serverBack/src/main/java/com/tpagrupo17/Metamapa/dtos/input/CriteriosColeccionDTO.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/serverBack/src/main/java/modulos/shared/dtos/input/EditarNombreDeUsuarioDtoInput.java" beforeDir="false" afterPath="$PROJECT_DIR$/serverBack/src/main/java/com/tpagrupo17/Metamapa/dtos/input/EditarNombreDeUsuarioDtoInput.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/serverBack/src/main/java/modulos/shared/dtos/input/EditarUsuarioDtoInput.java" beforeDir="false" afterPath="$PROJECT_DIR$/serverBack/src/main/java/com/tpagrupo17/Metamapa/dtos/input/EditarUsuarioDtoInput.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/serverBack/src/main/java/modulos/shared/dtos/input/EvaluarReporteInputDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/serverBack/src/main/java/com/tpagrupo17/Metamapa/dtos/input/EvaluarReporteInputDTO.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/serverBack/src/main/java/modulos/shared/dtos/input/GetHechosColeccionInputDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/serverBack/src/main/java/com/tpagrupo17/Metamapa/dtos/input/GetHechosColeccionInputDTO.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/serverBack/src/main/java/modulos/shared/dtos/input/HechoModificarInputDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/serverBack/src/main/java/com/tpagrupo17/Metamapa/dtos/input/HechoModificarInputDTO.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/serverBack/src/main/java/modulos/shared/dtos/input/ImportacionHechosInputDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/serverBack/src/main/java/com/tpagrupo17/Metamapa/dtos/input/ImportacionHechosInputDTO.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/serverBack/src/main/java/modulos/shared/dtos/input/LoginDtoInput.java" beforeDir="false" afterPath="$PROJECT_DIR$/serverBack/src/main/java/com/tpagrupo17/Metamapa/dtos/input/LoginDtoInput.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/serverBack/src/main/java/modulos/shared/dtos/input/ModificarConsensoInputDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/serverBack/src/main/java/com/tpagrupo17/Metamapa/dtos/input/ModificarConsensoInputDTO.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/serverBack/src/main/java/modulos/shared/dtos/input/SinonimoInputDto.java" beforeDir="false" afterPath="$PROJECT_DIR$/serverBack/src/main/java/com/tpagrupo17/Metamapa/dtos/input/SinonimoInputDto.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/serverBack/src/main/java/modulos/shared/dtos/input/SolicitudHechoEliminarInputDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/serverBack/src/main/java/com/tpagrupo17/Metamapa/dtos/input/SolicitudHechoEliminarInputDTO.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/serverBack/src/main/java/modulos/shared/dtos/input/SolicitudHechoEvaluarInputDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/serverBack/src/main/java/com/tpagrupo17/Metamapa/dtos/input/SolicitudHechoEvaluarInputDTO.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/serverBack/src/main/java/modulos/shared/dtos/input/SolicitudHechoInputDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/serverBack/src/main/java/com/tpagrupo17/Metamapa/dtos/input/SolicitudHechoInputDTO.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/serverBack/src/main/java/modulos/shared/dtos/input/SolicitudHechoModificarInputDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/serverBack/src/main/java/com/tpagrupo17/Metamapa/dtos/input/SolicitudHechoModificarInputDTO.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/serverBack/src/main/java/modulos/shared/dtos/input/TokenResponse.java" beforeDir="false" afterPath="$PROJECT_DIR$/serverBack/src/main/java/com/tpagrupo17/Metamapa/dtos/input/TokenResponse.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/serverBack/src/main/java/modulos/shared/dtos/input/UsuarioInputDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/serverBack/src/main/java/com/tpagrupo17/Metamapa/dtos/input/UsuarioInputDTO.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/serverBack/src/main/java/modulos/shared/dtos/output/AtributosModificarDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/serverBack/src/main/java/com/tpagrupo17/Metamapa/dtos/output/AtributosModificarDTO.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/serverBack/src/main/java/modulos/shared/dtos/output/AuthResponseDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/serverBack/src/main/java/com/tpagrupo17/Metamapa/dtos/output/AuthResponseDTO.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/serverBack/src/main/java/modulos/shared/dtos/output/CategoriaDto.java" beforeDir="false" afterPath="$PROJECT_DIR$/serverBack/src/main/java/com/tpagrupo17/Metamapa/dtos/output/CategoriaDto.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/serverBack/src/main/java/modulos/shared/dtos/output/ColeccionOutputDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/serverBack/src/main/java/com/tpagrupo17/Metamapa/dtos/output/ColeccionOutputDTO.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/serverBack/src/main/java/modulos/shared/dtos/output/DatosPersonalesOutputDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/serverBack/src/main/java/com/tpagrupo17/Metamapa/dtos/output/DatosPersonalesOutputDTO.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/serverBack/src/main/java/modulos/shared/dtos/output/MensajeOutputDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/serverBack/src/main/java/com/tpagrupo17/Metamapa/dtos/output/MensajeOutputDTO.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/serverBack/src/main/java/modulos/shared/dtos/output/PaisDto.java" beforeDir="false" afterPath="$PROJECT_DIR$/serverBack/src/main/java/com/tpagrupo17/Metamapa/dtos/output/PaisDto.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/serverBack/src/main/java/modulos/shared/dtos/output/PaisProvinciaDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/serverBack/src/main/java/com/tpagrupo17/Metamapa/dtos/output/PaisProvinciaDTO.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/serverBack/src/main/java/modulos/shared/dtos/output/ProvinciaDto.java" beforeDir="false" afterPath="$PROJECT_DIR$/serverBack/src/main/java/com/tpagrupo17/Metamapa/dtos/output/ProvinciaDto.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/serverBack/src/main/java/modulos/shared/dtos/output/ReporteHechoOutputDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/serverBack/src/main/java/com/tpagrupo17/Metamapa/dtos/output/ReporteHechoOutputDTO.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/serverBack/src/main/java/modulos/shared/dtos/output/RolCambiadoDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/serverBack/src/main/java/com/tpagrupo17/Metamapa/dtos/output/RolCambiadoDTO.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/serverBack/src/main/java/modulos/shared/dtos/output/SolicitudHechoOutputDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/serverBack/src/main/java/com/tpagrupo17/Metamapa/dtos/output/SolicitudHechoOutputDTO.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/serverBack/src/main/java/modulos/shared/dtos/output/UsuarioOutputDto.java" beforeDir="false" afterPath="$PROJECT_DIR$/serverBack/src/main/java/com/tpagrupo17/Metamapa/dtos/output/UsuarioOutputDto.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/serverBack/src/main/java/modulos/shared/dtos/output/VisualizarHechosOutputDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/serverBack/src/main/java/com/tpagrupo17/Metamapa/dtos/output/VisualizarHechosOutputDTO.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/serverBack/src/main/java/modulos/shared/utils/DetectorDeSpam.java" beforeDir="false" afterPath="$PROJECT_DIR$/serverBack/src/main/java/com/tpagrupo17/Metamapa/utils/DetectorDeSpam.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/serverBack/src/main/java/modulos/shared/utils/FechaParser.java" beforeDir="false" afterPath="$PROJECT_DIR$/serverBack/src/main/java/com/tpagrupo17/Metamapa/utils/FechaParser.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/serverBack/src/main/java/modulos/shared/utils/FormateadorHecho.java" beforeDir="false" afterPath="$PROJECT_DIR$/serverBack/src/main/java/com/tpagrupo17/Metamapa/utils/FormateadorHecho.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/serverBack/src/main/java/modulos/shared/utils/FormateadorHechoMemoria.java" beforeDir="false" afterPath="$PROJECT_DIR$/serverBack/src/main/java/com/tpagrupo17/Metamapa/utils/FormateadorHechoMemoria.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/serverBack/src/main/java/modulos/shared/utils/Geocodificador.java" beforeDir="false" afterPath="$PROJECT_DIR$/serverBack/src/main/java/com/tpagrupo17/Metamapa/utils/Geocodificador.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/serverBack/src/main/java/modulos/shared/utils/GestorArchivos.java" beforeDir="false" afterPath="$PROJECT_DIR$/serverBack/src/main/java/com/tpagrupo17/Metamapa/utils/GestorArchivos.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/serverBack/src/main/java/modulos/shared/utils/GestorRoles.java" beforeDir="false" afterPath="$PROJECT_DIR$/serverBack/src/main/java/com/tpagrupo17/Metamapa/utils/GestorRoles.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/serverBack/src/main/java/modulos/shared/utils/JwtUtil.java" beforeDir="false" afterPath="$PROJECT_DIR$/serverBack/src/main/java/com/tpagrupo17/Metamapa/JWT/JwtUtil.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/serverBack/target/classes/modulos/AtributosHechoMemoria$AtributosHechoMemoriaBuilder.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/serverBack/target/classes/modulos/AtributosHechoMemoria.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/serverBack/target/classes/modulos/BodyToListConverter.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/serverBack/target/classes/modulos/JwtClaimExtractor.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/serverBack/target/classes/modulos/ServerBackApplication.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/serverBack/target/classes/modulos/agregacion/config/DbHechosDinamicaConfig.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/serverBack/target/classes/modulos/agregacion/config/DbHechosEstaticaConfig.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/serverBack/target/classes/modulos/agregacion/config/DbHechosProxyConfig.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/serverBack/target/classes/modulos/agregacion/config/DbMainConfig.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/serverBack/target/classes/modulos/agregacion/controllers/ColeccionController.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/serverBack/target/classes/modulos/agregacion/controllers/HechosController.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/serverBack/target/classes/modulos/agregacion/controllers/SolicitudHechoController.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/serverBack/target/classes/modulos/agregacion/controllers/UsuarioController.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/serverBack/target/classes/modulos/agregacion/converters/AlgoritmoConsensoConverter.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/serverBack/target/classes/modulos/agregacion/entities/AtributosHechoModificarMemoria$AtributosHechoModificarMemoriaBuilder.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/serverBack/target/classes/modulos/agregacion/entities/AtributosHechoModificarMemoria.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/serverBack/target/classes/modulos/agregacion/entities/DbDinamica/HechoDinamica$HechoDinamicaBuilder.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/serverBack/target/classes/modulos/agregacion/entities/DbDinamica/HechoDinamica$HechoDinamicaBuilderImpl.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/serverBack/target/classes/modulos/agregacion/entities/DbDinamica/HechoDinamica.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/serverBack/target/classes/modulos/agregacion/entities/DbDinamica/solicitudes/SolicitudEliminarHecho.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/serverBack/target/classes/modulos/agregacion/entities/DbDinamica/solicitudes/SolicitudHecho.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/serverBack/target/classes/modulos/agregacion/entities/DbDinamica/solicitudes/SolicitudModificarHecho.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/serverBack/target/classes/modulos/agregacion/entities/DbDinamica/solicitudes/SolicitudSubirHecho.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/serverBack/target/classes/modulos/agregacion/entities/DbEstatica/Dataset.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/serverBack/target/classes/modulos/agregacion/entities/DbEstatica/HechoEstatica$HechoEstaticaBuilder.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/serverBack/target/classes/modulos/agregacion/entities/DbEstatica/HechoEstatica$HechoEstaticaBuilderImpl.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/serverBack/target/classes/modulos/agregacion/entities/DbEstatica/HechoEstatica.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/serverBack/target/classes/modulos/agregacion/entities/DbMain/Categoria.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/serverBack/target/classes/modulos/agregacion/entities/DbMain/Coleccion.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/serverBack/target/classes/modulos/agregacion/entities/DbMain/DatosColeccion.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/serverBack/target/classes/modulos/agregacion/entities/DbMain/Filtrador.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/serverBack/target/classes/modulos/agregacion/entities/DbMain/FiltrosColeccion.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/serverBack/target/classes/modulos/agregacion/entities/DbMain/Fuente.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/serverBack/target/classes/modulos/agregacion/entities/DbMain/Hash.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/serverBack/target/classes/modulos/agregacion/entities/DbMain/Hecho$HechoBuilder.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/serverBack/target/classes/modulos/agregacion/entities/DbMain/Hecho.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/serverBack/target/classes/modulos/agregacion/entities/DbMain/Mensaje.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/serverBack/target/classes/modulos/agregacion/entities/DbMain/Pais.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/serverBack/target/classes/modulos/agregacion/entities/DbMain/PaisProvincias.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/serverBack/target/classes/modulos/agregacion/entities/DbMain/Provincia.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/serverBack/target/classes/modulos/agregacion/entities/DbMain/Reporte.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/serverBack/target/classes/modulos/agregacion/entities/DbMain/RespuestaHttp.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/serverBack/target/classes/modulos/agregacion/entities/DbMain/Sinonimo.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/serverBack/target/classes/modulos/agregacion/entities/DbMain/Ubicacion.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/serverBack/target/classes/modulos/agregacion/entities/DbMain/UbicacionString.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/serverBack/target/classes/modulos/agregacion/entities/DbMain/algoritmosConsenso/AlgoritmoConsensoMayoriaAbsoluta.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/serverBack/target/classes/modulos/agregacion/entities/DbMain/algoritmosConsenso/AlgoritmoConsensoMayoriaSimple.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/serverBack/target/classes/modulos/agregacion/entities/DbMain/algoritmosConsenso/AlgoritmoConsensoMultiplesMenciones.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/serverBack/target/classes/modulos/agregacion/entities/DbMain/algoritmosConsenso/IAlgoritmoConsenso.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/serverBack/target/classes/modulos/agregacion/entities/DbMain/filtros/Filtro.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/serverBack/target/classes/modulos/agregacion/entities/DbMain/filtros/FiltroCategoria.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/serverBack/target/classes/modulos/agregacion/entities/DbMain/filtros/FiltroContenidoMultimedia.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/serverBack/target/classes/modulos/agregacion/entities/DbMain/filtros/FiltroDescripcion.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/serverBack/target/classes/modulos/agregacion/entities/DbMain/filtros/FiltroFechaAcontecimiento.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/serverBack/target/classes/modulos/agregacion/entities/DbMain/filtros/FiltroFechaCarga.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/serverBack/target/classes/modulos/agregacion/entities/DbMain/filtros/FiltroPais.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/serverBack/target/classes/modulos/agregacion/entities/DbMain/filtros/FiltroProvincia.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/serverBack/target/classes/modulos/agregacion/entities/DbMain/filtros/FiltroTitulo.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/serverBack/target/classes/modulos/agregacion/entities/DbMain/filtros/IFiltro.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/serverBack/target/classes/modulos/agregacion/entities/DbMain/hechoRef/HechoRef.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/serverBack/target/classes/modulos/agregacion/entities/DbMain/hechoRef/HechoRefKey.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/serverBack/target/classes/modulos/agregacion/entities/DbMain/projections/CantSolicitudesSpamProjection.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/serverBack/target/classes/modulos/agregacion/entities/DbMain/projections/CategoriaCantidadProjection.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/serverBack/target/classes/modulos/agregacion/entities/DbMain/projections/CategoriaProvinciaProjection.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/serverBack/target/classes/modulos/agregacion/entities/DbMain/projections/ColeccionProvinciaProjection.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/serverBack/target/classes/modulos/agregacion/entities/DbMain/projections/HoraCategoriaProjection.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/serverBack/target/classes/modulos/agregacion/entities/DbMain/projections/SolicitudHechoProjection.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/serverBack/target/classes/modulos/agregacion/entities/DbMain/usuario/DatosPersonalesPublicador.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/serverBack/target/classes/modulos/agregacion/entities/DbMain/usuario/Rol.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/serverBack/target/classes/modulos/agregacion/entities/DbMain/usuario/Usuario.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/serverBack/target/classes/modulos/agregacion/entities/DbProxy/HechoProxy$HechoProxyBuilder.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/serverBack/target/classes/modulos/agregacion/entities/DbProxy/HechoProxy$HechoProxyBuilderImpl.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/serverBack/target/classes/modulos/agregacion/entities/DbProxy/HechoProxy.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/serverBack/target/classes/modulos/agregacion/entities/HechoMemoria$HechoMemoriaBuilder.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/serverBack/target/classes/modulos/agregacion/entities/HechoMemoria.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/serverBack/target/classes/modulos/agregacion/entities/atributosHecho/AtributosHecho$AtributosHechoBuilder.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/serverBack/target/classes/modulos/agregacion/entities/atributosHecho/AtributosHecho.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/serverBack/target/classes/modulos/agregacion/entities/atributosHecho/AtributosHechoModificar$AtributosHechoModificarBuilder.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/serverBack/target/classes/modulos/agregacion/entities/atributosHecho/AtributosHechoModificar.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/serverBack/target/classes/modulos/agregacion/entities/atributosHecho/ContenidoMultimedia.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/serverBack/target/classes/modulos/agregacion/entities/atributosHecho/Origen.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/serverBack/target/classes/modulos/agregacion/entities/atributosHecho/OrigenConexion.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/serverBack/target/classes/modulos/agregacion/entities/atributosHecho/TipoContenido.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/serverBack/target/classes/modulos/agregacion/entities/fuentes/FuenteDinamica.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/serverBack/target/classes/modulos/agregacion/entities/fuentes/FuenteEstatica.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/serverBack/target/classes/modulos/agregacion/entities/fuentes/FuenteProxy.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/serverBack/target/classes/modulos/agregacion/entities/fuentes/LectorCSV.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/serverBack/target/classes/modulos/agregacion/entities/fuentes/Requests/LoginRequest.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/serverBack/target/classes/modulos/agregacion/entities/fuentes/Responses/ColeccionesResponse.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/serverBack/target/classes/modulos/agregacion/entities/fuentes/Responses/HechoMetamapaResponse.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/serverBack/target/classes/modulos/agregacion/entities/fuentes/Responses/HechoResponse.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/serverBack/target/classes/modulos/agregacion/entities/fuentes/Responses/HechosMetamapaResponse.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/serverBack/target/classes/modulos/agregacion/entities/fuentes/Responses/HechosResponse.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/serverBack/target/classes/modulos/agregacion/entities/fuentes/Responses/LoginResponse.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/serverBack/target/classes/modulos/agregacion/repositories/DbDinamica/IHechosDinamicaRepository.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/serverBack/target/classes/modulos/agregacion/repositories/DbDinamica/ISolicitudAgregarHechoRepository.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/serverBack/target/classes/modulos/agregacion/repositories/DbDinamica/ISolicitudEliminarHechoRepository.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/serverBack/target/classes/modulos/agregacion/repositories/DbDinamica/ISolicitudModificarHechoRepository.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/serverBack/target/classes/modulos/agregacion/repositories/DbDinamica/ISolicitudRepository.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/serverBack/target/classes/modulos/agregacion/repositories/DbEstatica/IDatasetsRepository.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/serverBack/target/classes/modulos/agregacion/repositories/DbEstatica/IHechosEstaticaRepository.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/serverBack/target/classes/modulos/agregacion/repositories/DbMain/IAtributosHechoModificarRepository.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/serverBack/target/classes/modulos/agregacion/repositories/DbMain/ICategoriaRepository.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/serverBack/target/classes/modulos/agregacion/repositories/DbMain/IColeccionRepository.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/serverBack/target/classes/modulos/agregacion/repositories/DbMain/IFiltroRepository.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/serverBack/target/classes/modulos/agregacion/repositories/DbMain/IHechoRefRepository.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/serverBack/target/classes/modulos/agregacion/repositories/DbMain/IMensajeRepository.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/serverBack/target/classes/modulos/agregacion/repositories/DbMain/IPaisRepository.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/serverBack/target/classes/modulos/agregacion/repositories/DbMain/IProvinciaRepository.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/serverBack/target/classes/modulos/agregacion/repositories/DbMain/IReporteHechoRepository.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/serverBack/target/classes/modulos/agregacion/repositories/DbMain/ISinonimoRepository.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/serverBack/target/classes/modulos/agregacion/repositories/DbMain/IUbicacionRepository.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/serverBack/target/classes/modulos/agregacion/repositories/DbMain/IUsuarioRepository.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/serverBack/target/classes/modulos/agregacion/repositories/DbProxy/IHechosProxyRepository.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/serverBack/target/classes/modulos/agregacion/services/ColeccionService.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/serverBack/target/classes/modulos/agregacion/services/HechosService.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/serverBack/target/classes/modulos/agregacion/services/SolicitudHechoService.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/serverBack/target/classes/modulos/agregacion/services/UsuarioService.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/serverBack/target/classes/modulos/apis/DatosQuery.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/serverBack/target/classes/modulos/apis/IDatosQuery.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/serverBack/target/classes/modulos/buscadores/BuscadorCategoria.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/serverBack/target/classes/modulos/buscadores/BuscadorFiltro.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/serverBack/target/classes/modulos/buscadores/BuscadorHecho.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/serverBack/target/classes/modulos/buscadores/BuscadorPais.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/serverBack/target/classes/modulos/buscadores/BuscadorProvincia.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/serverBack/target/classes/modulos/buscadores/BuscadorUbicacion.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/serverBack/target/classes/modulos/buscadores/BuscadoresRegistry.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/serverBack/target/classes/modulos/buscadores/Normalizador.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/serverBack/target/classes/modulos/config/SecurityConfig.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/serverBack/target/classes/modulos/filters/JwtAuthenticationFilter.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/serverBack/target/classes/modulos/runners/JsonCleaner.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/serverBack/target/classes/modulos/servicioEstadistica/ServicioDeEstadistica.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/serverBack/target/classes/modulos/servicioEstadistica/config/DbEstadisticaConfig.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/serverBack/target/classes/modulos/servicioEstadistica/controller/EstadisticasController.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/serverBack/target/classes/modulos/servicioEstadistica/entities/CategoriaCantidad.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/serverBack/target/classes/modulos/servicioEstadistica/entities/CategoriaHora.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/serverBack/target/classes/modulos/servicioEstadistica/entities/CategoriaProvincia.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/serverBack/target/classes/modulos/servicioEstadistica/entities/ColeccionProvincia.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/serverBack/target/classes/modulos/servicioEstadistica/entities/Estadisticas.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/serverBack/target/classes/modulos/servicioEstadistica/entities/ProvinciaCantidad.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/serverBack/target/classes/modulos/servicioEstadistica/repositories/ICategoriaCantidadRepository.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/serverBack/target/classes/modulos/servicioEstadistica/repositories/ICategoriaHoraRepository.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/serverBack/target/classes/modulos/servicioEstadistica/repositories/ICategoriaProvinciaRepository.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/serverBack/target/classes/modulos/servicioEstadistica/repositories/IColeccionProvinciaRepository.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/serverBack/target/classes/modulos/servicioEstadistica/repositories/IEstadisticasRepository.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/serverBack/target/classes/modulos/shared/dtos/input/CambiarContraseniaDtoInput.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/serverBack/target/classes/modulos/shared/dtos/input/ColeccionInputDTO.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/serverBack/target/classes/modulos/shared/dtos/input/ColeccionUpdateInputDTO.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/serverBack/target/classes/modulos/shared/dtos/input/CriteriosColeccionDTO$CriteriosColeccionDTOBuilder.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/serverBack/target/classes/modulos/shared/dtos/input/CriteriosColeccionDTO.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/serverBack/target/classes/modulos/shared/dtos/input/EditarNombreDeUsuarioDtoInput.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/serverBack/target/classes/modulos/shared/dtos/input/EditarUsuarioDtoInput.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/serverBack/target/classes/modulos/shared/dtos/input/EvaluarReporteInputDTO.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/serverBack/target/classes/modulos/shared/dtos/input/GetHechosColeccionInputDTO$GetHechosColeccionInputDTOBuilder.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/serverBack/target/classes/modulos/shared/dtos/input/GetHechosColeccionInputDTO.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/serverBack/target/classes/modulos/shared/dtos/input/ImportacionHechosInputDTO.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/serverBack/target/classes/modulos/shared/dtos/input/LoginDtoInput.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/serverBack/target/classes/modulos/shared/dtos/input/ModificarConsensoInputDTO.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/serverBack/target/classes/modulos/shared/dtos/input/SolicitudHechoEliminarInputDTO.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/serverBack/target/classes/modulos/shared/dtos/input/SolicitudHechoEvaluarInputDTO.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/serverBack/target/classes/modulos/shared/dtos/input/SolicitudHechoInputDTO.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/serverBack/target/classes/modulos/shared/dtos/input/SolicitudHechoModificarInputDTO.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/serverBack/target/classes/modulos/shared/dtos/input/TokenResponse$TokenResponseBuilder.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/serverBack/target/classes/modulos/shared/dtos/input/TokenResponse.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/serverBack/target/classes/modulos/shared/dtos/input/UsuarioInputDTO.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/serverBack/target/classes/modulos/shared/dtos/output/AuthResponseDTO$AuthResponseDTOBuilder.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/serverBack/target/classes/modulos/shared/dtos/output/AuthResponseDTO.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/serverBack/target/classes/modulos/shared/dtos/output/CategoriaDto$CategoriaDtoBuilder.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/serverBack/target/classes/modulos/shared/dtos/output/CategoriaDto.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/serverBack/target/classes/modulos/shared/dtos/output/ColeccionOutputDTO.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/serverBack/target/classes/modulos/shared/dtos/output/DatosPersonalesOutputDTO.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/serverBack/target/classes/modulos/shared/dtos/output/MensajeOutputDTO$MensajeOutputDTOBuilder.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/serverBack/target/classes/modulos/shared/dtos/output/MensajeOutputDTO.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/serverBack/target/classes/modulos/shared/dtos/output/PaisDto$PaisDtoBuilder.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/serverBack/target/classes/modulos/shared/dtos/output/PaisDto.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/serverBack/target/classes/modulos/shared/dtos/output/PaisProvinciaDTO.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/serverBack/target/classes/modulos/shared/dtos/output/ProvinciaDto$ProvinciaDtoBuilder.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/serverBack/target/classes/modulos/shared/dtos/output/ProvinciaDto.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/serverBack/target/classes/modulos/shared/dtos/output/ReporteHechoOutputDTO$ReporteHechoOutputDTOBuilder.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/serverBack/target/classes/modulos/shared/dtos/output/ReporteHechoOutputDTO.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/serverBack/target/classes/modulos/shared/dtos/output/RolCambiadoDTO.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/serverBack/target/classes/modulos/shared/dtos/output/SolicitudHechoOutputDTO$SolicitudHechoOutputDTOBuilder.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/serverBack/target/classes/modulos/shared/dtos/output/SolicitudHechoOutputDTO.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/serverBack/target/classes/modulos/shared/dtos/output/UsuarioOutputDto.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/serverBack/target/classes/modulos/shared/dtos/output/VisualizarHechosOutputDTO.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/serverBack/target/classes/modulos/shared/utils/DetectorDeSpam.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/serverBack/target/classes/modulos/shared/utils/FechaParser.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/serverBack/target/classes/modulos/shared/utils/FormateadorHecho.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/serverBack/target/classes/modulos/shared/utils/FormateadorHechoMemoria.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/serverBack/target/classes/modulos/shared/utils/Geocodificador$PaisIso2.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/serverBack/target/classes/modulos/shared/utils/Geocodificador.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/serverBack/target/classes/modulos/shared/utils/GestorArchivos.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/serverBack/target/classes/modulos/shared/utils/GestorRoles.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/serverBack/target/classes/modulos/shared/utils/JwtUtil.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/serverFront/src/main/java/raiz/Front/ApiCall.java" beforeDir="false" afterPath="$PROJECT_DIR$/serverFront/src/main/java/com/tpagrupo17/Metamapa/utils/ApiCall.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/serverFront/src/main/java/raiz/Front/BodyToListConverter.java" beforeDir="false" afterPath="$PROJECT_DIR$/serverFront/src/main/java/com/tpagrupo17/Metamapa/utils/BodyToListConverter.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/serverFront/src/main/java/raiz/Front/ContenidoMultimedia.java" beforeDir="false" afterPath="$PROJECT_DIR$/serverFront/src/main/java/com/tpagrupo17/Metamapa/entities/ContenidoMultimedia.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/serverFront/src/main/java/raiz/Front/FechaParser.java" beforeDir="false" afterPath="$PROJECT_DIR$/serverFront/src/main/java/com/tpagrupo17/Metamapa/utils/FechaParser.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/serverFront/src/main/java/raiz/Front/GestorArchivos.java" beforeDir="false" afterPath="$PROJECT_DIR$/serverFront/src/main/java/com/tpagrupo17/Metamapa/utils/GestorArchivos.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/serverFront/src/main/java/raiz/Front/TipoContenido.java" beforeDir="false" afterPath="$PROJECT_DIR$/serverFront/src/main/java/com/tpagrupo17/Metamapa/entities/TipoContenido.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/serverFront/src/main/java/raiz/Front/config/SecurityConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/serverFront/src/main/java/com/tpagrupo17/Metamapa/config/SecurityConfig.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/serverFront/src/main/java/raiz/Front/config/StaticResourceConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/serverFront/src/main/java/com/tpagrupo17/Metamapa/config/StaticResourceConfig.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/serverFront/src/main/java/raiz/Front/controllers/ColeccionController.java" beforeDir="false" afterPath="$PROJECT_DIR$/serverFront/src/main/java/com/tpagrupo17/Metamapa/controllers/ColeccionController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/serverFront/src/main/java/raiz/Front/controllers/GestionController.java" beforeDir="false" afterPath="$PROJECT_DIR$/serverFront/src/main/java/com/tpagrupo17/Metamapa/controllers/GestionController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/serverFront/src/main/java/raiz/Front/controllers/HechosController.java" beforeDir="false" afterPath="$PROJECT_DIR$/serverFront/src/main/java/com/tpagrupo17/Metamapa/controllers/HechosController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/serverFront/src/main/java/raiz/Front/controllers/HomeController.java" beforeDir="false" afterPath="$PROJECT_DIR$/serverFront/src/main/java/com/tpagrupo17/Metamapa/controllers/HomeController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/serverFront/src/main/java/raiz/Front/controllers/LoginController.java" beforeDir="false" afterPath="$PROJECT_DIR$/serverFront/src/main/java/com/tpagrupo17/Metamapa/controllers/LoginController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/serverFront/src/main/java/raiz/Front/controllers/SolicitudHechoController.java" beforeDir="false" afterPath="$PROJECT_DIR$/serverFront/src/main/java/com/tpagrupo17/Metamapa/controllers/SolicitudHechoController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/serverFront/src/main/java/raiz/Front/controllers/UsuarioController.java" beforeDir="false" afterPath="$PROJECT_DIR$/serverFront/src/main/java/com/tpagrupo17/Metamapa/controllers/UsuarioController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/serverFront/src/main/java/raiz/Front/dtos/ContenidoMultimediaDto.java" beforeDir="false" afterPath="$PROJECT_DIR$/serverFront/src/main/java/com/tpagrupo17/Metamapa/dtos/ContenidoMultimediaDto.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/serverFront/src/main/java/raiz/Front/dtos/DetallesColeccionCargadaDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/serverFront/src/main/java/com/tpagrupo17/Metamapa/dtos/DetallesColeccionCargadaDTO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/serverFront/src/main/java/raiz/Front/dtos/OrigenDto.java" beforeDir="false" afterPath="$PROJECT_DIR$/serverFront/src/main/java/com/tpagrupo17/Metamapa/dtos/OrigenDto.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/serverFront/src/main/java/raiz/Front/dtos/input/AuthResponseDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/serverFront/src/main/java/com/tpagrupo17/Metamapa/dtos/input/AuthResponseDTO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/serverFront/src/main/java/raiz/Front/dtos/input/CambiarContraseniaDtoInput.java" beforeDir="false" afterPath="$PROJECT_DIR$/serverFront/src/main/java/com/tpagrupo17/Metamapa/dtos/input/CambiarContraseniaDtoInput.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/serverFront/src/main/java/raiz/Front/dtos/input/ColeccionInputDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/serverFront/src/main/java/com/tpagrupo17/Metamapa/dtos/input/ColeccionInputDTO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/serverFront/src/main/java/raiz/Front/dtos/input/ColeccionUpdateInputDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/serverFront/src/main/java/com/tpagrupo17/Metamapa/dtos/input/ColeccionUpdateInputDTO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/serverFront/src/main/java/raiz/Front/dtos/input/ContenidoMultimediaDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/serverFront/src/main/java/com/tpagrupo17/Metamapa/dtos/input/ContenidoMultimediaDTO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/serverFront/src/main/java/raiz/Front/dtos/input/CriteriosColeccionDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/serverFront/src/main/java/com/tpagrupo17/Metamapa/dtos/input/CriteriosColeccionDTO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/serverFront/src/main/java/raiz/Front/dtos/input/CriteriosColeccionProxyDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/serverFront/src/main/java/com/tpagrupo17/Metamapa/dtos/input/CriteriosColeccionProxyDTO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/serverFront/src/main/java/raiz/Front/dtos/input/EditarNombreDeUsuarioDtoInput.java" beforeDir="false" afterPath="$PROJECT_DIR$/serverFront/src/main/java/com/tpagrupo17/Metamapa/dtos/input/EditarNombreDeUsuarioDtoInput.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/serverFront/src/main/java/raiz/Front/dtos/input/EditarUsuarioDtoInput.java" beforeDir="false" afterPath="$PROJECT_DIR$/serverFront/src/main/java/com/tpagrupo17/Metamapa/dtos/input/EditarUsuarioDtoInput.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/serverFront/src/main/java/raiz/Front/dtos/input/EvaluarReporteInputDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/serverFront/src/main/java/com/tpagrupo17/Metamapa/dtos/input/EvaluarReporteInputDTO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/serverFront/src/main/java/raiz/Front/dtos/input/FiltroHechosDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/serverFront/src/main/java/com/tpagrupo17/Metamapa/dtos/input/FiltroHechosDTO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/serverFront/src/main/java/raiz/Front/dtos/input/GetHechosColeccionInputDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/serverFront/src/main/java/com/tpagrupo17/Metamapa/dtos/input/GetHechosColeccionInputDTO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/serverFront/src/main/java/raiz/Front/dtos/input/HechoModificarInputDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/serverFront/src/main/java/com/tpagrupo17/Metamapa/dtos/input/HechoModificarInputDTO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/serverFront/src/main/java/raiz/Front/dtos/input/ImportacionHechosInputDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/serverFront/src/main/java/com/tpagrupo17/Metamapa/dtos/input/ImportacionHechosInputDTO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/serverFront/src/main/java/raiz/Front/dtos/input/LoginDtoInput.java" beforeDir="false" afterPath="$PROJECT_DIR$/serverFront/src/main/java/com/tpagrupo17/Metamapa/dtos/input/LoginDtoInput.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/serverFront/src/main/java/raiz/Front/dtos/input/ModificarConsensoInputDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/serverFront/src/main/java/com/tpagrupo17/Metamapa/dtos/input/ModificarConsensoInputDTO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/serverFront/src/main/java/raiz/Front/dtos/input/ProxyDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/serverFront/src/main/java/com/tpagrupo17/Metamapa/dtos/input/ProxyDTO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/serverFront/src/main/java/raiz/Front/dtos/input/SinonimoInputDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/serverFront/src/main/java/com/tpagrupo17/Metamapa/dtos/input/SinonimoInputDTO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/serverFront/src/main/java/raiz/Front/dtos/input/SolicitudHechoEliminarInputDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/serverFront/src/main/java/com/tpagrupo17/Metamapa/dtos/input/SolicitudHechoEliminarInputDTO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/serverFront/src/main/java/raiz/Front/dtos/input/SolicitudHechoEvaluarInputDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/serverFront/src/main/java/com/tpagrupo17/Metamapa/dtos/input/SolicitudHechoEvaluarInputDTO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/serverFront/src/main/java/raiz/Front/dtos/input/SolicitudHechoInputDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/serverFront/src/main/java/com/tpagrupo17/Metamapa/dtos/input/SolicitudHechoInputDTO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/serverFront/src/main/java/raiz/Front/dtos/input/SolicitudHechoModificarInputDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/serverFront/src/main/java/com/tpagrupo17/Metamapa/dtos/input/SolicitudHechoModificarInputDTO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/serverFront/src/main/java/raiz/Front/dtos/input/TokenResponse.java" beforeDir="false" afterPath="$PROJECT_DIR$/serverFront/src/main/java/com/tpagrupo17/Metamapa/dtos/input/TokenResponse.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/serverFront/src/main/java/raiz/Front/dtos/input/UsuarioInputDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/serverFront/src/main/java/com/tpagrupo17/Metamapa/dtos/input/UsuarioInputDTO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/serverFront/src/main/java/raiz/Front/dtos/output/AtributosModificarDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/serverFront/src/main/java/com/tpagrupo17/Metamapa/dtos/output/AtributosModificarDTO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/serverFront/src/main/java/raiz/Front/dtos/output/CategoriaDto.java" beforeDir="false" afterPath="$PROJECT_DIR$/serverFront/src/main/java/com/tpagrupo17/Metamapa/dtos/output/CategoriaDto.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/serverFront/src/main/java/raiz/Front/dtos/output/ColeccionOutputDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/serverFront/src/main/java/com/tpagrupo17/Metamapa/dtos/output/ColeccionOutputDTO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/serverFront/src/main/java/raiz/Front/dtos/output/DatosPersonalesOutputDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/serverFront/src/main/java/com/tpagrupo17/Metamapa/dtos/output/DatosPersonalesOutputDTO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/serverFront/src/main/java/raiz/Front/dtos/output/HechosResponse.java" beforeDir="false" afterPath="$PROJECT_DIR$/serverFront/src/main/java/com/tpagrupo17/Metamapa/dtos/output/HechosResponse.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/serverFront/src/main/java/raiz/Front/dtos/output/MensajeOutputDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/serverFront/src/main/java/com/tpagrupo17/Metamapa/dtos/output/MensajeOutputDTO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/serverFront/src/main/java/raiz/Front/dtos/output/PaisDto.java" beforeDir="false" afterPath="$PROJECT_DIR$/serverFront/src/main/java/com/tpagrupo17/Metamapa/dtos/output/PaisDto.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/serverFront/src/main/java/raiz/Front/dtos/output/PaisProvinciaDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/serverFront/src/main/java/com/tpagrupo17/Metamapa/dtos/output/PaisProvinciaDTO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/serverFront/src/main/java/raiz/Front/dtos/output/ProvinciaDto.java" beforeDir="false" afterPath="$PROJECT_DIR$/serverFront/src/main/java/com/tpagrupo17/Metamapa/dtos/output/ProvinciaDto.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/serverFront/src/main/java/raiz/Front/dtos/output/ReporteHechoOutputDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/serverFront/src/main/java/com/tpagrupo17/Metamapa/dtos/output/ReporteHechoOutputDTO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/serverFront/src/main/java/raiz/Front/dtos/output/RolCambiadoDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/serverFront/src/main/java/com/tpagrupo17/Metamapa/dtos/output/RolCambiadoDTO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/serverFront/src/main/java/raiz/Front/dtos/output/SinonimoDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/serverFront/src/main/java/com/tpagrupo17/Metamapa/dtos/output/SinonimoDTO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/serverFront/src/main/java/raiz/Front/dtos/output/SolicitudHechoOutputDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/serverFront/src/main/java/com/tpagrupo17/Metamapa/dtos/output/SolicitudHechoOutputDTO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/serverFront/src/main/java/raiz/Front/dtos/output/UsuarioOutputDto.java" beforeDir="false" afterPath="$PROJECT_DIR$/serverFront/src/main/java/com/tpagrupo17/Metamapa/dtos/output/UsuarioOutputDto.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/serverFront/src/main/java/raiz/Front/dtos/output/VisualizarHechosOutputDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/serverFront/src/main/java/com/tpagrupo17/Metamapa/dtos/output/VisualizarHechosOutputDTO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/serverFront/src/main/java/raiz/Front/providers/CustomAuthProvider.java" beforeDir="false" afterPath="$PROJECT_DIR$/serverFront/src/main/java/com/tpagrupo17/Metamapa/providers/CustomAuthProvider.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/serverFront/src/main/java/raiz/Front/services/CategoriaService.java" beforeDir="false" afterPath="$PROJECT_DIR$/serverFront/src/main/java/com/tpagrupo17/Metamapa/services/CategoriaService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/serverFront/src/main/java/raiz/Front/services/ColeccionService.java" beforeDir="false" afterPath="$PROJECT_DIR$/serverFront/src/main/java/com/tpagrupo17/Metamapa/services/ColeccionService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/serverFront/src/main/java/raiz/Front/services/HechosService.java" beforeDir="false" afterPath="$PROJECT_DIR$/serverFront/src/main/java/com/tpagrupo17/Metamapa/services/HechosService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/serverFront/src/main/java/raiz/Front/services/SinonimoService.java" beforeDir="false" afterPath="$PROJECT_DIR$/serverFront/src/main/java/com/tpagrupo17/Metamapa/services/SinonimoService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/serverFront/src/main/java/raiz/Front/services/SolicitudHechoService.java" beforeDir="false" afterPath="$PROJECT_DIR$/serverFront/src/main/java/com/tpagrupo17/Metamapa/services/SolicitudHechoService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/serverFront/src/main/java/raiz/Front/services/UsuarioService.java" beforeDir="false" afterPath="$PROJECT_DIR$/serverFront/src/main/java/com/tpagrupo17/Metamapa/services/UsuarioService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/serverFront/src/main/java/raiz/Front/services/WebApiCallerService.java" beforeDir="false" afterPath="$PROJECT_DIR$/serverFront/src/main/java/com/tpagrupo17/Metamapa/services/WebApiCallerService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/serverFront/src/main/java/raiz/Front/sessionHandlers/ActiveSessionTracker.java" beforeDir="false" afterPath="$PROJECT_DIR$/serverFront/src/main/java/com/tpagrupo17/Metamapa/sessionHandlers/ActiveSessionTracker.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/serverFront/src/main/java/raiz/Front/usuario/DatosPersonalesPublicador.java" beforeDir="false" afterPath="$PROJECT_DIR$/serverFront/src/main/java/com/tpagrupo17/Metamapa/entities/usuario/DatosPersonalesPublicador.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/serverFront/src/main/java/raiz/Front/usuario/Rol.java" beforeDir="false" afterPath="$PROJECT_DIR$/serverFront/src/main/java/com/tpagrupo17/Metamapa/entities/usuario/Rol.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/serverFront/src/main/java/raiz/Front/usuario/Usuario.java" beforeDir="false" afterPath="$PROJECT_DIR$/serverFront/src/main/java/com/tpagrupo17/Metamapa/entities/usuario/Usuario.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/serverFront/src/main/java/raiz/ServerFrontApplication.java" beforeDir="false" afterPath="$PROJECT_DIR$/serverFront/src/main/java/com/tpagrupo17/Metamapa/ServerFrontApplication.java" afterDir="false" />
     </list>
     <list id="3bb68fa4-4cba-440f-a626-e70e60e396a9" name="Changes by germa" comment="" />
     <list id="f13608ce-ca7b-462a-b1c3-e6566403784d" name="Changes by Lucas" comment="" />
@@ -588,24 +280,6 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="ServerFrontApplication (1)" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" temporary="true" nameIsGenerated="true">
-      <module name="serverFront" />
-      <selectedOptions>
-        <option name="vmParameters" />
-        <option name="commandLineParameters" />
-        <option name="environmentVariables" />
-      </selectedOptions>
-      <option name="SPRING_BOOT_MAIN_CLASS" value="raiz.ServerFrontApplication" />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="raiz.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
     <configuration name="ServerFrontApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" nameIsGenerated="true">
       <module name="serverFront" />
       <selectedOptions>
@@ -614,6 +288,24 @@
         <option name="environmentVariables" />
       </selectedOptions>
       <option name="SPRING_BOOT_MAIN_CLASS" value="modulos.ServerFrontApplication" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="ServerFrontApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" temporary="true" nameIsGenerated="true">
+      <module name="serverFront" />
+      <selectedOptions>
+        <option name="vmParameters" />
+        <option name="commandLineParameters" />
+        <option name="environmentVariables" />
+      </selectedOptions>
+      <option name="SPRING_BOOT_MAIN_CLASS" value="com.tpagrupo17.Metamapa.ServerFrontApplication" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="com.tpagrupo17.Metamapa.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
@@ -732,7 +424,7 @@
       <workItem from="1767809666535" duration="702000" />
       <workItem from="1767847316591" duration="3375000" />
       <workItem from="1769627348976" duration="4811000" />
-      <workItem from="1769700455547" duration="1767000" />
+      <workItem from="1769700455547" duration="2781000" />
     </task>
     <task id="LOCAL-00001" summary="Merge branch 'entrega_6' of https://github.com/dds-utn/2025-tpa-mi-no-grupo-17 into entrega_6&#10;&#10;# Conflicts:&#10;#&#9;.idea/workspace.xml">
       <option name="closed" value="true" />

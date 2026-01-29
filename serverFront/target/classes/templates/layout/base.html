@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org" th:fragment="html" xmlns:sec="https://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title th:text="${titulo} ?: 'MetaMapa'"></title>
+
+    <!-- Bootstrap + Icons -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/choices.js/public/assets/styles/choices.min.css"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.css"/>
+
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet">
+
+    <style>
+        :root{
+            --mm-primary:#667eea;--mm-secondary:#764ba2;--mm-accent:#8b5cf6;--mm-muted:#64748b;--mm-dark:#1a202c;--mm-light:#f8f9ff;
+
+            /* Tipografías */
+            --bs-font-sans-serif: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", "Liberation Sans", "Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol","Noto Color Emoji";
+            --mm-heading: "DM Serif Display", Georgia, "Times New Roman", serif;
+        }
+
+        *{box-sizing:border-box}
+
+        body{
+            background:radial-gradient(1200px 600px at 50% -150px,#e8ecf6 0%,#f5f7fb 45%,#fff 100%);
+            min-height:100vh;
+            display:flex;
+            flex-direction:column;
+            font-family: var(--bs-font-sans-serif);
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            text-rendering: optimizeLegibility;
+        }
+
+        /* Títulos con la fuente display */
+        h1, h2, h3, h4, h5, h6,
+        .display-1, .display-2, .display-3, .display-4, .display-5, .display-6{
+            font-family: var(--mm-heading);
+            letter-spacing:.2px;
+        }
+
+        /* Navbar moderna */
+        .navbar{background:#fff;border-bottom:1px solid rgba(0,0,0,.06);backdrop-filter:blur(10px);box-shadow:0 2px 12px rgba(0,0,0,.04);position:sticky;top:0;z-index:1000}
+        .navbar-brand{font-weight:700;color:var(--mm-dark);transition:transform .2s ease}
+        .navbar-brand:hover{transform:translateY(-2px)}
+        .brand-pill{width:40px;height:40px;border-radius:12px;background:linear-gradient(135deg,var(--mm-primary) 0%,var(--mm-secondary) 100%);color:#fff;display:inline-flex;align-items:center;justify-content:center;font-weight:800;margin-right:.75rem;box-shadow:0 4px 12px rgba(102,126,234,.3);transition:all .3s ease}
+        .brand-pill:hover{transform:rotate(10deg) scale(1.05);box-shadow:0 6px 16px rgba(102,126,234,.4)}
+
+        .nav-link{color:var(--mm-muted);font-weight:500;padding:.5rem 1rem!important;border-radius:10px;transition:all .2s ease;position:relative}
+        .nav-link:hover{color:var(--mm-primary);background:rgba(102,126,234,.08);transform:translateY(-1px)}
+        .nav-link.active{color:var(--mm-primary);background:rgba(102,126,234,.1)}
+
+        /* Botones del navbar */
+        .navbar .btn{border-radius:10px;font-weight:600;padding:.5rem 1.25rem;transition:all .2s ease}
+        .navbar .btn-primary{background:linear-gradient(135deg,var(--mm-primary) 0%,var(--mm-secondary) 100%);border:none;box-shadow:0 4px 12px rgba(102,126,234,.25)}
+        .navbar .btn-primary:hover{transform:translateY(-2px);box-shadow:0 6px 16px rgba(102,126,234,.35)}
+
+        /* Main content */
+        main{flex:1}
+
+        /* Footer moderno */
+        footer{background:linear-gradient(135deg,#0b1220 0%,#1a202c 100%);color:#cbd5e1;border-top:1px solid rgba(255,255,255,.05);margin-top:auto;position:relative;overflow:hidden}
+        footer::before{content:'';position:absolute;top:0;left:0;right:0;bottom:0;background:url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23fff' fill-opacity='0.02'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");pointer-events:none}
+        footer .brand-pill{box-shadow:0 4px 12px rgba(102,126,234,.4)}
+        footer a{color:#cbd5e1;text-decoration:none;transition:all .2s ease;position:relative}
+        footer a:hover{color:#fff;transform:translateX(2px)}
+        footer a i{transition:transform .2s ease}
+        footer a:hover i{transform:scale(1.1)}
+        .text-secondary{color:#94a3b8!important}
+
+        /* Utilidades globales */
+        .btn{border-radius:12px;font-weight:600;transition:all .2s ease}
+        .btn:hover{transform:translateY(-2px)}
+        .card{border-radius:16px;border:1px solid rgba(0,0,0,.06);transition:all .3s ease}
+        .card:hover{box-shadow:0 12px 32px rgba(0,0,0,.1)}
+        .badge{border-radius:8px;padding:.35rem .75rem;font-weight:600}
+        .form-control,.form-select{border-radius:10px;border:1px solid #e9ecef;transition:all .2s ease}
+        .form-control:focus,.form-select:focus{border-color:var(--mm-primary);box-shadow:0 0 0 .2rem rgba(102,126,234,.15)}
+
+        .top-action-button-v2 { position: absolute; right: 15px;top: 50px;z-index: 10;}
+        .btn-icon-top-action { background: linear-gradient(135deg, #f97316, #ea580c); border: none;color: #fff;padding: .6rem 1.5rem;border-radius: 10px;font-size: .88rem;font-weight: 600;display: inline-flex;align-items: center;text-decoration: none;transition: all .2s ease;box-shadow: 0 4px 10px rgba(234, 88, 12, .3);}
+        .btn-icon-top-action:hover {transform: translateY(-2px);box-shadow: 0 6px 16px rgba(234, 88, 12, .4);color: #fff;}
+
+        /* Scroll suave */
+        html{scroll-behavior:smooth}
+
+        /* Estilo para el texto con gradiente animado, para que se vea con degrade y violeta */
+        .animated-gradient-text {
+            background: linear-gradient(90deg, #667eea, #764ba2, #667eea);
+            background-size: 200% auto;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: gradient-animation 4s ease infinite;
+            /* CAMBIO CLAVE: Usa display: block para que ocupe toda la línea */
+            display: block;
+            padding: 0 5px;
+        }
+
+        @keyframes gradient-animation {
+            0% { background-position: 0% center; }
+            50% { background-position: 100% center; }
+            100% { background-position: 0% center; }
+        }
+
+        /* Responsive */
+        @media (max-width:991px){
+            .navbar-collapse{background:#fff;margin-top:1rem;padding:1rem;border-radius:12px;box-shadow:0 4px 12px rgba(0,0,0,.08)}
+            .nav-item{margin:.25rem 0}
+        }
+    </style>
+    <meta name="_csrf" th:content="${_csrf.token}"/>
+    <meta name="_csrf_header" th:content="${_csrf.headerName}"/>
+</head>
+<body>
+
+<nav class="navbar navbar-expand-lg">
+    <div class="container">
+        <a class="navbar-brand d-flex align-items-center" th:href="@{/}">
+            <span class="brand-pill">M</span><span class="fw-bold">MetaMapa</span>
+        </a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navMain">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div id="navMain" class="collapse navbar-collapse">
+            <ul class="navbar-nav me-auto">
+                <li class="nav-item"><a class="nav-link" th:href="@{/hechos/public/get-all}">Hechos</a></li>
+                <li class="nav-item"><a class="nav-link" th:href="@{/hechos/public/get-mapa}">Mapa</a></li>
+                <li class="nav-item"><a class="nav-link" th:href="@{/colecciones/public/get-all}">Colecciones</a></li>
+                <li class="nav-item"><a class="nav-link" th:href="@{/public/contribuir}">Contribuir</a></li>
+                <li class="nav-item" sec:authorize="hasRole('ADMINISTRADOR')">
+                    <a class="nav-link" th:href="@{/solicitudes}">Solicitudes</a>
+                </li>
+                <li class="nav-item" sec:authorize="hasRole('ADMINISTRADOR')">
+                    <a class="nav-link" th:href="@{/colecciones/crear}">Crear colecciones</a>
+                </li>
+            </ul>
+
+            <div class="d-flex align-items-center gap-2">
+                <a class="btn btn-primary"
+                   th:if="${session.username == null and session.accessToken == null}"
+                   th:href="@{/login}">
+                    <i class="bi bi-box-arrow-in-right me-1"></i><span>Iniciar Sesión</span>
+                </a>
+                <a class="btn btn-primary"
+                   th:if="${session.username != null or session.accessToken != null}"
+                   th:href="@{/usuarios/perfil}">
+                    <i class="bi bi-person-circle me-1"></i><span>Mi Perfil</span>
+                </a>
+            </div>
+        </div>
+    </div>
+</nav>
+<!-- ALERTAS GLOBALES -->
+<div class="container mt-4" style="max-width: 900px;">
+
+    <!-- Éxito -->
+    <div th:if="${msgExito != null}"
+         class="alert alert-success alert-dismissible fade show shadow-sm"
+         role="alert">
+        <i class="bi bi-check-circle-fill me-2"></i>
+        <span th:text="${msgExito}">Operación exitosa</span>
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+    </div>
+
+    <!-- Error -->
+    <div th:if="${msgError != null}"
+         class="alert alert-danger alert-dismissible fade show shadow-sm"
+         role="alert">
+        <i class="bi bi-exclamation-triangle-fill me-2"></i>
+        <span th:text="${msgError}">Ocurrió un error</span>
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+    </div>
+
+</div>
+<main class="container py-4" th:replace="~{::contenido}"></main>
+
+<footer class="py-5 mt-auto">
+    <div class="container">
+        <div class="row g-4">
+            <div class="col-lg-4">
+                <div class="d-flex align-items-center mb-3">
+                    <span class="brand-pill me-2">M</span>
+                    <div>
+                        <div class="fw-bold fs-5">MetaMapa</div>
+                        <small class="text-secondary">Sistema de Mapeos Colaborativos</small>
+                    </div>
+                </div>
+                <p class="text-secondary small mb-0">
+                    Explora, contribuye y descubre acontecimientos históricos de forma colaborativa.
+                </p>
+            </div>
+
+            <div class="col-lg-4 col-md-6">
+                <h6 class="fw-bold mb-3">Enlaces Rápidos</h6>
+                <div class="d-flex flex-column gap-2">
+                    <a th:href="@{/hechos/public/get-all}"><i class="bi bi-arrow-right me-2"></i>Hechos</a>
+                    <a th:href="@{/hechos/public/get-mapa}"><i class="bi bi-arrow-right me-2"></i>Mapa</a>
+                    <a th:href="@{/colecciones/public/get-all}"><i class="bi bi-arrow-right me-2"></i>Colecciones</a>
+                    <a th:href="@{/public/contribuir}"><i class="bi bi-arrow-right me-2"></i>Contribuir</a>
+                </div>
+            </div>
+
+
+            <div class="col-lg-4 col-md-6">
+                <h6 class="fw-bold mb-3">Legal y Contacto</h6>
+                <div class="d-flex flex-column gap-2">
+                    <a href="https://www.youtube.com/watch?v=pld3Vr5pQyo"><i class="bi bi-file-earmark-text me-2"></i>Términos de uso</a>
+                    <a href="https://www.youtube.com/results?search_query=pollito+pio"><i class="bi bi-shield-lock me-2"></i>Privacidad</a>
+                    <a href="https://www.linkedin.com/in/lucca-bertani-25168135a/" target="_blank" rel="noopener">
+                        <i class="bi bi-linkedin me-2"></i>Soporte
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <hr class="my-4" style="border-color:rgba(255,255,255,.1)">
+
+        <div class="d-flex flex-column flex-md-row justify-content-between align-items-center gap-3">
+            <small class="text-secondary">
+                © <span th:text="${#dates.format(#dates.createNow(),'yyyy')}">2024</span> MetaMapa. Todos los derechos reservados.
+            </small>
+            <div class="d-flex gap-3">
+                <a href="https://github.com/dds-utn/2025-tpa-mi-no-grupo-17" class="text-secondary" title="GitHub"><i class="bi bi-github fs-5"></i></a>
+                <a href="#" class="text-secondary" title="Twitter"><i class="bi bi-twitter fs-5"></i></a>
+                <a href="https://www.linkedin.com/in/ezequiel-oscar-escobar/" target="_blank" rel="noopener" class="text-secondary" title="LinkedIn">
+                    <i class="bi bi-linkedin fs-5"></i>
+                </a>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
